@@ -366,7 +366,8 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
 env = Environment(loader=DictLoader(T), autoescape=select_autoescape(default=False))
 for m in modules:
     m["pod_count"] = len({k for c in m["cards"] for k in c["pods"]})
-common = dict(steps={}, icon=ICON,   # step-through animations off; F.STEPS kept for later use mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
+# Step-through animations are off (steps={}); captions stay in F.STEPS for later use.
+common = dict(steps={}, icon=ICON, mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
 
 if SITE.exists(): shutil.rmtree(SITE)
 SITE.mkdir()

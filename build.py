@@ -76,6 +76,17 @@ for k, (t, p) in IMAGES.items():
     FIGS[k] = Markup(f'<img class="fig" src="../{p}" alt="{t}" loading="lazy">')
     FIGT[k] = t
 
+# Callout icons, drawn as inline SVG so they look the same on screen and in print (Inter lacks these glyphs)
+def _ico(body, label):
+    return Markup(f'<svg class="ico" viewBox="0 0 16 16" aria-hidden="true" focusable="false">{body}</svg>')
+ICON = {
+    "stop": _ico('<path d="M5.2 1h5.6L15 5.2v5.6L10.8 15H5.2L1 10.8V5.2z" fill="currentColor"/>', "Stop"),
+    "rule": _ico('<path d="M8 1.2 14.8 8 8 14.8 1.2 8z" fill="currentColor"/>', "Rule"),
+    "note": _ico('<circle cx="8" cy="8" r="6.4" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="7.2" y="7" width="1.6" height="5" fill="currentColor"/><circle cx="8" cy="4.9" r="1" fill="currentColor"/>', "Note"),
+    "flag": _ico('<path d="M3 1.5v13" stroke="currentColor" stroke-width="1.6"/><path d="M3.8 2h9l-2.2 3.2 2.2 3.3h-9z" fill="currentColor"/>', "Red flag"),
+    "say":  _ico('<path d="M2 2.5h12v8H7l-3.5 3v-3H2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>', "Say"),
+}
+
 T = {}
 T["card"] = r"""
 {% macro valtables(c, wide) %}{% for v in c.get('values') or [] %}{% if ((v.header|length > 6) or v.place == 'steps') == wide %}
@@ -96,7 +107,7 @@ T["card"] = r"""
         </ol>
         {% if b.rule %}<div class="rule">{{ b.rule|safe }}</div>{% endif %}
         {% if b.example %}<p class="example">{{ b.example|safe }}</p>{% endif %}
-        {% if b.stop %}<div class="callout stop" style="margin:6px 0 0 2.2em"><span class="lbl">⬣ Stop</span>{{ b.stop|safe }}</div>{% endif %}
+        {% if b.stop %}<div class="callout stop" style="margin:6px 0 0 2.2em"><span class="lbl">{{ icon.stop }}Stop</span>{{ b.stop|safe }}</div>{% endif %}
       </section>
       {% endfor %}
 {% endmacro %}
@@ -120,13 +131,13 @@ T["card"] = r"""
       {% if c.blocks|selectattr('side')|list %}<div>{{ blocks(c, medium, True) }}</div>{% endif %}
       {{ valtables(c, False) }}
       {% for n in c.notes or [] %}
-        {% if n.kind == 'stop' %}<div class="callout stop"><span class="lbl">⬣ Stop</span>{{ n.text|safe }}</div>
-        {% elif n.kind == 'rule' %}<div class="callout rule-note"><span class="lbl">= Rule</span>{{ n.text|safe }}</div>
-        {% elif n.kind == 'flag' %}<div class="callout flag"><span class="lbl">⚑ Red flag</span>{{ n.text|safe }}</div>
-        {% else %}<div class="callout note"><span class="lbl">ⓘ Note</span>{{ n.text|safe }}</div>{% endif %}
+        {% if n.kind == 'stop' %}<div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>{{ n.text|safe }}</div>
+        {% elif n.kind == 'rule' %}<div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>{{ n.text|safe }}</div>
+        {% elif n.kind == 'flag' %}<div class="callout flag"><span class="lbl">{{ icon.flag }}Red flag</span>{{ n.text|safe }}</div>
+        {% else %}<div class="callout note"><span class="lbl">{{ icon.note }}Note</span>{{ n.text|safe }}</div>{% endif %}
       {% endfor %}
       {% if c.script and medium == 'print' %}
-      <div class="callout note"><span class="lbl">“ Say</span>{% for s in c.script %}<br>{{ s }}{% endfor %}</div>
+      <div class="callout note"><span class="lbl">{{ icon.say }}Say</span>{% for s in c.script %}<br>{{ s }}{% endfor %}</div>
       {% endif %}
       
     </aside>
@@ -230,9 +241,9 @@ T["home"] = r"""
 <div class="hero-shape"><img class="hero-logo" src="assets/uoa-logo-reversed.png" alt="Waipapa Taumata Rau University of Auckland"><p>Master of Audiology</p><h1>Clinical Checklist</h1></div>
 <p class="home-lead">Each protocol has a print card with the steps, and a teaching page that adds the reasons, diagrams, simulator practice and tips from our clinical teachers. The steps are the same in both.</p>
 <div class="legend">
-  <div class="callout stop"><span class="lbl">⬣ Stop</span>Safety or contraindication. Do not go on.</div>
-  <div class="callout rule-note"><span class="lbl">= Rule</span>A decision formula you apply every time.</div>
-  <div class="callout note"><span class="lbl">ⓘ Note</span>Practical detail for the bench.</div>
+  <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety or contraindication. Do not go on.</div>
+  <div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>A decision rule you apply every time.</div>
+  <div class="callout note"><span class="lbl">{{ icon.note }}Note</span>Useful detail to know while you test.</div>
   <div class="pod-box" style="margin:0"><b style="color:var(--pod)">≠ Point of difference</b><br>We teach this differently from the NZAS or UNHSEIP guideline.</div>
   <div class="ptf"><b>PTF tip</b><br>Advice from our Professional Teaching Fellows.</div>
 </div>
@@ -319,9 +330,9 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
     <h2 style="color:var(--brand);font-size:13pt">How to use these cards</h2>
     <p style="max-width:150mm">One protocol per page. <b>Read and do</b> cards are followed step by step. <b>Do, then confirm</b> cards are done from memory and checked at a pause. Scan the QR code on any card for the reasons, diagrams and simulator practice.</p>
     <div class="legend" style="max-width:170mm">
-      <div class="callout stop"><span class="lbl">⬣ Stop</span>Safety or contraindication.</div>
-      <div class="callout rule-note"><span class="lbl">= Rule</span>Decision formula.</div>
-      <div class="callout note"><span class="lbl">ⓘ Note</span>Practical detail.</div>
+      <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety or contraindication.</div>
+      <div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>Decision rule.</div>
+      <div class="callout note"><span class="lbl">{{ icon.note }}Note</span>Useful detail while you test.</div>
       <div class="callout" style="border-left-color:var(--pod);background:var(--pod-wash)"><span class="lbl" style="color:var(--pod)">≠</span>Differs from NZAS BPG; see teaching page.</div>
     </div>
     {% if pcards|length > 14 %}<ol style="columns:3;font-size:8pt;padding:0;margin-top:4mm">{% for m in modules %}<li style="list-style:none;break-inside:avoid;margin-bottom:2mm"><b style="color:var(--brand)">{{ m.title }}</b><br>{{ m.cards|map(attribute='id')|join(', ') }}</li>{% endfor %}</ol>
@@ -340,7 +351,7 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
 env = Environment(loader=DictLoader(T), autoescape=select_autoescape(default=False))
 for m in modules:
     m["pod_count"] = len({k for c in m["cards"] for k in c["pods"]})
-common = dict(mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
+common = dict(icon=ICON, mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
 
 if SITE.exists(): shutil.rmtree(SITE)
 SITE.mkdir()

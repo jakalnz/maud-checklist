@@ -241,7 +241,7 @@ T["home"] = r"""
 <div class="hero-shape"><img class="hero-logo" src="assets/uoa-logo-reversed.png" alt="Waipapa Taumata Rau University of Auckland"><p>Master of Audiology</p><h1>Clinical Checklist</h1></div>
 <p class="home-lead">Each protocol has a print card with the steps, and a teaching page that adds the reasons, diagrams, simulator practice and tips from our clinical teachers. The steps are the same in both.</p>
 <div class="legend">
-  <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety or contraindication. Do not go on.</div>
+  <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety concern or contraindication. Pause and decide whether, and how, to go on.</div>
   <div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>A decision rule you apply every time.</div>
   <div class="callout note"><span class="lbl">{{ icon.note }}Note</span>Useful detail to know while you test.</div>
   <div class="pod-box" style="margin:0"><b style="color:var(--pod)">≠ Point of difference</b><br>We teach this differently from the NZAS or UNHSEIP guideline.</div>
@@ -330,7 +330,7 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
     <h2 style="color:var(--brand);font-size:13pt">How to use these cards</h2>
     <p style="max-width:150mm">One protocol per page. <b>Read and do</b> cards are followed step by step. <b>Do, then confirm</b> cards are done from memory and checked at a pause. Scan the QR code on any card for the reasons, diagrams and simulator practice.</p>
     <div class="legend" style="max-width:170mm">
-      <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety or contraindication.</div>
+      <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety concern or contraindication: pause and decide.</div>
       <div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>Decision rule.</div>
       <div class="callout note"><span class="lbl">{{ icon.note }}Note</span>Useful detail while you test.</div>
       <div class="callout" style="border-left-color:var(--pod);background:var(--pod-wash)"><span class="lbl" style="color:var(--pod)">≠</span>Differs from NZAS BPG; see teaching page.</div>

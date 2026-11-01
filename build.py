@@ -116,7 +116,7 @@ T["card"] = r"""
   <header class="card-head">
     <div class="head-shape"><span class="card-id">{{ c.id }}</span>
     <h2 class="card-title">{{ c.title }}</h2></div>
-    <div class="card-mode"><b>{{ 'Procedure' if c.mode == 'READ-DO' else 'Guideline' }}</b>{{ 'Follow the steps in order' if c.mode == 'READ-DO' else 'Cover every point; order can vary' }}</div>
+    <div class="card-mode"><b>{{ 'Procedure' if c.mode == 'READ-DO' else 'Guide' }}</b>{{ 'Follow the steps in order' if c.mode == 'READ-DO' else 'Cover every point; order can vary' }}</div>
   </header>
   <p class="card-purpose">{{ c.purpose|safe }}</p>
   <div class="card-body">
@@ -251,7 +251,7 @@ T["home"] = r"""
 <section class="module" id="mod-{{ m.id }}">
 <h2>{{ m.title }}</h2>
 <p class="src">From the March 2026 checklist §{{ m.source }} · <a href="print/{{ m.id }}.pdf">Print this module</a> · <a href="edit/{{ m.id }}.docx">Edit in Word</a></p>
-<ul class="cardlist">{% for c in m.cards %}<li><a href="{{ c.dir }}/{{ c.id|lower }}.html"><span class="cid">{{ c.id }}</span><span>{{ c.title }}</span><span class="mode">{{ 'Procedure' if c.mode == 'READ-DO' else 'Guideline' }}</span></a></li>{% endfor %}</ul>
+<ul class="cardlist">{% for c in m.cards %}<li><a href="{{ c.dir }}/{{ c.id|lower }}.html"><span class="cid">{{ c.id }}</span><span>{{ c.title }}</span><span class="mode">{{ 'Procedure' if c.mode == 'READ-DO' else 'Guide' }}</span></a></li>{% endfor %}</ul>
 </section>
 {% endfor %}
 <p class="src" style="margin-top:20px">Not yet included: hearing aid fitting, diagnostic ABR and impression taking (possible later modules).</p>
@@ -328,7 +328,7 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
   </div>
   <div>
     <h2 style="color:var(--brand);font-size:13pt">How to use these cards</h2>
-    <p style="max-width:150mm">One protocol per page. <b>Procedure</b> cards are followed in order. <b>Guideline</b> cards list every point to cover, in an order that suits the patient. Scan the QR code on any card for the reasons, diagrams and simulator practice.</p>
+    <p style="max-width:150mm">One protocol per page. <b>Procedure</b> cards are followed in order. <b>Guide</b> cards list every point to cover, in an order that suits the patient. Scan the QR code on any card for the reasons, diagrams and simulator practice.</p>
     <div class="legend" style="max-width:170mm">
       <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety concern or contraindication: pause and decide.</div>
       <div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>Decision rule.</div>
@@ -416,7 +416,7 @@ def module_md(mods, title):
     for m in mods:
         L.append(f"# {m['title']}\n")
         for c in m["cards"]:
-            mode = "Procedure" if c["mode"] == "READ-DO" else "Guideline"
+            mode = "Procedure" if c["mode"] == "READ-DO" else "Guide"
             L.append(f"## {c['id']} {md_text(c['title'])}\n")
             L.append(f"*{mode}. From March 2026 checklist section {c['source']}.*\n")
             L.append(f"**Purpose:** {md_text(c['purpose'])}\n")

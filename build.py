@@ -94,7 +94,7 @@ T["card"] = r"""
         <ol class="steps" start="1">
           {% for s in b.steps %}<li>{{ s|safe }}{% if loop.last and b.pod %}{% if medium == 'site' %}<a class="pod-mark" href="#pod-{{ b.pod }}" title="Differs from NZAS BPG: see Points of difference">≠</a>{% else %}<span class="pod-mark" title="Differs from NZAS BPG">≠</span>{% endif %}{% endif %}</li>{% endfor %}
         </ol>
-        {% if b.rule %}<div class="rule"><span class="ico" aria-hidden="true">=</span><span>{{ b.rule|safe }}</span></div>{% endif %}
+        {% if b.rule %}<div class="rule">{{ b.rule|safe }}</div>{% endif %}
         {% if b.example %}<p class="example">{{ b.example|safe }}</p>{% endif %}
         {% if b.stop %}<div class="callout stop" style="margin:6px 0 0 2.2em"><span class="lbl">⬣ Stop</span>{{ b.stop|safe }}</div>{% endif %}
       </section>

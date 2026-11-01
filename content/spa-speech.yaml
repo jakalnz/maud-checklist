@@ -136,7 +136,7 @@ cards:
         - Mask if the speech level minus IAA reaches the best bone conduction threshold of the non-test ear.
         - Use masked BC thresholds for the non-test ear if you have them.
         - If BC was not tested in the non-test ear, assume it equals that ear's best AC threshold.
-      rule: "Mask if  Level<sub>TE</sub> − IAA ≥ best BC<sub>NTE</sub>"
+      rule: "Mask if Level<sub>TE</sub> − IAA ≥ best BC<sub>NTE</sub>"
       pod: speech-iaa
     - title: Set the masking level
       steps:

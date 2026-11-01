@@ -330,14 +330,14 @@ cards:
         - Check again after bone conduction, using the non-test ear's bone thresholds.
         - Mask if the rule below is met.
       rule: |
-        Mask AC if  AC<sub>TE</sub> − BC<sub>NTE</sub> ≥ IAA
+        Mask AC if AC<sub>TE</sub> − BC<sub>NTE</sub> ≥ IAA
       why: Sound reaching the non-test ear is the test level minus the interaural attenuation. If that is at or above the non-test cochlea's threshold (its bone conduction), the non-test ear may have heard it. Before bone conduction is known, use AC<sub>NTE</sub>; bone conduction can only be the same or better.
       pod: insert-depth
     - title: Bone conduction
       steps:
         - Mask if both parts of the rule below are true.
       rule: |
-        Mask BC if  air-bone gap<sub>TE</sub> ≥ 15 dB  and  AC<sub>TE</sub> > 15 dB HL
+        Mask BC if air-bone gap<sub>TE</sub> ≥ 15 dB and AC<sub>TE</sub> > 15 dB HL
       why: Interaural attenuation for bone conduction is taken as 0 dB, so an unmasked bone threshold could come from either cochlea.
   values:
     - caption: "Interaural attenuation (dB)"

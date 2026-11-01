@@ -1,0 +1,553 @@
+module:
+  id: pta
+  title: Pure-tone audiometry and masking
+  source: "Clinical Checklist March 2026, sections 4 and 5"
+  version: "0.1 draft"
+  date: "2026-11-01"
+  reviewer: "MS (pending)"
+
+cards:
+
+# ---------------------------------------------------------------- PTA-01
+- id: PTA-01
+  title: Prepare the room and instruct the patient
+  mode: DO-CONFIRM
+  source: "4.1, 4.2"
+  purpose: Get the equipment checked and the patient ready to give clear, honest responses.
+  equipment:
+    - Audiogram form and history form
+    - Audiometer, transducers and talk-back working
+    - Speech material calibrated to the VU meter
+  blocks:
+    - title: Before the patient arrives
+      steps:
+        - Read the referral and plan which tests you will do.
+        - Get the correct forms and prepare the test area.
+        - "Do listening checks on all transducers: level and distortion."
+        - Calibrate the speech CD, MP3 player or .wav files using the VU meter.
+      why: A listening check finds a faulty cord or transducer before it produces a false hearing loss on a real patient.
+    - title: Instruct the patient
+      steps:
+        - Explain the purpose of the test.
+        - Ask them to respond even when the sound is very faint, and to guess if unsure.
+        - Explain that each ear is tested separately.
+        - If the audiometer is outside the booth, tell them you can hear them through the microphone.
+        - Agree a clear response, such as a button press or a raised hand.
+        - Ask about loud noise exposure in the last 24 hours.
+      why: Encouraging guesses brings responses down to true threshold. Recent loud noise can cause a temporary threshold shift, so the result may not reflect their usual hearing.
+  script:
+    - "I'm going to play some beeps to find the quietest sounds you can hear."
+    - "Press the button every time you hear a beep, even if it is very faint. If you think you heard one, press."
+    - "We will test one ear at a time."
+    - "Have you been around any loud noise in the last 24 hours?"
+  notes:
+    - kind: note
+      text: "\"Loud\" means having to shout or raise your voice to talk to someone more than 1 metre away (BSA, 2011)."
+    - kind: note
+      text: If you think recent noise has affected the results, record the details and offer a retest when they have had no recent exposure.
+  check:
+    - q: A patient used a chainsaw this morning without earmuffs. What do you do?
+      a: Record the exposure and its details on the audiogram. Test as planned, but if results may be affected, offer a retest after a period without noise.
+  refs:
+    - "British Society of Audiology. (2011). Recommended procedure: Pure-tone air-conduction and bone-conduction threshold audiometry with and without masking."
+    - "Carhart, R., & Jerger, J. F. (1959). Preferred method for clinical determination of pure-tone thresholds. Journal of Speech and Hearing Disorders, 24, 330-345."
+  fixes:
+    - "\"may case a temporary threshold shift\" corrected to \"cause\"."
+
+# ---------------------------------------------------------------- PTA-02
+- id: PTA-02
+  title: Choose the transducer
+  mode: READ-DO
+  source: "4.3"
+  purpose: Choose the transducer that gives an accurate result for this ear.
+  when:
+    - Choose using otoscopy, history and the test environment.
+    - Insert earphones are the default unless a reason below applies.
+  blocks:
+    - title: Use supra-aural headphones instead of inserts when there is
+      steps:
+        - A larger than usual ear canal volume, such as a perforation, a patent grommet or a mastoid cavity.
+        - Significant ear wax.
+        - A discharging ear canal, such as active otitis externa.
+        - Severe exostoses that would block the insert or make it painful.
+      stop: Do not use supra-aural headphones if you suspect a collapsing ear canal.
+      why: Inserts in a large-volume ear lower the sound level reaching the eardrum, which can overestimate a low-frequency loss. Supra-aural headphones press on the pinna and can close a collapsing canal, which also creates a false loss.
+  notes:
+    - kind: rule
+      text: "If your audiometer has no separate insert output, apply the insert correction factors before you plot thresholds. Insert corrections are negative in the high frequencies."
+    - kind: note
+      text: Circum-aural headphones cover the whole ear. Use them for extended high-frequency audiometry or when ambient noise is slightly raised.
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Practise transducer choice with an otoscopy finding
+  check:
+    - q: Otoscopy shows a patent grommet in the right ear. Which transducer, and why?
+      a: Supra-aural headphones. The grommet makes the canal volume larger, so an insert would deliver less sound to the eardrum and could create a false low-frequency loss.
+  fixes:
+    - "\"should not be selected when if\" corrected."
+    - "March 2026 section 4.3 split across PTA-02 (choose) and PTA-03 (fit) so each fits one printed page."
+
+# ---------------------------------------------------------------- PTA-03
+- id: PTA-03
+  title: Fit the transducers
+  mode: READ-DO
+  source: "4.3.1-4.3.3"
+  purpose: Fit each transducer so the sound reaches the ear as calibrated.
+  blocks:
+    - title: Fit insert earphones
+      steps:
+        - "Choose the foam tip size: small (10 mm, 14B, beige) for children and small adults; regular (13 mm, 14A, yellow) for most adults; jumbo (18 mm, 14C) for very large canals."
+        - Insert the foam tip so its outer edge is at least flush with the canal entrance (intermediate depth).
+        - Clip the transducer box so the tip points straight down the canal.
+        - Tug gently. The tip should resist.
+        - Check comfort. Deep insertion can hurt.
+        - If the patient feels discomfort, repeat otoscopy to check for skin abrasion.
+      why: The interaural attenuation and occlusion effect values we use for inserts assume at least intermediate depth. A shallow insert behaves like a supra-aural headphone.
+      pod: insert-depth
+    - title: Fit supra-aural headphones
+      steps:
+        - Put the red earphone on the right ear and the blue on the left.
+        - Centre each diaphragm directly over the canal opening.
+        - Move hair, glasses and earrings out of the way.
+        - Check comfort, for example earrings pressing under the cushion.
+      why: If glasses come off, the patient may lose lip-reading cues. Allow for this when you talk to them.
+    - title: Place the bone conductor
+      steps:
+        - Place it on the prominent part of the mastoid, not touching the pinna.
+        - Keep hair between the transducer and the mastoid to a minimum.
+        - Check it is secure and comfortable.
+  notes:
+    - kind: note
+      text: Once transducers are in place, the patient may not hear you. Give instructions first.
+  figures: [insert-depth]
+  media_planned:
+    - "Video: fitting an insert earphone to intermediate depth (60 s)"
+    - "Photo set: the three foam tip sizes beside a ruler"
+    - "Video: bone conductor placement and the pinna-touch error (45 s)"
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Practise fitting decisions in a full test
+  check:
+    - q: The foam tip sits 3 mm outside the canal entrance. What changes?
+      a: It is a shallow insertion. Use supra-aural values for interaural attenuation and occlusion effect.
+  refs:
+    - "Bell-Lehmkuhler, et al. (2009). Insert earphone insertion depth illustration (source of the original Figure 2)."
+  fixes:
+    - "Regular and jumbo tips were both listed as yellow. Jumbo colour removed until checked against current stock."
+    - "Figure 2 (insertion depth) redrawn as a new diagram, avoiding the copyright question on the original."
+
+# ---------------------------------------------------------------- PTA-04
+- id: PTA-04
+  title: Set up the audiometer
+  mode: DO-CONFIRM
+  source: "4.4"
+  purpose: Make sure you can hear the patient, they can hear you, and each channel goes to the right ear.
+  blocks:
+    - title: Set up
+      steps:
+        - Close the booth door before you turn up the talk-back, to avoid feedback.
+        - Check the loudspeaker is on and you can hear the patient clearly through talk-back.
+        - Set the talk-forward level to suit the patient's hearing.
+        - With headphones selected, send channels 1 and 2 to separate ears.
+        - If masking, set the masking channel (usually channel 2) to the non-test ear.
+      why: If both channels go to one ear, the maximum output is reduced. That matters most for a patient with a severe to profound loss.
+
+# ---------------------------------------------------------------- PTA-05
+- id: PTA-05
+  title: Find air conduction thresholds
+  mode: READ-DO
+  source: "4.6"
+  purpose: Find the quietest level the patient hears each test frequency, in each ear.
+  blocks:
+    - title: First frequency
+      steps:
+        - Test the better ear first, if known.
+        - Start at 30 dB HL, or at 50 dB HL if you suspect a hearing loss.
+        - If there is no response, go up in 15 to 20 dB steps until they respond.
+        - After each response, go down 10 dB.
+        - After each miss, go up 5 dB.
+        - "Threshold is the lowest level with responses on at least 2 of 3 ascending presentations."
+      why: The modified Hughson-Westlake method (Carhart & Jerger, 1959) brackets threshold from below. Ascending presentations give the most stable thresholds.
+      pod: threshold-definition
+    - title: Timing
+      steps:
+        - Present each tone for 1 to 2 seconds.
+        - Leave at least 3 seconds between tones, and vary the gap.
+        - To save time, go faster below threshold, not at or above it.
+        - Keep your shoulders, arms and face still. Give no visual cues.
+      why: Predictable or very fast presentations encourage false-positive responses.
+    - title: Frequencies
+      steps:
+        - "Test in this order: 1, 2, 3, 4, 6, 8 kHz."
+        - Retest 1 kHz in the first ear as a reliability check.
+        - Then test 500 Hz and 250 Hz.
+        - At each new frequency, start 15 to 20 dB above the last threshold, unless that level would be uncomfortably loud.
+        - Repeat in the other ear.
+      pod: retest
+    - title: Add inter-octave frequencies when
+      side: true
+      steps:
+        - Thresholds at adjacent octaves differ by 20 dB or more (test 750 Hz or 1.5 kHz).
+        - You suspect noise-induced hearing loss (test 1.5 kHz).
+        - The patient reports hearing difficulty but the audiogram looks normal (test 750 Hz and 1.5 kHz).
+    - title: If there is no response
+      steps:
+        - Test up to the audiometer limit or 110 dB HL, whichever is lower.
+        - Ask whether they hear or feel low-frequency tones at high levels. Write VT beside a felt response.
+        - If tinnitus makes pure tones hard to hear, use warble tones and note the stimulus and frequencies on the audiogram.
+      pod: test-limit
+  notes:
+    - kind: rule
+      text: "Correct thresholds for insert earphones before you plot them, if the audiometer has no separate insert output."
+    - kind: note
+      text: Do not join air conduction symbols until you know whether masking is needed.
+  figures: [hughson-westlake]
+  media_planned:
+    - "Video: a tester giving accidental visual cues, then the corrected version (60 s)"
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Practise threshold seeking on a normal and a sloping loss
+  check:
+    - q: "At 2 kHz the patient responds at 35 dB, misses at 25, responds at 30, misses at 20, responds at 25, misses at 15, responds at 20, misses at 10, misses at 15, responds at 20. What is the threshold?"
+      a: "Count only responses on the way up: 30 once, 25 once, 20 twice, and none at 15 or 10. Two ascending responses at 20 dB HL is the lowest level meeting 2 of 3, so threshold is 20 dB HL."
+    - q: Right 1 kHz threshold is 20 dB HL and 2 kHz is 45 dB HL. What extra frequency do you test?
+      a: 1.5 kHz, because adjacent octave thresholds differ by 20 dB or more.
+  refs:
+    - "Carhart, R., & Jerger, J. F. (1959). Preferred method for clinical determination of pure-tone thresholds. Journal of Speech and Hearing Disorders, 24, 330-345."
+  fixes:
+    - "Step numbering error (\"19.\") corrected."
+    - "\"≥\" restored where the March 2026 file showed \"³\"."
+    - Repeated instruction about joining symbols (4.5.2 step 1 and 4.6 step 13) kept once only, in PTA-07.
+
+# ---------------------------------------------------------------- PTA-06
+- id: PTA-06
+  title: Find bone conduction thresholds
+  mode: READ-DO
+  source: "4.7, 4.8, 4.9"
+  purpose: Find whether a hearing loss is conductive, sensorineural or mixed.
+  when:
+    - Test bone conduction when air conduction shows a hearing loss.
+  blocks:
+    - title: Test
+      steps:
+        - Start with the ear that was worse for air conduction.
+        - "Test in this order: 1, 2, 4 kHz, then 500 Hz."
+        - Start 20 dB above the better air conduction threshold at that frequency, in either ear.
+        - Use the same 10-down 5-up bracketing as for air conduction.
+        - Leave the test ear uncovered at 1 kHz and below.
+      why: Covering the test ear improves low-frequency bone conduction thresholds (the occlusion effect), which would hide a real air-bone gap.
+      pod: bc-criterion
+    - title: Add these frequencies when useful
+      steps:
+        - 250 Hz, if there is an unexpected conductive loss at 500 Hz.
+        - 3 kHz, to check a sensorineural asymmetry seen only at that frequency, or when you cannot mask 4 kHz.
+        - Check which bone conduction frequencies your audiometer is calibrated for before testing them.
+    - title: Check for acoustic radiation
+      steps:
+        - If bone conduction at 2 kHz or above shows an unexpected air-bone gap, put a plug or insert in the test ear and retest.
+        - Write "checked for AR" on the audiogram.
+        - To save time, leave the test ear insert in place for high-frequency bone conduction.
+      why: Sound can leak from the bone conductor and reach the ear by air, making high-frequency bone thresholds look better than they are.
+    - title: Check for vibrotactile responses
+      steps:
+        - At high levels at 250 Hz to 1 kHz, ask whether they hear or feel the tone.
+        - Write VT beside any felt response.
+        - If they cannot tell, note where they first felt it and look for a level where they also hear it.
+        - If the diagnosis depends on it, move the bone conductor to the forehead and retest.
+      why: The forehead is more sensitive to vibration and less sensitive to bone-conducted sound. If thresholds improve on the forehead, they are probably vibrotactile. If they get worse, they are probably auditory (Dean & Martin, 1997).
+  notes:
+    - kind: note
+      text: "Occlusion effect, in two sentences: covering an ear canal improves that ear's low-frequency bone conduction thresholds. That is why the test ear stays open, and why we add an occlusion effect factor when an earphone covers the non-test ear for masking."
+  media_planned:
+    - "Graph: vibrotactile thresholds by frequency for AC and BC (redraw of Boothroyd & Chalkwell, 1970, permission or new data needed)"
+    - "Video: forehead vibrotactile check (45 s)"
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Practise bone conduction on a conductive and a mixed loss
+  check:
+    - q: Unmasked BC at 4 kHz is 15 dB HL; AC is 45 dB HL. The patient has noise-induced hearing loss. What do you check first?
+      a: Acoustic radiation. Put an insert in the test ear and retest bone conduction at 4 kHz before you report an air-bone gap.
+  refs:
+    - "Boothroyd, A., & Cawkwell, S. (1970). Vibrotactile thresholds in pure tone audiometry. Acta Oto-Laryngologica, 69, 381-387."
+    - "Dean, M. S., & Martin, F. N. (1997). Auditory and tactile bone-conduction thresholds. Journal of the American Academy of Audiology, 8, 227-232."
+  fixes:
+    - "\"auditor or vibrotactile, this this\" corrected."
+    - "Occlusion effect paragraph rewritten: the March 2026 wording (copied from NZAS BPG) said the effect occurs when the non-test ear is blocked, then advised keeping the test ear open."
+    - "Reference spelt \"Chalkwell\" in March 2026; the 1970 paper's second author is usually cited as Cawkwell. Check before release."
+
+# ---------------------------------------------------------------- PTA-07
+- id: PTA-07
+  title: Record the audiogram
+  mode: DO-CONFIRM
+  source: "4.5"
+  purpose: Record results so anyone can read, copy and act on them.
+  blocks:
+    - title: Every audiogram must show
+      steps:
+        - Patient name and date of birth.
+        - Audiologist and student names.
+        - Test date.
+        - "Equipment: audiometer model, calibration date (done and due), transducers."
+        - Reliability of responses.
+        - Otoscopy findings.
+        - Any non-standard method or stimulus, such as ascending technique or warble tones.
+        - Any non-standard symbol, such as VT, with a note explaining it.
+      why: These are the ASHA (2005) minimum fields. Records must also follow New Zealand privacy law.
+    - title: Plot and join symbols
+      steps:
+        - Use a graph, with right and left ears shown clearly. A table may be added.
+        - Use the NZ symbol set below.
+        - Join air conduction symbols only once you know no further masking is needed.
+        - Do not join a no-response symbol to other thresholds.
+        - Join right ear thresholds with a solid line and left with a dashed line.
+        - Do not join bone conduction symbols.
+      why: A joined line tells the reader "these are true thresholds". A no-response at the audiometer limit is not a threshold.
+  figures: [symbols]
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Plot a masked audiogram
+  refs:
+    - "American Speech-Language-Hearing Association. (2005). Guidelines for manual pure-tone threshold audiometry."
+  fixes: []
+
+# ---------------------------------------------------------------- MSK-01
+- id: MSK-01
+  title: Decide when to mask
+  mode: READ-DO
+  source: "5.1"
+  purpose: Find out whether the non-test ear could have heard the tone.
+  blocks:
+    - title: Air conduction
+      steps:
+        - Check for masking straight after unmasked air conduction in both ears.
+        - Check again after bone conduction, using the non-test ear's bone thresholds.
+        - Mask if the rule below is met.
+      rule: |
+        Mask AC if  AC<sub>TE</sub> − BC<sub>NTE</sub> ≥ IAA
+      why: Sound reaching the non-test ear is the test level minus the interaural attenuation. If that is at or above the non-test cochlea's threshold (its bone conduction), the non-test ear may have heard it. Before bone conduction is known, use AC<sub>NTE</sub>; bone conduction can only be the same or better.
+      pod: insert-depth
+    - title: Bone conduction
+      steps:
+        - Mask if both parts of the rule below are true.
+      rule: |
+        Mask BC if  air-bone gap<sub>TE</sub> ≥ 15 dB  and  AC<sub>TE</sub> > 15 dB HL
+      why: Interaural attenuation for bone conduction is taken as 0 dB, so an unmasked bone threshold could come from either cochlea.
+  values:
+    - caption: "Interaural attenuation (dB)"
+      source: "Katz (2009); Katz & Lezynski (2002)"
+      header: ["Transducer", "250", "500", "1k", "1.5k", "2k", "3k", "4k", "6k", "8k"]
+      rows:
+        - ["Supra-aural", "40", "40", "40", "40", "40", "40", "40", "40", "40"]
+        - ["Insert (flush or deeper)", "60", "60", "60", "50", "50", "50", "50", "50", "50"]
+      note: A shallow insert uses supra-aural values.
+  notes:
+    - kind: note
+      text: "Why these numbers: the minimum IAA of supra-aural headphones is 40 dB. ER-3A inserts have a minimum of 75 dB at 1 kHz and below and 50 dB above, but clinical practice uses a more conservative 60 dB at 1 kHz and below (Katz & Lezynski, 2002; Yacullo, 1996)."
+  figures: [cross-hearing]
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Decide when to mask on five audiograms
+  check:
+    - q: "Inserts, intermediate depth. Right AC 2 kHz = 70 dB HL. Left AC 2 kHz = 10 dB HL, left BC unknown. Mask right AC?"
+      a: "70 − 10 = 60, which is ≥ 50 (insert IAA at 2 kHz). Yes, mask."
+    - q: "Same patient, supra-aural headphones, 500 Hz: right AC 45, left AC 5. Mask?"
+      a: "45 − 5 = 40, which is ≥ 40. Yes, mask."
+    - q: "Right AC 500 Hz = 40 dB HL, unmasked BC = 20 dB HL. Mask BC?"
+      a: "Air-bone gap is 20 dB (≥ 15) and AC is above 15 dB HL. Yes, mask."
+  refs:
+    - "Katz, J. (Ed.). (2009). Handbook of clinical audiology (6th ed.). Lippincott Williams & Wilkins."
+    - "Katz, J., & Lezynski, J. (2002). Clinical masking. In J. Katz (Ed.), Handbook of clinical audiology (5th ed.)."
+    - "Yacullo, W. S. (1996). Clinical masking procedures. Allyn & Bacon."
+  fixes:
+    - "ERROR CORRECTED: March 2026 gave the AC rule as AC(TE) ≥ BC(NTE) − IAA. The correct rule is AC(TE) − BC(NTE) ≥ IAA, which is AC(TE) ≥ BC(NTE) + IAA."
+    - "\"≥\" restored in the BC rule where the file showed \"³\"."
+
+# ---------------------------------------------------------------- MSK-02
+- id: MSK-02
+  title: Mask with the plateau method
+  mode: READ-DO
+  source: "5.2"
+  purpose: Raise masking in the non-test ear until the test-ear threshold stops changing. That stable level is the true threshold.
+  blocks:
+    - title: Start
+      steps:
+        - "AC: set initial masking to AC<sub>NTE</sub> + 10 dB."
+        - "BC: set initial masking to AC<sub>NTE</sub> + 10 dB + OEF."
+        - Leave out the OEF if the non-test ear may have an air-bone gap of 20 dB or more at that frequency. If you do not know, add it.
+        - For insert masking, subtract insert correction factors from the audiogram values to get the dial level.
+      why: The extra 10 dB is a safety factor. The OEF makes up for the non-test ear's improved bone conduction once it is covered by the masking earphone. A conductive loss already reduces that effect.
+      pod: oef-depth
+    - title: Find the plateau
+      steps:
+        - Present the tone to the test ear.
+        - If they respond, raise masking 10 dB and present again.
+        - If they do not respond, raise the tone 5 dB until they do, then raise masking 10 dB again.
+        - Stop when the threshold holds steady over 20 dB of masking (2 steps of 10 dB).
+        - Record that level as the masked threshold.
+      why: If the threshold keeps rising with masking, the non-test ear was hearing it (undermasking). When it holds steady, masking has removed the non-test ear and the threshold belongs to the test ear.
+  values:
+    - caption: "Occlusion effect factors (dB), added for BC masking"
+      place: steps
+      source: "Katz (2009)"
+      header: ["Masking earphone", "250", "500", "1k"]
+      rows:
+        - ["Supra-aural", "30", "20", "10"]
+        - ["Insert (flush or deeper)", "10", "10", "0"]
+      note: A shallow insert uses supra-aural values.
+  notes:
+    - kind: stop
+      text: "Overmasking: when masking exceeds the test-ear tone level by more than the IAA, it can cross back and mask the test ear. If the response disappears as masking rises, stop and accept a short plateau."
+    - kind: note
+      text: You may accept a 15 dB plateau, or use 5 dB masking steps, when there is a masking dilemma or overmasking. Insert earphones add 10 to 20 dB of IAA and can solve a dilemma.
+    - kind: note
+      text: If the threshold moves by only 5 dB with more masking, lower the tone 5 dB and present again to confirm the shift is real, not test-retest error.
+    - kind: rule
+      text: "Record: if you cannot reach a plateau because of overmasking or the audiometer limit, plot a masked no-response at the level where overmasking begins and note why, for example \"insufficient masking available\". If a masking dilemma stops you, plot the unmasked threshold and mark it MD."
+  figures: [plateau-flow, plateau-graph]
+  media_planned:
+    - "Video: a full plateau run on a unilateral loss, with the tester narrating each decision (2 min)"
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Practise plateau masking on a unilateral and a bilateral conductive loss
+  check:
+    - q: "Inserts, intermediate depth. Masking BC at 500 Hz. AC<sub>NTE</sub> = 15 dB HL; the non-test ear has normal AC and no known air-bone gap. Initial masking level?"
+      a: "15 + 10 + 10 (insert OEF at 500 Hz) = 35 dB HL."
+    - q: "Same question with supra-aural headphones."
+      a: "15 + 10 + 20 = 45 dB HL."
+  refs:
+    - "Katz, J. (Ed.). (2009). Handbook of clinical audiology (6th ed.). Lippincott Williams & Wilkins."
+  fixes:
+    - "Figure 5 redrawn: the original flowchart had crossing lines and unlabelled yes/no branches when exported."
+
+# ---------------------------------------------------------------- MSK-03
+- id: MSK-03
+  title: Mask air conduction with the step method
+  mode: READ-DO
+  source: "5.3, 5.3.1"
+  purpose: A faster alternative to the plateau method. Masking rises in 20 dB steps, giving similar results.
+  blocks:
+    - title: Initial step
+      steps:
+        - Set masking to AC<sub>NTE</sub> + 30 dB.
+        - Recheck the test-ear threshold.
+        - If they respond, accept it. Repeat if you doubt reliability.
+        - If they do not respond, raise the tone until they do.
+        - If the threshold moved 15 dB or less, accept it.
+        - If it moved 20 dB or more, go to the subsequent step.
+      example: "A non-test ear threshold of 10 dB HL gives initial masking of 40 dB HL."
+      why: A shift of up to 15 dB is treated as a small amount of cross-hearing. A larger shift means the non-test ear was carrying the response.
+    - title: Subsequent step
+      steps:
+        - Raise masking another 20 dB.
+        - Recheck the threshold, raising the tone if needed.
+        - If it moved 10 dB or less, accept it.
+        - If it moved 15 dB or more, do another subsequent step.
+      example: "Masking now 60 dB HL."
+    - title: Second subsequent step
+      steps:
+        - Raise masking another 20 dB.
+        - Accept the threshold when it no longer shifts significantly, or there is no response at the audiometer limit.
+      example: "Masking now 80 dB HL."
+  figures: [step-flow-ac]
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Practise step masking on a unilateral loss
+  check:
+    - q: "AC<sub>NTE</sub> = 5 dB HL. Unmasked AC<sub>TE</sub> = 60. With initial masking the threshold moves to 70. What next?"
+      a: "Initial masking is 35 dB HL. A 10 dB shift is ≤ 15 dB, so accept 70 dB HL as the masked threshold."
+  refs:
+    - "Katz, J. (Ed.). (2009). Handbook of clinical audiology (6th ed.). Lippincott Williams & Wilkins."
+  fixes:
+    - "\"≥\" restored where the file showed \"³\"."
+    - "Figure 6 redrawn."
+
+# ---------------------------------------------------------------- MSK-04
+- id: MSK-04
+  title: Mask bone conduction with the step method
+  mode: READ-DO
+  source: "5.3.2"
+  purpose: The same as air conduction step masking, but the first step adds the occlusion effect factor.
+  blocks:
+    - title: Initial step
+      steps:
+        - Set masking to AC<sub>NTE</sub> + 30 dB + OEF.
+        - Recheck the bone conduction threshold.
+        - If they respond, accept it. Repeat if you doubt reliability.
+        - If they do not respond, raise the tone until they do.
+        - If the threshold moved 15 dB or less, accept it.
+        - If it moved 20 dB or more, go to the subsequent step.
+      pod: oef-depth
+    - title: Subsequent steps
+      steps:
+        - Raise masking another 20 dB and recheck.
+        - If it moved 15 dB or more, repeat.
+        - Accept the threshold when it no longer shifts significantly, or there is no response at the audiometer limit.
+  values:
+    - caption: "Occlusion effect factors (dB)"
+      source: "Katz (2009)"
+      header: ["Masking earphone", "250", "500", "1k"]
+      rows:
+        - ["Supra-aural", "30", "20", "10"]
+        - ["Insert (flush or deeper)", "10", "10", "0"]
+      note: A shallow insert uses supra-aural values. Children's canals rarely allow intermediate depth, so you will often need supra-aural OEFs with children.
+  figures: [step-flow-bc]
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Practise BC step masking on a conductive loss
+  check:
+    - q: "Supra-aural masking, BC at 250 Hz, AC<sub>NTE</sub> = 20 dB HL. Initial masking?"
+      a: "20 + 30 + 30 = 80 dB HL. Watch for overmasking."
+  refs:
+    - "Katz, J. (Ed.). (2009). Handbook of clinical audiology (6th ed.). Lippincott Williams & Wilkins."
+  fixes:
+    - "INCONSISTENCY RESOLVED FOR REVIEW: March 2026 5.3.2.1 step 2 said correctly positioned inserts create no occlusion effect, but Table 3 gives insert OEFs of 10 dB at 250 and 500 Hz at intermediate depth. This card uses Table 3. MS to confirm."
+    - "Subsequent step order tidied: March 2026 listed the stop rule before the repeat rule."
+    - "Figure 7 redrawn."
+
+# ---------------------------------------------------------------- Points of difference
+differences:
+  insert-depth:
+    title: Insert depth for the insert IAA values
+    ours: "Use insert IAA and OEF values when the foam tip is at intermediate (flush) depth or deeper."
+    bpg: "NZAS BPG Adult PTA (2021) says insert values apply only when the insert is inserted deeply; otherwise use supra-aural values."
+    why: "Flush (intermediate) depth is achievable and comfortable for most adults; deep insertion is often uncomfortable. To confirm: the rationale and the evidence for IAA at intermediate depth."
+    status: To confirm (MS)
+  oef-depth:
+    title: Insert depth for occlusion effect factors
+    ours: "Insert OEFs (10, 10, 0 dB) apply at intermediate depth or deeper."
+    bpg: "NZAS BPG Adult PTA (2021): insert OEFs apply only when the insert is inserted deeply."
+    why: "As for IAA. To confirm."
+    status: To confirm (MS)
+  threshold-definition:
+    title: Threshold definition
+    ours: "Lowest level with responses on at least 2 of 3 presentations (March 2026 did not say ascending; this draft adds it)."
+    bpg: "NZAS BPG (2021): responses on at least half of ascending trials, with a minimum of 2 of 3 ascending presentations."
+    why: "Wording difference only. This draft aligns with the BPG."
+    status: Aligned in draft
+  retest:
+    title: Reliability retest criterion
+    ours: "Retest 1 kHz in one ear (no pass criterion given in March 2026)."
+    bpg: "NZAS BPG (2021): if the retest differs by more than ±5 dB, retest other frequencies and cross-check with speech and immittance."
+    why: "No reason recorded. Proposed: adopt the ±5 dB criterion."
+    status: To confirm (MS)
+  test-limit:
+    title: Upper test limit
+    ours: "Test up to the audiometer limit or 110 dB HL, whichever is lower."
+    bpg: "NZAS BPG (2021): test to the maximum limit of the audiometer, monitoring comfort above 80 dB HL in 10 or 5 dB steps."
+    why: "110 dB HL may be a comfort and safety limit for student clinics. To confirm."
+    status: To confirm (MS)
+  bc-criterion:
+    title: When to test bone conduction
+    ours: "Test bone conduction if air conduction shows a hearing loss."
+    bpg: "NZAS BPG (2021): when air conduction thresholds are > 20 dB HL."
+    why: "March 2026 does not define \"hearing loss\" here; elsewhere it uses > 15 dB HL as the limit of normal. To confirm which cut-off we teach."
+    status: To confirm (MS)

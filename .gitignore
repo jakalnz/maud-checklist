@@ -1,0 +1,6 @@
+__pycache__/
+node_modules/
+shots.js
+fonts/atkinson*
+site/
+print/

@@ -1,0 +1,242 @@
+/* MAud Clinical Checklist — shared design tokens and styles (site + print) */
+/* Typeface: Inter, the University of Auckland brand font (subset from the UoA-supplied OTFs) */
+@font-face { font-family: "Inter"; src: url("fonts/inter-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("fonts/inter-BoldItalic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
+
+:root {
+  /* UoA brand: primary Waitematā, secondary Azure and Māhina */
+  --brand: #0c0c48;      /* Waitematā — headers, card frame (18:1 on white) */
+  --brand-2: #1f2bd4;    /* Azure — links, buttons, step numbers (8.9:1 on white) */
+  --accent: #00caef;     /* Māhina — only on Waitematā or as fills; never as text on white (2:1) */
+  /* Audiogram convention */
+  --right: #c8102e;
+  --left: #1f2bd4;      /* left ear = Azure */
+  --ink: #1d2329;
+  --muted: #5b6670;
+  --rule: #c9d2db;
+  --wash: #f1f1f5;      /* UoA panel grey */
+  --tint-60: #6d6d91;   /* Waitematā tint, brand shapes */
+  --tint-20: #cecedb;
+  --paper: #ffffff;
+  --tip: #fff6cc;
+  --tip-edge: #e0b400;
+  --stop: #b3261e;
+  --stop-wash: #fdeceb;
+  --flag: #8a4b00;
+  --pod: #6b3fa0;
+  --pod-wash: #f3edfa;
+  --font: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: var(--font); font-feature-settings: "cv05", "cv08"; font-size: 17px; color: var(--ink); background: var(--paper); line-height: 1.5; }
+a { color: var(--brand-2); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+sub { font-size: 0.7em; }
+
+/* ---------- The card (identical on screen and paper) ---------- */
+.card { border: 1px solid var(--rule); border-radius: 0; background: var(--paper); }
+.card-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; background: var(--paper); color: var(--brand); padding: 0 16px 0 0; }
+/* UoA header container shape 1: square left, large curve on the right corners */
+.head-shape { display: flex; align-items: center; gap: 14px; background: var(--brand); color: #fff; padding: 12px 40px 12px 16px; border-radius: 0 36px 36px 0; min-width: 62%; }
+.card-id { font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; border: 2px solid var(--accent); padding: 2px 8px; border-radius: 3px; white-space: nowrap; }
+.card-title { font-size: 1.5rem; font-weight: 700; margin: 0; line-height: 1.2; }
+.card-mode { font-size: 0.85rem; text-align: right; line-height: 1.25; }
+.card-mode b { display: block; font-size: 0.95rem; }
+.card-purpose { margin: 0; padding: 10px 16px; background: var(--wash); border-bottom: 1px solid var(--rule); font-size: 1.15rem; font-weight: 500; }
+.card-body { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 0; }
+.card-steps { padding: 6px 16px 12px; border-right: 1px solid var(--rule); }
+.card-side { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.card-when { margin: 8px 0 4px; padding-left: 1.1em; font-size: 0.95rem; color: var(--ink); }
+
+.block { margin-top: 10px; }
+.block h3 { font-size: 1.12rem; margin: 0 0 4px; color: var(--brand-2); }
+ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; }
+ol.steps > li { counter-increment: s; position: relative; padding: 2px 1.8em 2px 2.2em; min-height: 1.6em; }
+ol.steps > li::before { content: counter(s); position: absolute; left: 0; top: 3px; width: 1.55em; height: 1.55em; border-radius: 50%; background: var(--wash); color: var(--brand-2); font-weight: 700; font-size: 0.85em; text-align: center; line-height: 1.55em; }
+ol.steps.cont > li::before { background: transparent; border: 1.5px solid var(--brand); line-height: 1.35em; }
+.pod-mark { position: absolute; right: 0; top: 2px; color: var(--pod); font-weight: 700; text-decoration: none; border: 1.5px solid var(--pod); border-radius: 3px; padding: 0 4px; font-size: 0.8em; line-height: 1.3; }
+.example { margin: 4px 0 0 2.2em; font-style: italic; color: var(--muted); font-size: 0.93rem; }
+
+.rule { border: 2px solid var(--ink); border-radius: 3px; padding: 6px 10px; margin: 8px 0 4px 2.2em; font-size: 1.05rem; font-weight: 700; background: #fff; display: flex; gap: 10px; align-items: baseline; }
+.rule .ico { font-size: 1.1rem; }
+
+/* callouts: icon + label + colour, so meaning survives greyscale */
+.callout { border-left: 5px solid var(--muted); padding: 6px 10px; font-size: 0.93rem; background: var(--wash); border-radius: 0 3px 3px 0; }
+.callout .lbl { font-weight: 700; margin-right: 4px; }
+.callout.stop { border-left-color: var(--stop); background: var(--stop-wash); }
+.callout.stop .lbl { color: var(--stop); }
+.callout.rule-note { border-left-color: var(--ink); background: #fff; border: 1px solid var(--ink); border-left-width: 5px; }
+.callout.note { border-left-color: var(--muted); }
+.callout.flag { border-left-color: var(--flag); }
+
+table.vals { width: 100%; border-collapse: collapse; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+table.vals caption { text-align: left; font-weight: 700; color: var(--brand); padding-bottom: 3px; font-size: 0.95rem; }
+table.vals th, table.vals td { border: 1px solid var(--rule); padding: 3px 5px; text-align: center; }
+table.vals th:first-child, table.vals td:first-child { text-align: left; }
+table.vals thead th { background: var(--wash); }
+.vals-note { font-size: 0.82rem; color: var(--muted); margin: 3px 0 0; }
+.src { font-size: 0.78rem; color: var(--muted); }
+
+.card-foot { display: flex; justify-content: space-between; gap: 12px; align-items: center; border-top: 1px solid var(--rule); padding: 6px 16px; font-size: 0.78rem; color: var(--muted); }
+.card-foot .qr { width: 64px; height: 64px; }
+.fig { width: 100%; height: auto; display: block; }
+
+/* ---------- Site shell ---------- */
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 8px; top: 8px; background: #fff; padding: 6px 10px; z-index: 10; }
+.topbar { background: var(--brand); color: #fff; border-bottom: 4px solid var(--accent); padding: 10px 20px; display: flex; align-items: center; gap: 16px; }
+.topbar a { color: #fff; text-decoration: none; font-weight: 700; }
+.topbar .sub { opacity: 0.85; font-size: 0.9rem; }
+.draft-banner { background: var(--tip); border-bottom: 1px solid var(--tip-edge); padding: 6px 20px; font-size: 0.9rem; }
+.shell { display: grid; grid-template-columns: 260px minmax(0, 1fr); max-width: 1240px; margin: 0 auto; }
+nav.index { border-right: 1px solid var(--rule); padding: 18px 16px; position: sticky; top: 0; align-self: start; max-height: 100vh; overflow: auto; }
+nav.index h2 { font-size: 0.95rem; margin: 14px 0 6px; color: var(--muted); }
+nav.index ol { list-style: none; padding: 0; margin: 0; }
+nav.index li a { display: grid; grid-template-columns: 4.6em 1fr; gap: 4px; padding: 5px 6px; border-radius: 3px; text-decoration: none; color: var(--ink); font-size: 0.92rem; line-height: 1.3; }
+nav.index li a span:first-child { color: var(--brand); font-weight: 700; }
+nav.index li a[aria-current] { background: var(--wash); box-shadow: inset 3px 0 0 var(--brand); }
+nav.index input { width: 100%; padding: 7px 9px; font: inherit; border: 1px solid var(--rule); border-radius: 3px; }
+main { padding: 22px 28px 60px; min-width: 0; }
+main > .measure { max-width: 860px; }
+.crumbs { font-size: 0.88rem; color: var(--muted); margin-bottom: 10px; }
+
+.layer { margin-top: 18px; border-top: 1px solid var(--rule); padding-top: 4px; }
+.layer > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 1.15rem; font-weight: 700; color: var(--brand); }
+.layer > summary::-webkit-details-marker { display: none; }
+.layer > summary::before { content: "+"; width: 1.3em; height: 1.3em; border: 2px solid var(--brand); border-radius: 3px; display: inline-grid; place-items: center; font-size: 0.9em; line-height: 1; }
+.layer[open] > summary::before { content: "−"; }
+.layer > summary .hint { font-weight: 400; font-size: 0.9rem; color: var(--muted); }
+.layer-body { padding: 4px 0 10px 2.3em; max-width: 72ch; }
+.why-item { margin: 0 0 12px; }
+.why-item h4 { margin: 0 0 2px; font-size: 1rem; }
+
+.ptf { background: var(--tip); border: 1px solid var(--tip-edge); border-radius: 4px; padding: 10px 14px 10px 14px; }
+.ptf ul { margin: 6px 0 0; padding-left: 1.2em; }
+.ptf .who { font-size: 0.88rem; color: var(--muted); }
+
+figure { margin: 10px 0 18px; }
+figcaption { font-size: 0.9rem; color: var(--muted); margin-top: 4px; }
+.replay { font: inherit; font-size: 0.88rem; background: #fff; border: 1.5px solid var(--brand); color: var(--brand); border-radius: 3px; padding: 3px 10px; cursor: pointer; margin-top: 6px; }
+.planned { list-style: none; padding: 0; }
+.planned li { border: 1.5px dashed var(--rule); border-radius: 4px; padding: 8px 12px; margin: 6px 0; color: var(--muted); }
+
+.try { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.btn { display: inline-block; background: var(--brand); color: #fff; text-decoration: none; padding: 9px 16px; border-radius: 3px; font-weight: 700; }
+.btn { background: var(--brand-2); }
+.btn:hover { background: var(--brand); }
+
+.qa { border: 1px solid var(--rule); border-radius: 4px; padding: 10px 14px; margin: 8px 0; }
+.qa p { margin: 0 0 6px; }
+.qa details summary { cursor: pointer; color: var(--brand-2); font-weight: 700; }
+.qa details p { margin: 6px 0 0; }
+
+.pod-box { background: var(--pod-wash); border-left: 5px solid var(--pod); padding: 8px 12px; margin: 10px 0; border-radius: 0 4px 4px 0; scroll-margin-top: 20px; }
+.pod-box h4 { margin: 0 0 4px; color: var(--pod); }
+.pod-box dl { display: grid; grid-template-columns: 7.5em 1fr; gap: 4px 10px; margin: 0; font-size: 0.95rem; }
+.pod-box dt { font-weight: 700; }
+.pod-box dd { margin: 0; }
+.status { display: inline-block; font-size: 0.82rem; border: 1px solid var(--pod); color: var(--pod); padding: 0 6px; border-radius: 3px; }
+.fixes li { margin-bottom: 4px; }
+.refs li { margin-bottom: 4px; font-size: 0.93rem; }
+.pager { display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid var(--rule); padding-top: 12px; gap: 12px; }
+.pager a { text-decoration: none; font-weight: 700; }
+
+/* animation — only one orchestrated moment per figure, replayable */
+.anim .draw { stroke-dasharray: 1200; stroke-dashoffset: 1200; animation: draw 3.2s ease-out forwards; }
+.anim .pt { opacity: 0; animation: pop 0.25s ease-out forwards; animation-delay: calc(var(--i) * 0.32s); }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pop { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .anim .draw, .anim .pt { animation: none; opacity: 1; stroke-dashoffset: 0; } }
+
+.navsum { display: none; }
+@media screen and (max-width: 900px) { .navsum { display: block; cursor: pointer; font-weight: 700; color: var(--brand); padding: 4px 0; } nav.index { padding: 10px 16px; } }
+/* home */
+.home-lead { font-size: 1.15rem; max-width: 62ch; }
+.legend { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; margin: 14px 0; }
+.legend .callout { margin: 0; }
+.cardlist { list-style: none; padding: 0; display: grid; gap: 8px; }
+.cardlist a { display: grid; grid-template-columns: 5.5em 1fr auto; gap: 10px; align-items: baseline; padding: 10px 12px; border: 1.5px solid var(--rule); border-radius: 4px; text-decoration: none; color: var(--ink); }
+.cardlist a:hover { border-color: var(--brand); }
+.cardlist .cid { color: var(--brand); font-weight: 700; }
+.cardlist .mode { font-size: 0.85rem; color: var(--muted); }
+.reviewtbl { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+.reviewtbl th, .reviewtbl td { border: 1px solid var(--rule); padding: 6px 8px; text-align: left; vertical-align: top; }
+.reviewtbl thead th { background: var(--wash); }
+.reviewtbl td:first-child { white-space: nowrap; }
+
+@media screen and (max-width: 900px) {
+  .shell { grid-template-columns: 1fr; }
+  nav.index { position: static; max-height: none; border-right: 0; border-bottom: 1px solid var(--rule); }
+  main { padding: 16px; }
+  .card-body { grid-template-columns: 1fr; }
+  .card-steps { border-right: 0; border-bottom: 1px solid var(--rule); }
+  .card-head { grid-template-columns: auto 1fr; }
+  .card-mode { grid-column: 1 / -1; text-align: left; margin-top: 4px; }
+  .card-mode b { display: inline; margin-right: 6px; }
+  .layer-body { padding-left: 0; }
+  .card-foot .qr { display: none; }
+}
+
+/* ---------- Print sheet ---------- */
+@page { size: A4; margin: 10mm; }
+.print body, body.print { background: #fff; }
+body.print .card { break-after: page; height: 277mm; display: flex; flex-direction: column; font-size: 10.2pt; border-width: 1.6pt; }
+body.print .card:last-child { break-after: auto; }
+body.print .card-body { flex: 1; line-height: 1.4; }
+body.print .card { font-size: 10pt; }
+body.print .card-title { font-size: 16pt; }
+body.print .card-foot .qr { width: 20mm; height: 20mm; }
+body.print .fig { max-height: 92mm; }
+body.print .cover { height: 277mm; break-after: page; display: flex; flex-direction: column; justify-content: space-between; border: 1.6pt solid var(--brand); padding: 16mm; }
+@media print { * { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
+body.print .flowpage { break-after: page; height: 277mm; border: 1.6pt solid var(--brand); border-radius: 4px; display: flex; flex-direction: column; }
+body.print .flowpage .fig-wrap { flex: 1; display: flex; align-items: center; justify-content: center; padding: 8mm 14mm; }
+body.print .flowpage .fig { max-height: 220mm; width: 100%; }
+
+.initials { font-size: 0.8rem; color: var(--muted); border: 1px solid var(--rule); border-radius: 3px; padding: 0 4px; margin-left: 4px; white-space: nowrap; }
+.ptf-edit { margin: 10px 0 0; font-size: 0.9rem; }
+code { background: var(--wash); padding: 1px 4px; border-radius: 3px; font-size: 0.92em; }
+
+/* UoA print type scale: headers Bold 14pt · intro Medium 11pt · subheads Bold 11pt · body Regular 9pt · footer Regular 6.5pt */
+body.print .card { font-size: 9pt; }
+body.print .card-title { font-size: 14pt; font-weight: 700; }
+body.print .card-purpose { font-size: 11pt; font-weight: 500; }
+body.print .block h3, body.print table.vals caption { font-size: 11pt; font-weight: 700; }
+body.print .card-steps, body.print .callout, body.print .card-when, body.print .example { font-size: 9pt; }
+body.print .rule { font-size: 11pt; }
+body.print table.vals { font-size: 8.5pt; }
+body.print .vals-note, body.print .src { font-size: 7.5pt; }
+body.print .card-foot { font-size: 6.5pt; }
+body.print .card-mode { font-size: 7.5pt; }
+body.print .card-mode b { font-size: 9pt; }
+body.print .card-id { font-size: 11pt; }
+
+/* UoA brand shapes */
+.card-id { border-color: #fff; }
+.card-mode { color: var(--brand); }
+.cover-shape { background: var(--brand); color: #fff; padding: 16mm 34mm 14mm 16mm; margin: -16mm 0 0 -16mm; width: 160mm; clip-path: ellipse(125% 160% at -25% 50%); }
+.cover-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 10mm; margin: 0 -16mm -16mm 0; }
+.unaunahi { width: 80mm; height: 40mm; display: block; }
+body.print .cover { border: 0; }
+.hero-shape { background: var(--brand); color: #fff; padding: 24px 110px 28px 26px; margin: 0 0 18px; display: inline-block; border-radius: 0 110px 110px 0 / 0 50% 50% 0; min-width: 60%; }
+.hero-shape p { margin: 0; font-weight: 500; opacity: 0.85; }
+.hero-shape h1 { margin: 4px 0 0; font-size: 2rem; line-height: 1.15; }
+/* image double corner curve for figures and media */
+.layer-body figure { background: var(--wash); padding: 18px; border-radius: 48px 0 48px 0; }
+.layer-body figure .fig { background: #fff; border-radius: 32px 0 32px 0; padding: 10px; }
+/* single corner curve for PTF tips */
+.ptf { border-radius: 28px 0 0 0; }
+.planned li { border-radius: 16px; }
+@media screen and (max-width: 900px) { .card-head { flex-direction: column; align-items: stretch; gap: 6px; padding: 0 0 8px; } .head-shape { min-width: 0; margin-right: 24px; border-radius: 0 28px 28px 0; padding-right: 28px; } .head-shape .card-title { font-size: 1.2rem; } .card-mode { padding-left: 16px; text-align: left; } .hero-shape { padding-right: 50px; min-width: 0; } }
+body.print .head-shape { padding: 9px 34px 9px 14px; }
+
+/* UoA logo: start of document only (print cover, site home) */
+.cover-logo { display: block; width: 52mm; height: auto; margin: 0 0 7mm; }
+.hero-logo { display: block; width: 190px; height: auto; margin: 0 0 18px; }
+@media screen and (max-width: 900px) { .hero-logo { width: 150px; } }

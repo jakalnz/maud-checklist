@@ -14,10 +14,23 @@ BASE_URL = "https://jakalnz.github.io/maud-checklist/"   # change when the repo 
 REPO = "jakalnz/maud-checklist"                          # GitHub owner/repo for "Edit these tips" links
 BRANCH = "main"
 
-data = yaml.safe_load((ROOT / "content/pta-masking.yaml").read_text())
-mod = data["module"]
-cards = data["cards"]
-diffs = data["differences"]
+SITEINFO = {"title": "Clinical Checklist", "version": "0.2 draft", "date": "2026-11-02"}
+mod = SITEINFO                     # site-wide version/date used in banners and footers
+modules, cards, diffs = [], [], {}
+for f in sorted((ROOT / "content").glob("*.yaml")):
+    d = yaml.safe_load(f.read_text(encoding="utf-8"))
+    m = d["module"]
+    m["cards"] = d["cards"]
+    modules.append(m)
+    for k, v in (d.get("differences") or {}).items():
+        assert k not in diffs, f"duplicate difference key {k}"
+        diffs[k] = v
+modules.sort(key=lambda m: m["order"])
+for m in modules:
+    for c in m["cards"]:
+        c["mod"] = m
+        c["dir"] = m["id"]
+        cards.append(c)
 
 def qr_svg(url):
     img = qrcode.make(url, image_factory=qrcode.image.svg.SvgPathImage, box_size=10, border=1)
@@ -46,15 +59,22 @@ def load_ptf(cid):
 for c in cards:
     c["ptf"] = load_ptf(c["id"])
     c["ptf_edit"] = f"https://github.com/{REPO}/edit/{BRANCH}/content/ptf/{c['id'].lower()}.md"
-    c["url"] = BASE_URL + "pta/" + page_name(c)
+    c["url"] = BASE_URL + c["dir"] + "/" + page_name(c)
     c["qr"] = qr_svg(c["url"])
     c["pods"] = []
+    c.setdefault("refs", [])
     for b in c["blocks"]:
         if b.get("pod") and b["pod"] not in c["pods"]:
             c["pods"].append(b["pod"])
 
 FIGS = {k: Markup(fn()) for k, (_, fn) in F.FIGURES.items()}
 FIGT = {k: t for k, (t, _) in F.FIGURES.items()}
+# Image figures (forms): pages sit one folder down, so paths start with ../
+IMAGES = {"adult-history-form": ("UoA Adult History Form", "assets/forms/adult-history-form.png"),
+          "child-history-form": ("UoA Child History Form", "assets/forms/child-history-form.jpg")}
+for k, (t, p) in IMAGES.items():
+    FIGS[k] = Markup(f'<img class="fig" src="../{p}" alt="{t}" loading="lazy">')
+    FIGT[k] = t
 
 T = {}
 T["card"] = r"""
@@ -102,6 +122,7 @@ T["card"] = r"""
       {% for n in c.notes or [] %}
         {% if n.kind == 'stop' %}<div class="callout stop"><span class="lbl">⬣ Stop</span>{{ n.text|safe }}</div>
         {% elif n.kind == 'rule' %}<div class="callout rule-note"><span class="lbl">= Rule</span>{{ n.text|safe }}</div>
+        {% elif n.kind == 'flag' %}<div class="callout flag"><span class="lbl">⚑ Red flag</span>{{ n.text|safe }}</div>
         {% else %}<div class="callout note"><span class="lbl">ⓘ Note</span>{{ n.text|safe }}</div>{% endif %}
       {% endfor %}
       {% if c.script and medium == 'print' %}
@@ -112,7 +133,7 @@ T["card"] = r"""
   </div>
   <footer class="card-foot">
     <div>
-      {{ mod.title }} · Card {{ c.id }} · v{{ mod.version }} · {{ mod.date }} · from March 2026 checklist §{{ c.source }}<br>
+      {{ c.mod.title }} · Card {{ c.id }} · v{{ mod.version }} · {{ mod.date }} · from March 2026 checklist §{{ c.source }}<br>
       {% if c.pods %}<span style="color:var(--pod)"><b>≠</b> Differs from NZAS BPG. </span>{% endif %}
       {% if medium == 'print' %}Scan for explanation, video and practice.{% endif %}
     </div>
@@ -136,14 +157,17 @@ T["shell"] = r"""{% from 'card' import card with context %}<!doctype html>
 <nav class="index" aria-label="Protocols"><details id="navd" open><summary class="navsum">All protocols</summary>
   <label for="q" class="src">Search protocols</label>
   <input id="q" type="search" placeholder="e.g. plateau, OEF, bone" autocomplete="off">
-  <h2>{{ mod.title }}</h2>
-  <ol id="navlist">
-  {% for c in cards %}<li data-k="{{ (c.id ~ ' ' ~ c.title ~ ' ' ~ (c.blocks|map(attribute='title')|join(' ')))|lower }}"><a href="{{ up }}pta/{{ c.id|lower }}.html"{% if cur and cur.id == c.id %} aria-current="page"{% endif %}><span>{{ c.id }}</span><span>{{ c.title }}</span></a></li>{% endfor %}
-  </ol>
+  <div id="navlist">
+  {% for m in modules %}<h2>{{ m.title }}</h2>
+  <ol>
+  {% for c in m.cards %}<li data-k="{{ (c.id ~ ' ' ~ c.title ~ ' ' ~ m.title ~ ' ' ~ (c.blocks|map(attribute='title')|join(' ')))|lower }}"><a href="{{ up }}{{ c.dir }}/{{ c.id|lower }}.html"{% if cur and cur.id == c.id %} aria-current="page"{% endif %}><span>{{ c.id }}</span><span>{{ c.title }}</span></a></li>{% endfor %}
+  </ol>{% endfor %}
+  </div>
   <h2>For reviewers</h2>
   <ol><li><a href="{{ up }}review.html"{% if review %} aria-current="page"{% endif %}><span>Log</span><span>Errors and points of difference</span></a></li>
   <li><a href="{{ up }}print/cards.pdf"><span>PDF</span><span>Print cards</span></a></li>
-  <li><a href="{{ up }}ptf-editing.html"><span>PTFs</span><span>How to add tips</span></a></li></ol>
+  <li><a href="{{ up }}ptf-editing.html"><span>PTFs</span><span>How to add tips</span></a></li>
+  <li><a href="{{ up }}review-copies.html"{% if owners %} aria-current="page"{% endif %}><span>Edit</span><span>Download a module to edit in Word</span></a></li></ol>
 </details></nav>
 <main id="main"><div class="measure">
 {{ body }}
@@ -159,9 +183,9 @@ document.querySelectorAll('a.pod-mark').forEach(a=>a.addEventListener('click',()
 </body></html>"""
 
 T["page"] = r"""{% from 'card' import card with context %}
-<p class="crumbs"><a href="../index.html">{{ mod.title }}</a> / {{ c.id }}</p>
+<p class="crumbs"><a href="../index.html#mod-{{ c.dir }}">{{ c.mod.title }}</a> / {{ c.id }}</p>
 {{ card(c, 'site') }}
-<p class="src" style="margin-top:6px">The box above is the print card, word for word. <a href="../print/cards.pdf">Print the card set</a>.</p>
+<p class="src" style="margin-top:6px">The box above is the print card, word for word. <a href="../print/{{ c.dir }}.pdf">Print this module</a> · <a href="../print/cards.pdf">Print all cards</a>.</p>
 
 <details class="layer" open><summary>Why <span class="hint">the reason behind each block</span></summary><div class="layer-body">
 {% for b in c.blocks if b.why %}<div class="why-item"><h4>{{ b.title }}</h4><p>{{ b.why|safe }}</p></div>{% endfor %}
@@ -197,36 +221,41 @@ T["page"] = r"""{% from 'card' import card with context %}
 {% if c.refs %}<details class="layer"><summary>References</summary><div class="layer-body"><ul class="refs">{% for r in c.refs %}<li>{{ r }}</li>{% endfor %}</ul></div></details>{% endif %}
 
 <nav class="pager" aria-label="Previous and next">
-{% if prev %}<a href="{{ prev.id|lower }}.html">← {{ prev.id }} {{ prev.title }}</a>{% else %}<span></span>{% endif %}
-{% if nxt %}<a href="{{ nxt.id|lower }}.html">{{ nxt.id }} {{ nxt.title }} →</a>{% endif %}
+{% if prev %}<a href="../{{ prev.dir }}/{{ prev.id|lower }}.html">← {{ prev.id }} {{ prev.title }}</a>{% else %}<span></span>{% endif %}
+{% if nxt %}<a href="../{{ nxt.dir }}/{{ nxt.id|lower }}.html">{{ nxt.id }} {{ nxt.title }} →</a>{% endif %}
 </nav>
 """
 
 T["home"] = r"""
-<div class="hero-shape"><img class="hero-logo" src="assets/uoa-logo-reversed.png" alt="Waipapa Taumata Rau University of Auckland"><p>Master of Audiology Clinical Checklist</p><h1>{{ mod.title }}</h1></div>
+<div class="hero-shape"><img class="hero-logo" src="assets/uoa-logo-reversed.png" alt="Waipapa Taumata Rau University of Auckland"><p>Master of Audiology</p><h1>Clinical Checklist</h1></div>
 <p class="home-lead">Each protocol has a print card with the steps, and a teaching page that adds the reasons, diagrams, simulator practice and tips from our clinical teachers. The steps are the same in both.</p>
 <div class="legend">
   <div class="callout stop"><span class="lbl">⬣ Stop</span>Safety or contraindication. Do not go on.</div>
   <div class="callout rule-note"><span class="lbl">= Rule</span>A decision formula you apply every time.</div>
   <div class="callout note"><span class="lbl">ⓘ Note</span>Practical detail for the bench.</div>
-  <div class="pod-box" style="margin:0"><b style="color:var(--pod)">≠ Point of difference</b><br>We teach this differently from the NZAS guideline.</div>
+  <div class="pod-box" style="margin:0"><b style="color:var(--pod)">≠ Point of difference</b><br>We teach this differently from the NZAS or UNHSEIP guideline.</div>
   <div class="ptf"><b>PTF tip</b><br>Advice from our Professional Teaching Fellows.</div>
 </div>
-<h2>Protocols</h2>
-<ul class="cardlist">{% for c in cards %}<li><a href="pta/{{ c.id|lower }}.html"><span class="cid">{{ c.id }}</span><span>{{ c.title }}</span><span class="mode">{{ 'Read and do' if c.mode == 'READ-DO' else 'Do, then confirm' }}</span></a></li>{% endfor %}</ul>
-<p class="src" style="margin-top:20px">Modules still to build from the March 2026 checklist: case history, otoscopy, classification and referral, speech audiometry and masking, immittance, OAE, feedback and management, paediatric testing, infection control.</p>
+{% for m in modules %}
+<section class="module" id="mod-{{ m.id }}">
+<h2>{{ m.title }}</h2>
+<p class="src">From the March 2026 checklist §{{ m.source }} · <a href="print/{{ m.id }}.pdf">Print this module</a> · <a href="edit/{{ m.id }}.docx">Edit in Word</a></p>
+<ul class="cardlist">{% for c in m.cards %}<li><a href="{{ c.dir }}/{{ c.id|lower }}.html"><span class="cid">{{ c.id }}</span><span>{{ c.title }}</span><span class="mode">{{ 'Read and do' if c.mode == 'READ-DO' else 'Do, then confirm' }}</span></a></li>{% endfor %}</ul>
+</section>
+{% endfor %}
+<p class="src" style="margin-top:20px">Not yet included: hearing aid fitting, diagnostic ABR and impression taking (possible later modules).</p>
 """
 
 T["review"] = r"""
-<h1 style="color:var(--brand)">Review log: {{ mod.title }}</h1>
+<h1 style="color:var(--brand)">Review log</h1>
 <p>Everything this draft changed from the March 2026 checklist, and every place it differs from NZAS best practice guidelines. Reviewer for now: MS.</p>
 <h2>Points of difference</h2>
 <table class="reviewtbl"><thead><tr><th>Topic</th><th>We teach</th><th>NZAS BPG</th><th>Status</th></tr></thead><tbody>
-{% for k, d in diffs.items() %}<tr id="pod-{{ k }}"><td><b>{{ d.title }}</b></td><td>{{ d.ours }}</td><td>{{ d.bpg }}</td><td>{{ d.status }}</td></tr>{% endfor %}
+{% for k, d in diffs.items() %}<tr id="pod-{{ k }}"><td><b>{{ d.title }}</b>{% if d.cards %}<br><span class="src">{{ d.cards }}</span>{% endif %}</td><td>{{ d.ours }}</td><td>{{ d.bpg }}</td><td>{{ d.status }}</td></tr>{% endfor %}
 </tbody></table>
 <h2>Errors fixed and wording changes</h2>
 <table class="reviewtbl"><thead><tr><th>Card</th><th>Change</th></tr></thead><tbody>
-{% for c in cards %}{% for f in c.fixes or [] %}<tr><td><a href="pta/{{ c.id|lower }}.html">{{ c.id }}</a></td><td>{{ f }}</td></tr>{% endfor %}{% endfor %}
+{% for c in cards %}{% for f in c.fixes or [] %}<tr><td><a href="{{ c.dir }}/{{ c.id|lower }}.html">{{ c.id }}</a></td><td>{{ f }}</td></tr>{% endfor %}{% endfor %}
 </tbody></table>
 """
 
@@ -257,8 +286,25 @@ T["ptfhelp"] = r"""
 <ul class="cardlist">{% for c in cards %}<li><a href="{{ c.ptf_edit }}" target="_blank" rel="noopener"><span class="cid">{{ c.id }}</span><span>{{ c.title }}</span><span class="mode">{{ c.ptf|length }} tip{{ 's' if c.ptf|length != 1 }}</span></a></li>{% endfor %}</ul>
 """
 
+T["owners"] = r"""
+<h1 style="color:var(--brand)">Edit a module in Word</h1>
+<p>Download a module, make your changes in Word, and send it back to MS. You do not need a GitHub account for this.</p>
+<ol class="steps cont" style="max-width:68ch">
+  <li>Download the Word file for the module you want to review.</li>
+  <li>Turn on <b>Track Changes</b> (Review tab) before you edit, so MS can see what you changed.</li>
+  <li>Edit any step, value or explanation directly, or add a comment.</li>
+  <li>Add your advice for students under <b>Your PTF tips</b> at the end of each card. Put your initials after each tip if you would like credit.</li>
+  <li>Email the file back to MS. Your changes are checked and added to the site and print cards.</li>
+</ol>
+<table class="reviewtbl" style="margin-top:16px"><thead><tr><th>Module</th><th>Cards</th><th>Download</th></tr></thead><tbody>
+{% for m in modules %}<tr><td><a href="index.html#mod-{{ m.id }}"><b>{{ m.title }}</b></a></td><td>{{ m.cards|map(attribute='id')|join(', ') }}</td><td style="white-space:nowrap"><a href="edit/{{ m.id }}.docx">Word</a> · <a href="edit/{{ m.id }}.md">Markdown</a></td></tr>{% endfor %}
+<tr><td><b>Everything</b></td><td>All {{ cards|length }} cards</td><td style="white-space:nowrap"><a href="edit/all.docx">Word</a> · <a href="edit/all.md">Markdown</a></td></tr>
+</tbody></table>
+<p class="src" style="margin-top:10px">The files are made fresh from the site every time it is updated, so always download a new copy before you start.</p>
+"""
+
 T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
-<html lang="en-NZ"><head><meta charset="utf-8"><title>MAud Clinical Checklist · {{ mod.title }} · print cards</title>
+<html lang="en-NZ"><head><meta charset="utf-8"><title>MAud Clinical Checklist · {{ ptitle }} · print cards</title>
 <link rel="stylesheet" href="../assets/style.css"></head>
 <body class="print">
 <section class="cover">
@@ -266,7 +312,7 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
     <img class="cover-logo" src="../assets/uoa-logo-reversed.png" alt="Waipapa Taumata Rau University of Auckland">
     <p style="font-weight:500;font-size:11pt;margin:0;opacity:.9">Master of Audiology</p>
     <h1 style="font-size:30pt;margin:5mm 0 2mm">Clinical Checklist</h1>
-    <p style="font-size:16pt;margin:0;font-weight:500">{{ mod.title }}</p>
+    <p style="font-size:16pt;margin:0;font-weight:500">{{ ptitle }}</p>
     <p style="font-size:9pt;margin:4mm 0 0;opacity:.85">Print cards · version {{ mod.version }} · {{ mod.date }}</p>
   </div>
   <div>
@@ -278,38 +324,125 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
       <div class="callout note"><span class="lbl">ⓘ Note</span>Practical detail.</div>
       <div class="callout" style="border-left-color:var(--pod);background:var(--pod-wash)"><span class="lbl" style="color:var(--pod)">≠</span>Differs from NZAS BPG; see teaching page.</div>
     </div>
-    <ol style="columns:2;font-size:10.5pt">{% for c in cards %}<li style="list-style:none"><b style="color:var(--brand)">{{ c.id }}</b> {{ c.title }}</li>{% endfor %}</ol>
+    {% if pcards|length > 14 %}<ol style="columns:3;font-size:8pt;padding:0;margin-top:4mm">{% for m in modules %}<li style="list-style:none;break-inside:avoid;margin-bottom:2mm"><b style="color:var(--brand)">{{ m.title }}</b><br>{{ m.cards|map(attribute='id')|join(', ') }}</li>{% endfor %}</ol>
+    {% else %}<ol style="columns:2;font-size:9pt;padding:0;margin-top:6mm">{% for c in pcards %}<li style="list-style:none;break-inside:avoid"><b style="color:var(--brand)">{{ c.id }}</b> {{ c.title }}</li>{% endfor %}</ol>{% endif %}
   </div>
-  <div class="cover-foot"><p style="font-size:6.5pt;color:var(--muted);max-width:110mm;margin:0">DRAFT for review, built from the Clinical Checklist March 2026 (sections 4–5). Not yet approved for clinical teaching. © Section of Audiology, The University of Auckland.</p><svg class="unaunahi" viewBox="0 0 300 150" aria-hidden="true"><circle cx="150" cy="190" r="150" fill="#cecedb"/><circle cx="150" cy="210" r="130" fill="#6d6d91"/><circle cx="150" cy="230" r="110" fill="var(--brand)"/></svg></div>
+  <div class="cover-foot"><p style="font-size:6.5pt;color:var(--muted);max-width:110mm;margin:0">DRAFT for review, built from the Clinical Checklist March 2026. Not yet approved for clinical teaching. © Section of Audiology, The University of Auckland.</p><svg class="unaunahi" viewBox="0 0 300 150" aria-hidden="true"><circle cx="150" cy="190" r="150" fill="#cecedb"/><circle cx="150" cy="210" r="130" fill="#6d6d91"/><circle cx="150" cy="230" r="110" fill="var(--brand)"/></svg></div>
 </section>
-{% for c in cards %}{{ card(c, 'print') }}
+{% for c in pcards %}{{ card(c, 'print') }}
 {% for f in c.figures or [] %}{% if f in print_figs and f != 'symbols' %}
 <article class="card flowpage"><header class="card-head"><div class="head-shape"><span class="card-id">{{ c.id }}</span><h2 class="card-title">{{ figt[f] }}: decision flow</h2></div><div class="card-mode"><b>Back of card</b>Same rules as the front</div></header>
 <div class="fig-wrap">{{ figs[f] }}</div>
-<footer class="card-foot"><div>{{ mod.title }} · Card {{ c.id }} (flowchart) · v{{ mod.version }} · {{ mod.date }}</div></footer></article>
+<footer class="card-foot"><div>{{ c.mod.title }} · Card {{ c.id }} (flowchart) · v{{ mod.version }} · {{ mod.date }}</div></footer></article>
 {% endif %}{% endfor %}{% endfor %}
 </body></html>"""
 
 env = Environment(loader=DictLoader(T), autoescape=select_autoescape(default=False))
-common = dict(mod=mod, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
+for m in modules:
+    m["pod_count"] = len({k for c in m["cards"] for k in c["pods"]})
+common = dict(mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
 
 if SITE.exists(): shutil.rmtree(SITE)
-(SITE / "pta").mkdir(parents=True)
+SITE.mkdir()
+for m in modules: (SITE / m["id"]).mkdir()
 (SITE / "print").mkdir()
 shutil.copytree(ROOT / "assets", SITE / "assets")
 shutil.copytree(ROOT / "fonts", SITE / "assets/fonts")
 (SITE / ".nojekyll").write_text("")
 
-def shell(body, title, desc, up, cur=None, review=False):
-    return env.get_template("shell").render(body=Markup(body), title=title, desc=desc, up=up, cur=cur, review=review, **common)
+def shell(body, title, desc, up, cur=None, review=False, owners=False):
+    return env.get_template("shell").render(body=Markup(body), title=title, desc=desc, up=up, cur=cur, review=review, owners=owners, **common)
 
-(SITE / "index.html").write_text(shell(env.get_template("home").render(**common), mod.get("title"), "MAud clinical protocols: print cards and teaching pages.", ""))
+(SITE / "index.html").write_text(shell(env.get_template("home").render(**common), "Clinical Checklist", "MAud clinical protocols: print cards and teaching pages.", ""))
 (SITE / "ptf-editing.html").write_text(shell(env.get_template("ptfhelp").render(**common), "How PTFs add tips", "How Professional Teaching Fellows edit PTF tips.", ""))
 (SITE / "review.html").write_text(shell(env.get_template("review").render(**common), "Review log", "Errors fixed and points of difference.", "", review=True))
+(SITE / "review-copies.html").write_text(shell(env.get_template("owners").render(**common), "Edit a module in Word", "Download a module to edit in Word.", "", owners=True))
 for i, c in enumerate(cards):
     body = env.get_template("page").render(c=c, prev=cards[i-1] if i else None, nxt=cards[i+1] if i+1 < len(cards) else None, **common)
-    (SITE / "pta" / page_name(c)).write_text(shell(body, f"{c['id']} {c['title']}", c["purpose"], "../", cur=c))
+    (SITE / c["dir"] / page_name(c)).write_text(shell(body, f"{c['id']} {c['title']}", c["purpose"], "../", cur=c))
+
+# PTF tip files: create an empty one for any card that has none, so "Edit these tips" always works
+for c in cards:
+    f = ROOT / "content/ptf" / (c["id"].lower() + ".md")
+    if not f.exists():
+        f.write_text(f"""# PTF tips: {c['id']} {c['title']}
+
+<!--
+How to edit (no coding needed):
+- One tip per line, starting with a dash and a space: "- ".
+- Keep each tip to one or two short sentences, in your own voice.
+- Add your initials in brackets at the end if you want credit, e.g. (AS).
+- Lines that do not start with "- " are ignored, so this note is safe to leave.
+-->
+""", encoding="utf-8")
 
 PRINT.mkdir(exist_ok=True)
-(SITE / "print" / "cards.html").write_text(env.get_template("print").render(**common))
-print("built", len(cards), "cards")
+(SITE / "print" / "cards.html").write_text(env.get_template("print").render(pcards=cards, ptitle="All protocols", **common))
+for m in modules:
+    (SITE / "print" / f"{m['id']}.html").write_text(env.get_template("print").render(pcards=m["cards"], ptitle=m["title"], **common))
+print("built", len(modules), "modules,", len(cards), "cards")
+
+# ---------- Review copies for PTFs: Markdown + Word, one per module and one for everything
+import subprocess
+def md_text(s):
+    s = str(s)
+    s = re.sub(r"<sub>(.*?)</sub>", lambda m: "~" + m.group(1).replace(" ", "\\ ") + "~", s)
+    s = re.sub(r"<[^>]+>", "", s)
+    return html.unescape(s)
+
+def md_table(v):
+    head = [md_text(h) for h in v["header"]]
+    out = ["| " + " | ".join(head) + " |", "|" + "|".join(["---"] * len(head)) + "|"]
+    for r in v["rows"]:
+        out.append("| " + " | ".join(md_text(x) for x in r) + " |")
+    return "\n".join(out)
+
+def module_md(mods, title):
+    L = [f"---\ntitle: \"MAud Clinical Checklist: {title}\"\nsubtitle: \"Review copy for PTFs, version {SITEINFO['version']} ({SITEINFO['date']})\"\n---\n",
+         "**How to review:** turn on Track Changes, then edit any wording, step or value directly. "
+         "Add advice for students under *Your PTF tips* at the end of each card, with your initials if you would like credit. "
+         "Email the file back to MS.\n"]
+    for m in mods:
+        L.append(f"# {m['title']}\n")
+        for c in m["cards"]:
+            mode = "Read and do" if c["mode"] == "READ-DO" else "Do, then confirm"
+            L.append(f"## {c['id']} {md_text(c['title'])}\n")
+            L.append(f"*{mode}. From March 2026 checklist section {c['source']}.*\n")
+            L.append(f"**Purpose:** {md_text(c['purpose'])}\n")
+            if c.get("when"):
+                L.append("**When:**\n\n" + "\n".join(f"- {md_text(w)}" for w in c["when"]) + "\n")
+            for b in c["blocks"]:
+                L.append(f"### {md_text(b['title'])}\n")
+                L.append("\n".join(f"{i}. {md_text(s)}" for i, s in enumerate(b["steps"], 1)) + "\n")
+                if b.get("rule"): L.append(f"**Rule:** {md_text(b['rule']).strip()}\n")
+                if b.get("example"): L.append(f"**Example:** {md_text(b['example'])}\n")
+                if b.get("stop"): L.append(f"**Stop:** {md_text(b['stop'])}\n")
+                if b.get("why"): L.append(f"**Why:** {md_text(b['why'])}\n")
+                if b.get("pod") and b["pod"] in diffs:
+                    d = diffs[b["pod"]]
+                    L.append(f"**Point of difference ({md_text(d['title'])}):** We teach: {md_text(d['ours'])} Guideline: {md_text(d['bpg'])} Status: {md_text(d['status'])}\n")
+            for v in c.get("values") or []:
+                L.append(f"**{md_text(v['caption'])}** (source: {md_text(v['source'])})\n\n" + md_table(v) + "\n")
+                if v.get("note"): L.append(f"*{md_text(v['note'])}*\n")
+            if c.get("notes"):
+                lab = {"stop": "Stop", "rule": "Rule", "flag": "Red flag"}
+                L.append("**Notes:**\n\n" + "\n".join(f"- *{lab.get(n['kind'], 'Note')}:* {md_text(n['text'])}" for n in c["notes"]) + "\n")
+            if c.get("script"):
+                L.append("**What to say:**\n\n" + "\n".join(f"- {md_text(s)}" for s in c["script"]) + "\n")
+            if c["ptf"]:
+                L.append("**Current PTF tips:**\n\n" + "\n".join(f"- {md_text(t['text'])}" + (f" ({t['who']})" if t["who"] else "") for t in c["ptf"]) + "\n")
+            L.append("**Your PTF tips:**\n\n- \n\n**Other comments on this card:**\n\n- \n")
+            L.append("\\newpage\n" if False else "")
+    return "\n".join(L)
+
+EDIT = SITE / "edit"
+EDIT.mkdir()
+ref = ROOT / "assets" / "reference.docx"
+jobs = [(m["id"], [m], m["title"]) for m in modules] + [("all", modules, "All modules")]
+for name, mods, title in jobs:
+    md = EDIT / f"{name}.md"
+    md.write_text(module_md(mods, title), encoding="utf-8")
+    cmd = ["pandoc", str(md), "-o", str(EDIT / f"{name}.docx")]
+    if ref.exists(): cmd += ["--reference-doc", str(ref)]
+    subprocess.run(cmd, check=True)
+print("review copies:", len(jobs))

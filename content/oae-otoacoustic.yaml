@@ -1,0 +1,109 @@
+module:
+  id: oae
+  order: 6
+  title: Otoacoustic emissions
+  owner: ""
+  source: "11"
+
+cards:
+
+- id: OAE-01
+  title: Fit the OAE probe
+  mode: READ-DO
+  source: "11.1, 11.2, 11.3"
+  purpose: Get a clean stimulus in a quiet, well-sealed ear, so any response you see is real.
+  when:
+    - Do otoscopy and immittance first, to know the outer and middle ear status.
+  blocks:
+    - title: Instruct
+      steps:
+        - Explain the test, for example that they will hear clicks and tones and a microphone picks up tiny sounds made by the inner ear.
+        - Ask them to keep still and quiet, and to keep breathing and clothing noise to a minimum.
+    - title: Fit
+      steps:
+        - "Choose the tip size (adult or child). The DPOAE probe works for both TEOAE and DPOAE."
+        - Check the probe is clear of wax or debris; clean it carefully if blocked.
+        - Fit the tip so it does not overhang the probe.
+        - Insert as deep as comfortable without touching wax or the canal wall.
+        - Drape the cable over the shoulder so it does not rub on clothing.
+        - Check the fit is tight and comfortable.
+    - title: Check the stimulus
+      steps:
+        - "TEOAE: check for ringing in the waveform."
+        - "TEOAE and DPOAE: check for peaks or troughs in the stimulus spectrum."
+        - If either appears, reposition the probe or tip and check again.
+      why: A probe pointing at the canal wall, or a tip slipped over the end, distorts the stimulus and can mimic or hide a response.
+    - title: Interpret with care
+      steps:
+        - Print results and check the ear and patient details.
+        - "Allow for middle ear status: slight negative pressure, a grommet or a perforation can reduce OAE amplitude."
+        - "If OAEs appear with a moderately-severe loss, rule out stimulus artefact before you accept them."
+  fixes:
+    - "\"size of the hold\" corrected to \"hole\"."
+
+- id: OAE-02
+  title: Record and read TEOAEs
+  mode: READ-DO
+  source: "11.4"
+  purpose: Record transient-evoked OAEs and report presence by frequency band.
+  blocks:
+    - title: Record
+      steps:
+        - Set the stimulus to about 80 dB peSPL (± 3 dB) in the ear.
+        - Set noise rejection so most samples are kept and only very noisy ones are rejected.
+        - With a good seal and a quiet adult, lower the rejection level below the default.
+    - title: Report
+      steps:
+        - "Report a band as present if its SNR is ≥ 3 dB."
+        - Note overall reproducibility and amplitude as supporting evidence.
+      why: There are no universal TEOAE criteria. Kemp et al. (1990) suggested at least 50% reproducibility for presence; Prieve et al. (1993) found 70% reasonable with an overall amplitude of at least 6 dB SPL.
+  refs:
+    - "American Speech-Language-Hearing Association. (2004). Guidelines for the audiologic assessment of children from birth to 5 years of age."
+  fixes:
+    - "\"pSPL\" written as \"peSPL\" (peak-equivalent SPL). Confirm which unit your equipment displays."
+
+- id: OAE-03
+  title: Record and read DPOAEs
+  mode: READ-DO
+  source: "11.5"
+  purpose: Record distortion-product OAEs to the UNHSEIP protocol and judge presence at each frequency.
+  when:
+    - DPOAEs are required in all UNHSEIP ABR-based, VRA-based and CPA-based assessments.
+  blocks:
+    - title: Record
+      steps:
+        - "Check parameters: F2/F1 = 1.22, L1 = 65 dB SPL, L2 = 55 dB SPL."
+        - Watch the stimulus levels; correct the probe fit if any frequency is off level (often the highest).
+        - Average over several sweeps until the noise floor is low enough. This is harder in children.
+        - Repeat if the first sweep is low in amplitude with few passing frequencies.
+    - title: Judge presence
+      steps:
+        - Apply the criteria in the table at each frequency.
+        - Consider the absolute noise floor; a high floor means a response could have been missed.
+      pod: dpoae-criteria
+  values:
+    - caption: DPOAE pass criteria
+      source: UNHSEIP Diagnostic and Amplification Protocols (2023), Appendix 6
+      header: ["Criterion", "Pass"]
+      rows:
+        - ["SNR", "≥ 6 dB, or ≥ 5 dB next to a frequency passing at 6 dB"]
+        - ["Absolute amplitude", "≥ −5 dB SPL"]
+        - ["Repeat if any SNR < 6 dB", "Amplitudes agree within 5 dB"]
+        - ["Frequencies (F2)", "1.5, 2, 3, 4, 6 kHz (8 kHz if time allows)"]
+  check:
+    - q: "At 3 kHz the DPOAE is 2 dB SPL with a noise floor of −3 dB SPL; 2 kHz passed at 8 dB SNR. Present at 3 kHz?"
+      a: "SNR is 5 dB, next to a frequency passing at ≥ 6 dB, and amplitude is above −5 dB SPL. Yes, present."
+  refs:
+    - "Universal Newborn Hearing Screening and Early Intervention Programme. (2023). National policy and quality standards: Diagnostic and amplification protocols. Te Whatu Ora."
+  fixes:
+    - "Updated to UNHSEIP 2023: F2 frequencies now include 6 kHz (March 2026 text gave 1.5–4 kHz from the 2016 edition)."
+    - "Adjacent-frequency SNR updated from 4 dB (2016 text) to 5 dB (2023 Appendix 6)."
+
+differences:
+  dpoae-criteria:
+    title: DPOAE presence criteria and frequencies
+    cards: OAE-03
+    ours: "March 2026 text: SNR 6 dB, or 4 dB at several adjacent frequencies; F2 1.5–4 kHz (2016). Its Table 11 already cites 2023."
+    bpg: "UNHSEIP 2023 Appendix 6: SNR 6 dB, or 5 dB next to a passing frequency; F2 1.5, 2, 3, 4 and 6 kHz."
+    why: "The text had not caught up with the 2023 table. This draft follows 2023."
+    status: Aligned in draft

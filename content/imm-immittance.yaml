@@ -1,0 +1,161 @@
+module:
+  id: imm
+  order: 5
+  title: Immittance
+  owner: ""
+  source: "9"
+
+cards:
+
+- id: IMM-01
+  title: Run tympanometry
+  mode: READ-DO
+  source: "9.1, 9.2"
+  purpose: Measure middle ear function safely and record every value you need to classify the trace.
+  blocks:
+    - title: Check the equipment
+      steps:
+        - Check the three probe holes are clear.
+        - Do a cavity check against the tolerances.
+        - Check your own ipsilateral and contralateral reflexes to confirm sound levels.
+    - title: Prepare the patient
+      steps:
+        - Seat adults facing the meter so they can see what you are doing.
+        - "Explain: what it measures, the pressure change, a low humming sound, sit still but keep breathing, tell you about any pain."
+        - Choose the right tip and get an airtight seal; use ear gel if needed.
+        - Once the probe is in, keep your face visible when you talk.
+    - title: Test and record
+      steps:
+        - Use a sweep rate of 600/200 daPa/s unless a slower rate is needed (see Why).
+        - Save, print or draw the tympanogram.
+        - "Record type, ECV at +200 daPa, peak pressure, tympanometric width and static admittance."
+        - Extend below −200 daPa if needed to tell a flat B from a very negative C.
+        - Stop if the probe or pressure causes discomfort.
+        - Do not move a tip to the other ear if infection could spread.
+      why: "Slow the sweep when you need more accuracy, or for pressure-equalisation problems, pressure-induced vertigo (Ménière's disease, suspected fistula), recent middle ear surgery, or a very anxious patient."
+  values:
+    - caption: Cavity check tolerances
+      source: March 2026 Table 8; ANSI S3.39
+      header: ["Cavity", "Accept"]
+      rows:
+        - ["0.5 cm³", "0.4–0.6 cm³"]
+        - ["2.0 cm³", "1.9–2.1 cm³"]
+        - ["5.0 cm³", "4.8–5.2 cm³"]
+  notes:
+    - kind: stop
+      text: "Do not test: middle ear surgery in the last 3 months (check with the ENT), an actively discharging ear, or discomfort such as otitis externa or herpes zoster oticus."
+  media_planned:
+    - "Video: probe fit and getting a seal (45 s)"
+  sim:
+    name: immittance simulator
+    url: https://jakalnz.github.io/immittance-simulator/
+    label: Run a tympanogram and record the five values
+  fixes:
+    - "\"whose who are extremely anxious\" corrected."
+    - "Cavity tolerances say \"5%\" but the 0.5 cm³ range (0.4–0.6) is ±20%. NZAS BPG (2018) gives ±0.1 cm³ for small cavities and 4.75–5.25 for 5.0 cm³. Wording to confirm."
+
+- id: IMM-02
+  title: Classify the tympanogram
+  mode: READ-DO
+  source: "9.2, 9.3"
+  purpose: Name the tympanogram type from four values against adult norms.
+  blocks:
+    - title: Classify
+      steps:
+        - Compare peak pressure, admittance and ECV with the norms.
+        - Name the type from the figure on the back of this card.
+        - "For a type B, say B-low or B-high from the ECV."
+        - "Check tympanometric width for any B or borderline trace."
+        - "Confirm a type B with a reflex if useful, e.g. 1 kHz ipsilateral at 105 dB HL."
+      why: ECV depends on probe depth, and chronic middle ear disease can make it unreliable. Read every B in the light of the history.
+      pod: tymp-norms-year
+  values:
+    - caption: Adult norms (90% range)
+      source: ASHA (1990)
+      header: ["Measure", "Normal"]
+      rows:
+        - ["Admittance (Y<sub>tm</sub>)", "0.3–1.4 mmho"]
+        - ["Peak pressure (MEP)", "−100 to +100 daPa"]
+        - ["Tympanometric width (TW)", "50–110 daPa"]
+        - ["Ear canal volume (ECV)", "0.6–1.5 cm³"]
+      note: "A true B-high is usually well over 2.5 cm³ in adults."
+  figures: [tymp-types]
+  sim:
+    name: immittance simulator
+    url: https://jakalnz.github.io/immittance-simulator/
+    label: Classify ten tympanograms
+  check:
+    - q: "MEP −180 daPa, Y 0.2 mmho, ECV 1.1 cm³. Type?"
+      a: "C-shallow: peak below −100 daPa and admittance below 0.3 mmho, normal ECV."
+    - q: "No peak, ECV 3.4 cm³, patent grommet on otoscopy. Type?"
+      a: "B-high. Consistent with a patent grommet."
+  fixes:
+    - "Figure 9 redrawn."
+
+- id: IMM-03
+  title: Measure acoustic reflex thresholds
+  mode: READ-DO
+  source: "9.4"
+  purpose: Find reflex thresholds in four pathways and use the pattern to locate a problem.
+  when:
+    - "Measure contralateral and ipsilateral ARTs at 500 Hz, 1 kHz and 2 kHz."
+    - If all contralateral ARTs are normal, a 1 kHz ipsilateral may be enough. Decide case by case.
+  blocks:
+    - title: Prepare
+      steps:
+        - Warn the patient about loud sounds and what to do if they are uncomfortable.
+        - Place the probe and the contralateral earphone.
+        - Use steady (not pulsed) tones for contralateral reflexes.
+    - title: Find threshold
+      steps:
+        - Start at 80 dB HL. If no reflex, go up 10 dB, then 5 dB steps.
+        - "A reflex is a change of at least 0.02 mmho."
+        - Show it twice at threshold.
+        - Show it grows at 5 dB above (not possible at 105 dB HL).
+        - Show it is absent 5 dB below.
+    - title: Classify and record
+      steps:
+        - Classify as normal, elevated, absent or abnormal (e.g. biphasic, reversed).
+        - Record contralateral reflexes under the stimulus ear, not the probe ear.
+        - "Name each pathway by probe and stimulus ear, and follow it on the pathway diagram."
+  values:
+    - caption: Adult ART norms (dB HL)
+      place: steps
+      source: Golding et al. (2007)
+      header: ["Hz", "Contra mean ± SD", "Contra 90% range", "Ipsi mean ± SD", "Ipsi 90% range"]
+      rows:
+        - ["500", "95 ± 9.1", "85–105", "88 ± 7.9", "80–100"]
+        - ["1k", "90 ± 8.7", "80–100", "87 ± 8.3", "75–100"]
+        - ["2k", "90 ± 8.1", "80–100", "–", "–"]
+  notes:
+    - kind: stop
+      text: "Do not go above 105 dB HL unless there is a conductive or mixed loss at that frequency. Avoid reflexes with hyperacusis, severe tinnitus, pain conditions, anxiety or recent loud noise exposure, unless the result will change management. Do not test with a B-high tympanogram."
+    - kind: note
+      text: BBN reflexes are usually 20–25 dB lower than tonal ones; use them when tolerance is a concern.
+    - kind: note
+      text: "Lost seal? Reposition the probe, not the contralateral earphone. Contralateral 500 Hz unexpectedly high? Check the earphone fit. GSI meter repressurised to 0 daPa after erasing memory? Repeat the tympanogram or reset to peak pressure."
+  figures: [art-pathway]
+  sim:
+    name: immittance simulator
+    url: https://jakalnz.github.io/immittance-simulator/
+    label: Predict reflex patterns for a right conductive and a right VIII lesion
+  check:
+    - q: "Probe left, stimulus right. Which pathway?"
+      a: "Right contralateral: the stimulus ear names it, and you record it under the right ear."
+  refs:
+    - "Golding, M., et al. (2007). Tympanometric and acoustic stapedius reflex measures in older adults: the Blue Mountains Hearing Study. Journal of the American Academy of Audiology, 18(5), 391–403."
+    - "Emanuel, D. C. (2009). Acoustic reflex threshold patterns: an interpretation guide for students and supervisors. AudiologyOnline."
+    - "Hunter, L. L., Ries, D. T., Schlauch, R. S., Levine, S. C., & Ward, W. D. (1999). Safety and clinical performance of acoustic reflex tests. Ear and Hearing, 20(6), 506–514."
+  fixes:
+    - "ERROR CORRECTED: contralateral 2 kHz SD was ±8.7; Golding et al. (2007) via NZAS BPG gives 8.1."
+    - "\"Cut-off values\" renamed \"90% range\" to match the source."
+    - "Figure 10 (ART pathway) redrawn in the house style, removing the copyright question on the Emanuel (2009) image."
+
+differences:
+  tymp-norms-year:
+    title: Which ASHA norms for adult tympanometry
+    cards: IMM-02
+    ours: "March 2026 cites ASHA 1990 in Table 9 and ASHA 1997 in 9.2 step 9."
+    bpg: "NZAS Immittance BPG (2018): ASHA 1990 for adults."
+    why: "This draft uses ASHA 1990 throughout for adults; ASHA 1997 is kept for the paediatric norms."
+    status: Aligned in draft

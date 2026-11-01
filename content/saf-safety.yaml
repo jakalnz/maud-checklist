@@ -1,0 +1,88 @@
+module:
+  id: saf
+  order: 9
+  title: Safety and infection control
+  owner: ""
+  source: "14–15"
+
+cards:
+
+- id: SAF-01
+  title: Avoid common safety errors
+  mode: DO-CONFIRM
+  source: "14"
+  purpose: Check yourself against the errors that most often harm patients in audiology.
+  blocks:
+    - title: Testing and diagnosis
+      steps:
+        - "Mask when needed, and recognise undermasking."
+        - "Use loud sounds (audiometry, reflexes, loudness discomfort testing) only when appropriate."
+        - "Respect contraindications, e.g. a sweep rate too fast for comfort."
+    - title: Follow-up and referral
+      steps:
+        - Ask the history questions that matter.
+        - Monitor and follow up.
+        - "Act on red flags. Refer urgently (see CLS-02)."
+    - title: Physical safety
+      steps:
+        - Brace your hand for otoscopy.
+        - Never attempt wax removal you are not trained for.
+        - "Ear impressions: check the otoblock seal and avoid abrasion."
+        - Use good infection control (see INF-01).
+    - title: Amplification
+      side: true
+      steps:
+        - "Over-amplification: verify maximum output with real-ear measures to avoid pain or damage."
+        - "Under-amplification: verify targets so the patient has access to speech."
+    - title: Communication and records
+      side: true
+      steps:
+        - Document actions and information so others can see them.
+        - Communicate clearly with the patient and other professionals.
+  notes:
+    - kind: stop
+      text: "Possible stroke: sudden numbness or weakness of one side of the face, arm, leg or body; sudden confusion or trouble speaking; sudden vision loss; sudden trouble walking; sudden dizziness or loss of balance; sudden severe headache. Call 111."
+  fixes:
+    - "\"failure to ignore contraindications\" corrected to \"failure to respect contraindications\"."
+    - "Table 14 turned into a checklist grouped by stage of the appointment."
+
+- id: INF-01
+  title: Clean and disinfect reusable tips
+  mode: READ-DO
+  source: "15"
+  purpose: Clean reusable tips between patients so infection cannot pass from one ear to the next.
+  when:
+    - "Reusable: shiny otoscope tips, rubber OAE tips, rubber immittance tips."
+    - "Throw away after one use: matte otoscope tips, foam OAE tips, foam insert tips, the plastic serviceable part of the OAE probe."
+    - "Tips used on broken skin: throw away, or clean and autoclave."
+  blocks:
+    - title: You need
+      side: true
+      steps:
+        - Two 1 L plastic containers with lids
+        - A sieve
+        - Baxter Enzy-Clean (enzymatic pre-soak)
+        - Detergent
+        - Milton tablets
+    - title: Clean
+      steps:
+        - Collect tips from all clinic areas.
+        - Add 1 teaspoon of Enzy-Clean to 1 L of warm water in a lidded container.
+        - Add the tips, close the lid, shake, and soak for 2–3 minutes.
+        - Rinse thoroughly in warm water.
+      why: Without Enzy-Clean, use detergent and hot water and follow the same steps.
+    - title: Disinfect
+      steps:
+        - Dissolve ¼ Milton tablet in 250 mL of cold water in the second container.
+        - Add the tips, fully immersed and separated. Soak for no more than 1 hour.
+        - Drain with the sieve and dry on a clean paper towel.
+        - Return dry tips to their workstations.
+    - title: Tidy up
+      steps:
+        - Rinse and dry the containers.
+        - Wipe the bench with detergent and pack away.
+  notes:
+    - kind: rule
+      text: Make Milton solution fresh at least every second day, ideally daily.
+  fixes:
+    - "Disposable and reusable tip lists moved to the top of the card."

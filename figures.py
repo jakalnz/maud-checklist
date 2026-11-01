@@ -224,6 +224,101 @@ def cross_hearing():
     return _svg(W, H + 6, "\n".join(b), "Why we mask", "A 70 dB HL tone in the right ear loses 60 dB crossing the head, arriving at 10 dB. The left cochlea's threshold is 5 dB HL, so it could hear the tone. Masking is needed.")
 
 
+
+def tymp_types():
+    """Eight tympanogram types on the ASHA (1990) adult norm box."""
+    import math
+    W, H = 600, 560
+    pw, ph = 170, 100
+    types = [("A", 10, 1.0, 40, None), ("A-shallow", -20, 0.18, 60, None), ("A-deep", 20, 1.8, 25, None),
+             ("C", -160, 1.0, 40, None), ("C-shallow", -230, 0.2, 60, None), ("C-deep", -240, 1.7, 25, None),
+             ("B-low", None, 0.12, None, "low"), ("B-high", None, 1.6, None, "high")]
+    notes = {"A": "Normal", "A-shallow": "Y < 0.3", "A-deep": "Y > 1.4", "C": "MEP < −100", "C-shallow": "MEP < −100, Y < 0.3",
+             "C-deep": "MEP < −100, Y > 1.4", "B-low": "No peak, ECV 0.6–1.5", "B-high": "No peak, ECV > 1.5*"}
+    b = []
+    for i, (name, mep, y, w, flat) in enumerate(types):
+        col, row = i % 3, i // 3
+        ox, oy = 30 + col * 190, 20 + row * 175
+        X = lambda p: ox + (p + 400) / 600 * pw
+        Y = lambda v: oy + ph - v / 2.0 * ph
+        b.append(f'<rect x="{ox}" y="{oy}" width="{pw}" height="{ph}" fill="#fff" stroke="{RULE}"/>')
+        b.append(f'<rect x="{X(-100)}" y="{Y(1.4)}" width="{X(100)-X(-100)}" height="{Y(0.3)-Y(1.4)}" fill="{FILL}" stroke="{MUTED}" stroke-dasharray="3 2"/>')
+        b.append(f'<line x1="{X(0)}" x2="{X(0)}" y1="{oy}" y2="{oy+ph}" stroke="{MUTED}" stroke-width="0.8"/>')
+        pts = []
+        for p in range(-400, 201, 5):
+            if flat:
+                v = y + (0.02 * math.sin(p / 120))
+            else:
+                v = 0.04 + (y - 0.04) / (1 + ((p - mep) / (w / 2)) ** 2)
+            pts.append(f"{X(p):.1f},{Y(v):.1f}")
+        colour = BRAND if name.startswith("A") else (LEFT if name.startswith("B") else RIGHT)
+        b.append(f'<polyline points="{" ".join(pts)}" fill="none" stroke="{colour}" stroke-width="2.4"/>')
+        b.append(f'<text x="{ox}" y="{oy+ph+18}" font-size="14" font-weight="700" fill="{INK}" style="{FONT}">{name}</text>')
+        b.append(f'<text x="{ox}" y="{oy+ph+34}" font-size="11.5" fill="{MUTED}" style="{FONT}">{notes[name]}</text>')
+        for p in (-400, -200, 0, 200):
+            b.append(f'<text x="{X(p)}" y="{oy+ph+-2+12}" font-size="0" fill="none">.</text>')
+    b.append(f'<text x="410" y="400" font-size="11.5" fill="{INK}" style="{FONT}">Each panel: −400 to +200 daPa,</text>')
+    b.append(f'<text x="410" y="416" font-size="11.5" fill="{INK}" style="{FONT}">0 to 2.0 mmho. Shaded box:</text>')
+    b.append(f'<text x="410" y="432" font-size="11.5" fill="{INK}" style="{FONT}">MEP −100 to +100 daPa,</text>')
+    b.append(f'<text x="410" y="448" font-size="11.5" fill="{INK}" style="{FONT}">Y 0.3 to 1.4 mmho (ASHA 1990).</text>')
+    b.append(f'<text x="410" y="472" font-size="11.5" fill="{MUTED}" style="{FONT}">* ECV also depends on probe depth;</text>')
+    b.append(f'<text x="410" y="488" font-size="11.5" fill="{MUTED}" style="{FONT}">a true B-high is usually well</text>')
+    b.append(f'<text x="410" y="504" font-size="11.5" fill="{MUTED}" style="{FONT}">over 2.5 cm³ in adults.</text>')
+    return _svg(W, 540, "\n".join(b), "Tympanogram types",
+                "Eight tympanogram types plotted against the adult norm box: A, A-shallow and A-deep peak inside the pressure range with normal, low or high admittance; C, C-shallow and C-deep peak below −100 daPa; B-low and B-high are flat, with normal or large ear canal volume.")
+
+
+def art_pathway():
+    W, H = 600, 260
+    b = []
+    def node(x, y, w, h, t, c=INK, fill="#fff"):
+        lines = t.split("|")
+        s = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{h/2 if w < 90 else 10}" fill="{fill}" stroke="{c}" stroke-width="1.8"/>'
+        for i, ln in enumerate(lines):
+            s += f'<text x="{x+w/2}" y="{y+h/2+5+(i-(len(lines)-1)/2)*14}" text-anchor="middle" font-size="12.5" font-weight="700" fill="{c}" style="{FONT}">{ln}</text>'
+        return s
+    # right side (red), left side (blue)
+    b.append(node(20, 170, 60, 44, "ME", RIGHT)); b.append(node(100, 170, 60, 44, "IE", RIGHT))
+    b.append(node(190, 120, 70, 40, "CN", RIGHT)); b.append(node(180, 30, 100, 50, "SOC +|VII nucleus", RIGHT))
+    b.append(node(520, 170, 60, 44, "ME", LEFT)); b.append(node(440, 170, 60, 44, "IE", LEFT))
+    b.append(node(340, 120, 70, 40, "CN", LEFT)); b.append(node(320, 30, 100, 50, "SOC +|VII nucleus", LEFT))
+    a = lambda d, c: f'<path d="{d}" fill="none" stroke="{c}" stroke-width="1.8" marker-end="url(#ah)"/>'
+    b.append(a("M80,192 L98,192", INK)); b.append(a("M160,185 C175,175 185,160 195,155", INK))
+    b.append(a("M520,192 L502,192", INK)); b.append(a("M440,185 C425,175 415,160 405,155", INK))
+    b.append(a("M225,120 L228,82", RIGHT)); b.append(a("M375,120 L372,82", LEFT))
+    b.append(a("M250,125 L330,80", MUTED)); b.append(a("M350,125 L270,80", MUTED))
+    b.append(a("M180,50 C90,45 50,100 48,166", RIGHT)); b.append(a("M420,50 C510,45 550,100 552,166", LEFT))
+    b.append(f'<text x="166" y="210" font-size="11.5" fill="{INK}" style="{FONT}">VIII</text><text x="410" y="210" font-size="11.5" fill="{INK}" style="{FONT}">VIII</text>')
+    b.append(f'<text x="70" y="70" font-size="11.5" fill="{INK}" style="{FONT}">VII</text><text x="512" y="70" font-size="11.5" fill="{INK}" style="{FONT}">VII</text>')
+    b.append(f'<text x="20" y="245" font-size="13" font-weight="700" fill="{RIGHT}" style="{FONT}">Right ear</text><text x="580" y="245" text-anchor="end" font-size="13" font-weight="700" fill="{LEFT}" style="{FONT}">Left ear</text>')
+    b.append(f'<text x="300" y="245" text-anchor="middle" font-size="11" fill="{MUTED}" style="{FONT}">Grey arrows: crossed (contralateral) pathways</text>')
+    return _svg(W, H, "\n".join(b), "Acoustic reflex pathway",
+                "Sound enters the middle ear (ME) and inner ear (IE), travels along the VIII nerve to the cochlear nucleus (CN), then to the superior olivary complex and facial (VII) nucleus on both sides. The VII nerve then contracts the stapedius muscle in each middle ear. Redrawn after Emanuel (2009).")
+
+
+def pi_function():
+    W, H = 560, 300
+    x0, x1, y0, y1 = 70, 530, 250, 30
+    X = lambda d: x0 + d / 100 * (x1 - x0)
+    Y = lambda p: y0 - p / 100 * (y0 - y1)
+    pts = [(25, 10), (35, 40), (45, 76), (55, 92), (65, 94), (90, 94)]
+    b = []
+    for g in range(0, 101, 20):
+        b.append(f'<line x1="{x0}" x2="{x1}" y1="{Y(g)}" y2="{Y(g)}" stroke="{RULE}" stroke-width="0.8"/><text x="{x0-8}" y="{Y(g)+4}" text-anchor="end" font-size="11" fill="{MUTED}" style="{FONT}">{g}</text>')
+        b.append(f'<text x="{X(g)}" y="{y0+18}" text-anchor="middle" font-size="11" fill="{MUTED}" style="{FONT}">{g}</text>')
+    b.append(f'<text x="{(x0+x1)/2}" y="{H-6}" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">Presentation level (dB HL)</text>')
+    b.append(f'<text transform="translate(18,{(y0+y1)/2}) rotate(-90)" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">Phonemes correct (%)</text>')
+    path = "M" + " L".join(f"{X(d):.1f},{Y(p):.1f}" for d, p in pts)
+    b.append(f'<path class="draw" d="{path}" fill="none" stroke="{RIGHT}" stroke-width="3"/>')
+    for i, (d, p) in enumerate(pts):
+        b.append(f'<circle class="pt" style="--i:{i}" cx="{X(d):.1f}" cy="{Y(p):.1f}" r="6" fill="#fff" stroke="{RIGHT}" stroke-width="2.4"/>')
+    b.append(f'<line x1="{x0}" x2="{X(37)}" y1="{Y(47)}" y2="{Y(47)}" stroke="{BRAND}" stroke-dasharray="4 3"/><line x1="{X(37)}" x2="{X(37)}" y1="{Y(47)}" y2="{y0}" stroke="{BRAND}" stroke-dasharray="4 3"/>')
+    b.append(f'<text x="{X(40)+6}" y="{Y(30)}" font-size="12" font-weight="700" fill="{BRAND}" style="{FONT}">HPL ≈ 37 dB HL (half of 94%)</text>')
+    b.append(f'<text x="{X(55)}" y="{Y(92)-14}" text-anchor="middle" font-size="12" font-weight="700" fill="{INK}" style="{FONT}">PI max 94% at 55 dB HL</text>')
+    b.append(f'<text x="{X(90)}" y="{Y(94)+22}" text-anchor="end" font-size="11.5" fill="{MUTED}" style="{FONT}">No rollover at 90 dB HL</text>')
+    return _svg(W, H, "\n".join(b), "A performance-intensity function",
+                "Scores rise from 10% at 25 dB HL to a maximum of 94% at 55 dB HL and stay there at 65 and 90 dB HL. Half of 94% is 47%, reached at about 37 dB HL: the half-peak level.")
+
 FIGURES = {
     "plateau-flow": ("Plateau masking", plateau_flow),
     "plateau-graph": ("The masking function", plateau_graph),
@@ -233,6 +328,9 @@ FIGURES = {
     "insert-depth": ("Insert earphone depth", insert_depth),
     "symbols": ("NZ audiometric symbols", symbols),
     "cross-hearing": ("Why we mask: cross-hearing", cross_hearing),
+    "tymp-types": ("Tympanogram types", tymp_types),
+    "art-pathway": ("Acoustic reflex pathway (redrawn after Emanuel, 2009)", art_pathway),
+    "pi-function": ("A performance-intensity function", pi_function),
 }
-ANIMATED = {"plateau-graph", "hughson-westlake"}
-PRINT_FIGS = {"plateau-flow", "step-flow-ac", "step-flow-bc", "symbols"}
+ANIMATED = {"plateau-graph", "hughson-westlake", "pi-function"}
+PRINT_FIGS = {"plateau-flow", "step-flow-ac", "step-flow-bc", "symbols", "tymp-types"}

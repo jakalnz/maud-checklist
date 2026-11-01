@@ -1,0 +1,191 @@
+module:
+  id: spa
+  order: 4
+  title: Speech audiometry and speech masking
+  owner: ""
+  source: "7–8"
+
+cards:
+
+- id: SPA-01
+  title: Measure the PI function with CVC words
+  mode: READ-DO
+  source: "7, 7.1–7.3"
+  purpose: Find the lowest level for the best score (PI max) and the half-peak level (HPL).
+  blocks:
+    - title: Set up
+      steps:
+        - Set up the audiometer and the CD, MP3 or .wav source.
+        - Adjust the calibration tone to 0 on the VU meter.
+        - If the speech circuit is calibrated for supra-aural headphones, apply the same correction you used at 1 kHz.
+        - Warn the patient before testing at high levels.
+        - Test the better ear first.
+    - title: First level
+      steps:
+        - "2 kHz ≤ 15 dB HL: start at 40 dB HL."
+        - "2 kHz 20–45 dB HL: start 25 dB above it."
+        - "2 kHz 50–55 dB HL: start 20 dB above it."
+        - "2 kHz 60–65 dB HL: start 15 dB above it."
+        - "2 kHz 70–75 dB HL: start 10 dB above it."
+      pod: speech-start-80
+    - title: Find PI max, then the HPL
+      steps:
+        - If the score is below 90%, go up 10–15 dB, staying comfortable.
+        - Once the score is 90% or more, drop 10–20 dB (20 dB if the score was very high).
+        - Keep dropping 5–15 dB until a score is at or below the HPL.
+        - Test at least three levels.
+        - "Base each level on the best threshold in the test ear."
+      pod: speech-start-80
+      why: PI max is the lowest level giving the best score; 90% or more is clinically efficient. The HPL is the level giving half the PI max score, not 50% correct. If PI max is 80%, the HPL is the level giving 40%.
+  values:
+    - caption: Check against the audiogram
+      source: Boothroyd (1968)
+      header: ["Loss", "HPL should be within 15 dB of"]
+      rows:
+        - ["Flat", "1 kHz threshold"]
+        - ["Sloping", "Average of 2 and 4 kHz"]
+  notes:
+    - kind: note
+      text: The usual upper limit is 90 dB HL. Up to 100 dB HL is acceptable with a large conductive loss or a severe to profound sensorineural loss.
+    - kind: note
+      text: "Rollover: a drop in score at high levels (usually 90 dB HL). Not routine, but it can inform management and counselling."
+  script:
+    - "You'll hear the word \"say\" and then a single word. Repeat the word."
+    - "Some words will be very quiet. If you only hear part of a word, say that part. You get points for parts of words."
+  figures: [pi-function]
+  sim:
+    name: speech testing simulator
+    url: https://jakalnz.github.io/speech-testing-simulator/
+    label: Build a PI function and find the HPL
+  check:
+    - q: "2 kHz threshold is 35 dB HL. First presentation level?"
+      a: "35 + 25 = 60 dB HL."
+    - q: "PI max is 70%. What score defines the HPL?"
+      a: "35%: half the PI max score."
+  fixes:
+    - "7.2.3 numbering corrected (it jumped from 1 to 4)."
+
+- id: SPA-02
+  title: Score and record speech results
+  mode: DO-CONFIRM
+  source: "7.4"
+  purpose: Score phonemes the same way the normative group was scored, and record enough to check later.
+  blocks:
+    - title: Record
+      steps:
+        - "Record level in dB HL (not the dial reading if different), transducer, masking level and test ear."
+        - Watch the patient for visual cues.
+        - Write down what the patient actually says, and score as you go.
+        - Plot the speech audiogram on the form with the right norms.
+    - title: Score phonemes
+      steps:
+        - Score the sound, not the spelling.
+        - Treat each CVC word as consonant, vowel, consonant, where a consonant may be a blend.
+        - Count additions, omissions and distortions as errors, including plurals.
+        - Make no allowance for common errors.
+      why: The norms were built with no allowance for common errors. Allowing them would make the patient look better than the norms they are compared against.
+  notes:
+    - kind: note
+      text: The normative range on each form is the mean ± 1 standard deviation.
+    - kind: note
+      text: "Results before 2000 (AB words on cassette) may be plotted in dB SPL. Insert: dB SPL = dB HL + 12.5. Supra-aural: dB SPL = dB HL + 20."
+  sim:
+    name: speech testing simulator
+    url: https://jakalnz.github.io/speech-testing-simulator/
+    label: Score recorded responses phoneme by phoneme
+  check:
+    - q: "Target \"ship\", response \"chips\". Phoneme score?"
+      a: "1 of 3. /ʃ/ became /tʃ/ (error), /ɪ/ correct, /p/ correct but an /s/ was added, so the final consonant scores as an error. Scoring conventions vary; confirm with your PTF."
+  fixes:
+    - "\"conversation to dB HL\" corrected to \"conversion\"."
+
+- id: SPA-03
+  title: Find the speech detection threshold
+  mode: READ-DO
+  source: "7.5"
+  purpose: Find the lowest level at which the patient detects speech, as a cross-check on the audiogram.
+  blocks:
+    - title: Test
+      steps:
+        - Ask the patient to signal as soon as they hear speech, even if they cannot understand it.
+        - Start 10 dB below the best air conduction threshold.
+        - Present one word per level, rising in 5 dB steps until they hear it.
+        - Then drop 10 dB and rise again in 5 dB steps.
+        - "SDT is the level detected on 2 of 3 ascending trials."
+      why: If you suspect a non-organic (functional) loss, start well below the admitted thresholds so they cannot anchor to a loud start.
+    - title: Record and check
+      steps:
+        - Test SDT last, after PI max, HPL and rollover, because the instructions differ.
+        - Record SDT on the summary sheet, not on the PI function.
+        - "Check SDT agrees with the best threshold from 250 Hz to 4 kHz."
+  refs:
+    - "Olsen, W. O., & Matkin, N. D. (1979). Speech audiometry. In W. F. Rintelmann (Ed.), Hearing assessment."
+    - "American Speech-Language-Hearing Association. (1988). Guidelines for determining threshold level for speech."
+  fixes:
+    - "\"function loss\" corrected to \"functional loss\"."
+
+- id: SPM-01
+  title: Mask for speech audiometry
+  mode: READ-DO
+  source: "8"
+  purpose: Decide if speech could reach the non-test cochlea, and if so, how much masking noise to use.
+  blocks:
+    - title: Decide whether to mask
+      steps:
+        - "Use speech IAA: 40 dB for supra-aural headphones, 50 dB for inserts."
+        - Mask if the speech level minus IAA reaches the best bone conduction threshold of the non-test ear.
+        - Use masked BC thresholds for the non-test ear if you have them.
+        - If BC was not tested in the non-test ear, assume it equals that ear's best AC threshold.
+      rule: "Mask if  Level<sub>TE</sub> − IAA ≥ best BC<sub>NTE</sub>"
+      pod: speech-iaa
+    - title: Set the masking level
+      steps:
+        - Add the largest significant (≥ 15 dB) air-bone gap in the non-test ear.
+        - Warn the patient, then raise the noise gradually, not suddenly.
+        - Use speech noise if available. With white noise, add 5 dB unless effective masking has been calibrated.
+        - For inserts on an audiometer needing correction, apply the 1 kHz correction to both speech and masking levels.
+      rule: "Masking = Level<sub>TE</sub> − IAA + 10 dB + largest ABG<sub>NTE</sub>"
+      why: The extra 10 dB covers speech peaks, which are up to 12 dB above the average. An air-bone gap in the non-test ear matters because speech crosses by bone, but masking arrives by air.
+  values:
+    - caption: Worked examples (ABG<sub>NTE</sub> ≤ 10 dB)
+      source: March 2026 8.2.2
+      header: ["Transducer", "Speech", "Masking"]
+      rows:
+        - ["Supra-aural", "90", "90 − 40 + 10 = 60"]
+        - ["Supra-aural", "45", "45 − 40 + 10 = 15"]
+        - ["Insert", "90", "90 − 50 + 10 = 50"]
+        - ["Insert", "45", "45 − 50 + 10 = 5"]
+  notes:
+    - kind: note
+      text: A large ABG in the non-test ear can call for very high masking. Inserts reduce it by about 10 dB. Check comfort, and note any lower-than-ideal level on the audiogram.
+  sim:
+    name: speech testing simulator
+    url: https://jakalnz.github.io/speech-testing-simulator/
+    label: Calculate speech masking for three audiograms
+  check:
+    - q: "Inserts. Left ear speech at 70 dB HL. Right ear AC is normal, BC not tested, best AC 0 dB HL at 250 Hz. Mask?"
+      a: "70 − 50 = 20 dB reaches the right ear, above its assumed BC of 0 dB HL. Yes. Masking = 70 − 50 + 10 = 30 dB HL."
+  refs:
+    - "Yacullo, W. S. (1996). Clinical masking procedures. Allyn & Bacon."
+    - "Martin, F. N., & Blythe, M. E. (1977). On the cross hearing of spondaic words. Journal of Auditory Research, 17, 221–224."
+  fixes:
+    - "ERROR CORRECTED: the decision rule read \"best unmasked BC(TE)\"; it should be the non-test ear, BC(NTE)."
+    - "ERROR CORRECTED: worked example 4 (inserts) used IAA 40 in \"45 − 40 + 10 = 5\"; with inserts it is 45 − 50 + 10 = 5."
+    - "\"masking nose\" corrected to \"masking noise\"."
+    - "Figure 8 (audiogram example) to be redrawn; its content is now the Check yourself question."
+
+differences:
+  speech-iaa:
+    title: Speech IAA for inserts
+    cards: SPM-01
+    ours: "50 dB for inserts, 40 dB for supra-aural headphones."
+    bpg: "NZAS Speech BPG (2016): 50 dB for inserts at intermediate depth, 60 dB deep, 40 dB shallow; 40 dB supra-aural."
+    why: "Same value at intermediate depth, which is the depth we teach. Consider adding the shallow-insert value (40 dB)."
+    status: Aligned (check shallow case)
+  speech-start-80:
+    title: First speech level
+    cards: SPA-01
+    ours: "2 kHz ≤ 15 dB HL: start at 40 dB HL. Raise by 10–15 dB if PI max is not reached. No rule above 75 dB HL."
+    bpg: "NZAS Speech BPG (2016): normal or slight loss, start at 50 dB HL; < 50 dB HL add 25 dB. Raise by 5–10 dB."
+    why: "No reason recorded for 40 vs 50 dB HL or the larger step. Neither covers 2 kHz ≥ 80 dB HL."
+    status: To confirm (MS)

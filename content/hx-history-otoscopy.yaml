@@ -1,0 +1,134 @@
+module:
+  id: hx
+  order: 1
+  title: Case history and otoscopy
+  owner: ""
+  source: "1–3"
+
+cards:
+
+- id: HX-01
+  title: Run the case history interview
+  mode: DO-CONFIRM
+  source: "1, 2.1"
+  purpose: Build rapport and get an accurate history that shapes the rest of the appointment.
+  when:
+    - Test only in rooms that meet ambient noise standards, with calibrated, maintained equipment (NZAS Professional Practice Standards, Part A).
+  blocks:
+    - title: Open the interview
+      steps:
+        - Give your full name and say why you are asking questions.
+        - Choose seating and lighting that help communication.
+      why: Good light on your face supports lip-reading, which many of our patients rely on.
+    - title: Ask well
+      steps:
+        - Mix open and closed questions in a sensible order.
+        - Avoid leading questions and asking several questions at once.
+        - Use plain words. Say "ringing in your ears", not "tinnitus".
+        - Check the patient can hear you. Adjust your volume, clarity and speed.
+      why: A leading question ("Your hearing is worse on the left, isn't it?") invites agreement, not information.
+    - title: Communicate
+      steps:
+        - Use open body posture and keep eye contact.
+        - Avoid unconscious mannerisms.
+        - Be courteous and show you understand their hearing difficulties.
+    - title: Structure the interview
+      steps:
+        - Keep the patient on track.
+        - Encourage talk with silence, minimal encouragers and reflections.
+        - Pick up on verbal and non-verbal cues.
+        - Close the interview clearly before testing.
+  sim:
+    name: history-taking simulator
+    url: https://jakalnz.github.io/history-taking-simulator/
+    label: Practise an adult case history with a simulated patient
+  check:
+    - q: Rewrite as a non-leading question - "You don't get dizzy, do you?"
+      a: "For example: \"Have you had any dizziness or problems with your balance?\""
+  fixes:
+    - "Section 1 (standards) folded into this card as a one-line reminder."
+
+- id: HX-02
+  title: Take the adult history
+  mode: DO-CONFIRM
+  source: "2.2, 2.3"
+  purpose: Gather the history you need to form a hypothesis before you test.
+  blocks:
+    - title: Gather
+      steps:
+        - Order questions logically.
+        - Follow up on areas that may give diagnostic clues.
+        - Record all relevant answers clearly on the UoA Adult History Form.
+        - Cover every section of the form below.
+      why: Ordering questions and following up on clues is hypothesis-forming. By the end of the history you should be able to predict what the audiogram will show, and notice when it does not.
+    - title: Adult History Form sections
+      side: true
+      steps:
+        - "Reason for appointment: referral source and main concern."
+        - "Hearing: concerns, better ear, onset (gradual or sudden), sound sensitivity, previous tests or aids."
+        - "Tinnitus: side, description, onset, constant, intermittent or pulsatile, annoyance."
+        - "Vertigo, dizziness or imbalance: onset, trigger, type, duration, recent falls, GP aware."
+        - "General ear health: pain, discharge, fullness, wax."
+        - "ENT history: ear surgery, treatment, scans; middle ear, throat and sinus problems."
+        - "Loud noise: occupational or recreational, hearing protection."
+        - "Family history: relatives, age of onset, cause."
+        - "General health: illnesses, medications, hospital stays, head or ear injury, memory, past infections."
+  figures: [adult-history-form]
+  notes:
+    - kind: flag
+      text: Sudden hearing loss, unilateral tinnitus, or dizziness with neurological signs are red flags. See CLS-02 before the patient leaves.
+  sim:
+    name: history-taking simulator
+    url: https://jakalnz.github.io/history-taking-simulator/
+    label: Practise hypothesis-led questioning
+  fixes: []
+
+- id: OTO-01
+  title: Do otoscopy
+  mode: READ-DO
+  source: "3"
+  purpose: Check the ear canal and eardrum before any test, and decide whether testing or referral comes first.
+  blocks:
+    - title: Look
+      steps:
+        - Brace your hand against the patient's head before inserting the speculum.
+        - Check the outer ear.
+        - Check the canal for wax, foreign bodies, discharge, disease and collapsing canals.
+        - Check the eardrum for perforations and other changes.
+        - Record findings in the otoscopy section of the audiogram.
+      why: Bracing means the speculum moves with the head if the patient moves, so it cannot jab the canal.
+    - title: Repeat
+      steps:
+        - Look again if inserts cause discomfort, to check for skin abrasion.
+    - title: Refer when
+      steps:
+        - Findings are abnormal, such as significant wax or otitis externa.
+        - "Wax covers more than half the canal diameter, or is shallow, hard or central."
+        - For wax, refer directly to a wax-removal provider, or give the patient information to book one themselves.
+  values:
+    - caption: Words to use for common findings
+      source: March 2026 Table 1
+      header: ["Finding"]
+      rows:
+        - ["Clear canals; TM intact / NAD"]
+        - ["Slight non-occluding wax; TM visible"]
+        - ["Occluding wax; TM not visible"]
+        - ["TM scarring"]
+        - ["TM perforation"]
+        - ["Patent grommet / grommet in situ"]
+  notes:
+    - kind: stop
+      text: Do not insert a speculum, probe or insert earphone into a discharging ear.
+  sim:
+    name: otoscopy simulator
+    url: https://jakalnz.github.io/otoscopy/
+    label: Identify findings and choose the right description
+  media_planned:
+    - "Photo set: one example of each finding in the table"
+    - "Video: bracing technique for otoscopy (30 s)"
+  check:
+    - q: Wax covers about two-thirds of the canal but you can see part of the eardrum. Refer?
+      a: Yes. Wax covering more than half the canal diameter meets the referral guidance, even if part of the eardrum is visible.
+  fixes:
+    - "Bracing added from Section 14 (safety errors: failure to brace for otoscopy)."
+    - "Stop note on discharging ears added from the transducer and immittance contraindications."

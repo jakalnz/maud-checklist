@@ -1,7 +1,9 @@
 module:
   id: pta
+  order: 2
   title: Pure-tone audiometry and masking
-  source: "Clinical Checklist March 2026, sections 4 and 5"
+  owner: ""
+  source: "4–5"
   version: "0.1 draft"
   date: "2026-11-01"
   reviewer: "MS (pending)"
@@ -415,7 +417,7 @@ cards:
   sim:
     name: PTA simulator
     url: https://jakalnz.github.io/pta-simulator/
-    label: Practise plateau masking on a unilateral and a bilateral conductive loss
+    label: "Practise plateau masking, and see what happens to a BC threshold with and without the OEF (demonstration link to come)"
   check:
     - q: "Inserts, intermediate depth. Masking BC at 500 Hz. AC<sub>NTE</sub> = 15 dB HL; the non-test ear has normal AC and no known air-bone gap. Initial masking level?"
       a: "15 + 10 + 10 (insert OEF at 500 Hz) = 35 dB HL."
@@ -502,7 +504,7 @@ cards:
   sim:
     name: PTA simulator
     url: https://jakalnz.github.io/pta-simulator/
-    label: Practise BC step masking on a conductive loss
+    label: "Practise BC step masking, and compare the result with and without the OEF (demonstration link to come)"
   check:
     - q: "Supra-aural masking, BC at 250 Hz, AC<sub>NTE</sub> = 20 dB HL. Initial masking?"
       a: "20 + 30 + 30 = 80 dB HL. Watch for overmasking."

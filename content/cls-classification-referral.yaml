@@ -1,0 +1,113 @@
+module:
+  id: cls
+  order: 3
+  title: Classification and referral
+  owner: ""
+  source: "6, 14"
+
+cards:
+
+- id: CLS-01
+  title: Describe the audiogram
+  mode: DO-CONFIRM
+  source: "6"
+  purpose: Describe degree, configuration and type of hearing loss in consistent words.
+  blocks:
+    - title: Describe each ear
+      steps:
+        - Name the degree using the scale, by frequency range where it varies.
+        - Name the configuration.
+        - "Name the type: conductive, sensorineural or mixed, from the air-bone gaps."
+        - Say whether the ears are symmetrical. If not, go to CLS-02.
+      example: "Right: mild sloping to moderate-severe sensorineural hearing loss."
+  values:
+    - caption: Degree (dB HL)
+      source: Harrell (2002)
+      header: ["Hearing level", "Label"]
+      rows:
+        - ["−10 to 15", "Normal hearing"]
+        - ["16 to 25", "Slight"]
+        - ["26 to 40", "Mild"]
+        - ["41 to 55", "Moderate"]
+        - ["56 to 70", "Moderate-severe"]
+        - ["71 to 90", "Severe"]
+        - ["> 90", "Profound"]
+      note: "UNHSEIP treats ≤ 20 dB HL as normal for VRA and CPA (see VRA-03)."
+    - caption: Configuration
+      place: steps
+      source: "Carhart (1945); Lloyd & Kaplan (1978); Schlauch & Nelson (2015)"
+      header: ["Term", "Description"]
+      rows:
+        - ["Flat", "< 5 dB average change per octave"]
+        - ["Gradually sloping", "5–12 dB increase per octave"]
+        - ["Sharply sloping", "15–20 dB increase per octave"]
+        - ["Precipitously sloping", "Flat or gradual, then ≥ 25 dB increase per octave"]
+        - ["Rising", "> 5 dB decrease in threshold per octave"]
+        - ["Peaked or saucer", "≥ 20 dB loss at the extreme frequencies, not the mid frequencies"]
+        - ["Trough", "≥ 20 dB loss in the mid frequencies, not the extremes"]
+        - ["Notched", "≥ 20 dB loss with full or near recovery at adjacent octaves"]
+  sim:
+    name: PTA simulator
+    url: https://jakalnz.github.io/pta-simulator/
+    label: Describe five audiograms, then check your words
+  check:
+    - q: "Thresholds 20, 25, 35, 50, 60 dB HL at 0.5, 1, 2, 4, 8 kHz. Configuration?"
+      a: "Steps of 5, 10, 15 and 10 dB per octave: gradually sloping."
+  fixes:
+    - "Rising: \"> 5 dB decrease per threshold per octave\" reworded."
+
+- id: CLS-02
+  title: Decide on onward referral
+  mode: READ-DO
+  source: "6.1, 6.2, 10.3.2, 14"
+  purpose: Spot results and symptoms that need medical referral, and refer with the right urgency.
+  blocks:
+    - title: Asymmetric sensorineural loss
+      steps:
+        - "Check for an interaural difference of ≥ 20 dB at two adjacent frequencies."
+        - "Check for an interaural difference of ≥ 15 dB at any two frequencies from 2 to 8 kHz."
+        - If either is met, refer for investigation of retrocochlear pathology.
+      why: No single definition catches every retrocochlear lesion. History and other symptoms still count, so use the red flags below too.
+      pod: asnhl-definition
+    - title: Refer even without that asymmetry if there is
+      steps:
+        - "Asymmetry < 20 dB with neurological signs: vertigo, facial numbness or weakness, speech or vision disturbance."
+        - Unilateral tinnitus, even with a symmetrical audiogram.
+        - "A Ménière's cluster: vertigo, aural fullness, roaring tinnitus, fluctuating loss."
+        - Idiopathic sudden sensorineural loss, whatever the configuration.
+    - title: Then decide
+      steps:
+        - How urgently they must be seen.
+        - Who they need to see, and how you will refer them.
+  values:
+    - caption: Sudden hearing loss urgency
+      source: March 2026 Table 7; NZAS SSNHL BPG (2020)
+      header: ["Audiogram and symptoms", "Urgency", "Refer to"]
+      rows:
+        - ["Conductive, occluding wax", "Low", "Wax removal"]
+        - ["Conductive, middle ear infection", "Medium", "GP"]
+        - ["Sensorineural, with or without tinnitus, vertigo, fullness or pain", "High", "GP or ENT within 24 hours"]
+        - ["Sensorineural with neurological symptoms", "Urgent", "Emergency department; call an ambulance if severe"]
+  notes:
+    - kind: stop
+      text: "Sudden facial or limb numbness or weakness, confusion or trouble speaking, sudden vision loss, trouble walking, sudden dizziness or severe headache may be a stroke. Call 111."
+  check:
+    - q: "Right 3 kHz 40 dB, left 3 kHz 20 dB; right 4 kHz 45 dB, left 4 kHz 30 dB. Refer?"
+      a: "Differences are 20 and 15 dB. Not ≥ 20 dB at two adjacent frequencies, but ≥ 15 dB at two frequencies between 2 and 8 kHz. Yes, refer."
+  refs:
+    - "Durakovic, N., Valente, M., Goebel, J. A., & Wick, C. C. (2019). What defines asymmetric sensorineural hearing loss? The Laryngoscope, 129(5), 1023–1024."
+    - "Dawes, P. J., & Jeannon, J. P. (1998). Audit of regional screening guidelines for vestibular schwannoma. Journal of Laryngology and Otology, 112(9), 860–864."
+    - "New Zealand Audiological Society. (2020). Best practice guideline: Sudden sensorineural hearing loss."
+  fixes:
+    - "Stroke signs from Section 14 brought onto this card as a Stop note."
+    - "Broken cross-reference in 10.3.2 (\"See also Table 1 (4.6.1.) 3.7.1.\") replaced by this card."
+    - "\"111\" added as the NZ emergency number."
+
+differences:
+  asnhl-definition:
+    title: Definition of asymmetric SNHL
+    cards: CLS-02
+    ours: "≥ 20 dB at two adjacent frequencies, or ≥ 15 dB at any two frequencies from 2 to 8 kHz (Durakovic et al., 2019)."
+    bpg: "No NZAS BPG definition in the guidelines supplied."
+    why: "Check the second criterion against the Durakovic (2019) wording before release."
+    status: To confirm (MS)

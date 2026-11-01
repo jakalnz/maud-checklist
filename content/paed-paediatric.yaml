@@ -1,0 +1,299 @@
+module:
+  id: paed
+  order: 8
+  title: Paediatric testing
+  owner: ""
+  source: "12–13"
+
+cards:
+
+- id: VRA-01
+  title: Set up for VRA
+  mode: DO-CONFIRM
+  source: "12, 12.1.1.1, 12.1.2.1"
+  purpose: Prepare the room, equipment and seating so VRA can start the moment the child settles (about 6 to 30 months).
+  when:
+    - Read with the UNHSEIP Diagnostic and Amplification Protocols (Oct 2023) for children referred through newborn screening.
+  blocks:
+    - title: Audiometer and room
+      steps:
+        - "Select the speaker, stimulus (usually NBN), first frequency (usually 500 Hz) and 30 dB HL."
+        - Switch on the amplifier and loop, or the remote microphone, and check two-way communication.
+        - Turn on the talkback monitor or wear the headset.
+        - Listen in the room to check the signal.
+        - Place the child's chair on the calibrated spot.
+    - title: Seating
+      steps:
+        - "Under about 18 months: child on the parent's lap, distracter on a full-size chair in front."
+        - "From about 18 months: child at the small table, parent close by on the side away from the speaker and reinforcer."
+        - Distracter sits opposite the child, slightly to one side, so the tester can see the child.
+        - Reinforcer box sits at 45–90° from the child.
+      why: Some clinics are calibrated separately for the lap and the small chair. Check how yours was calibrated.
+    - title: Calibrate live voice
+      steps:
+        - Select microphone and speaker, and put the headset on.
+        - With the interrupt on and the dial at −10 dB HL, talk normally and set the mic so your voice peaks at 0 VU.
+        - Recalibrate if you move or adjust the headset.
+      why: The interrupt and −10 dB HL setting stop the child hearing you while you calibrate.
+  media_planned:
+    - "Photo: room layout from above, with the calibrated spot, speaker, reinforcer, distracter and parent marked"
+  fixes: []
+
+- id: VRA-02
+  title: Find thresholds with VRA
+  mode: READ-DO
+  source: "12.1.1.2, 12.1.2.2, 12.1.3"
+  purpose: Get a speech detection threshold, then frequency-specific thresholds, using a conditioned head turn.
+  blocks:
+    - title: Speech detection threshold (live voice)
+      steps:
+        - "At 30 dB HL, call the child naturally (\"Hi Emily, I'm over here\"). Reinforce a head turn."
+        - Get a second turn at 30 dB HL, with the interrupt off between calls.
+        - Drop to 20 dB HL and get two turns for a screening SDT.
+        - No turn at 30 dB HL? Go up in 20 dB steps until they respond, then find threshold.
+        - Still no spontaneous turn? Pair sound and reinforcer until the child is conditioned.
+    - title: Frequency-specific, sound field
+      steps:
+        - Present 500 Hz NBN at 30 dB HL and reinforce a head turn. Repeat once.
+        - Drop to 20 dB HL and get two reliable turns.
+        - Repeat at 2 kHz, 4 kHz, then 1 kHz.
+        - No response after two at 30 dB HL? Go up in 20 dB steps (two presentations each) to 50 then 70 dB HL, then find threshold.
+        - No response at 70 dB HL? Pair stimulus and reinforcer to condition. Still none? Move to bone conduction.
+      pod: vra-normal
+    - title: Bone conduction
+      steps:
+        - Switch early to BC if sound-field results are unreliable and suggest a loss.
+        - Place the bone conductor on the mastoid nearest the speaker.
+        - Condition with 500 Hz NBN at 40 dB HL (felt as vibration), paired with the reinforcer.
+        - Do not start BC at 2 kHz.
+      why: A conductive loss can give a false sensorineural-looking result at 2 kHz. If that is the only BC threshold you get, the result is ambiguous.
+    - title: Ear-specific (inserts)
+      side: true
+      steps:
+        - Start with the ear nearest the reinforcer, unless history or immittance suggests it is the poorer ear.
+        - Start at 30 dB HL and reduce to 20 dB HL.
+        - Get 500 Hz, 2 kHz, 4 kHz and 1 kHz before changing ears.
+        - No responses down to 20 dB HL? Test bone conduction.
+  notes:
+    - kind: rule
+      text: "If unsure whether a turn was real, do not reinforce. Reinforcing a false turn teaches searching and can pass a child with a hearing loss."
+    - kind: note
+      text: "Sound-field results normal? Get ear-specific evidence from DPOAEs, and do immittance with reflexes in each ear to exclude ANSD. Sound field shows a loss? Book more testing for ear-specific thresholds before any hearing aid fitting."
+    - kind: note
+      text: "After 2–3 unsuccessful VRA attempts, move promptly to another method, such as ABR under general anaesthetic."
+  sim:
+    name: play audiometry simulator
+    url: https://jakalnz.github.io/play-audiometry/
+    label: Practise conditioning and threshold search with a simulated child
+  fixes:
+    - "Heading numbering corrected (12.2.2.2 appeared inside 12.1.1)."
+    - "\"come and fine me\" corrected."
+  refs:
+    - "Gravel, J. S. (1994). Auditory assessment of infants. Seminars in Hearing, 15(2), 100–113."
+
+- id: VRA-03
+  title: Work as tester and distracter
+  mode: DO-CONFIRM
+  source: "12.1.4–12.1.6"
+  purpose: Share the work between two testers so every head turn is judged fairly and the child stays engaged.
+  blocks:
+    - title: Tester (case manager)
+      steps:
+        - Introduce yourselves and seat everyone.
+        - Take the history and explain the test. Ask the parent not to cue the child.
+        - Present stimuli with varied gaps between them.
+        - Decide with the distracter whether each turn was real; reinforce only clear turns.
+        - Tell the distracter the stimulus and level, but not just before presenting.
+        - Change reinforcers and stimuli (NBN or warble) to keep interest.
+        - Record every presentation and response (✓ or +, and −).
+        - Do at least one cross-check and immittance.
+        - Give brief feedback after each test, then manage the case and refer as needed.
+    - title: Distracter
+      side: true
+      steps:
+        - Engage the child during the history.
+        - Keep the child's attention forward, without over-engaging them.
+        - Change toys or how you use them to set the right level of distraction.
+        - Praise the child when they respond.
+        - Fit the bone conductor or inserts.
+        - Tell the tester whether you thought a turn was real, and if a false turn was reinforced.
+      why: Telling the distracter the level just before a presentation cues them, and they may cue the child.
+  notes:
+    - kind: note
+      text: "UNHSEIP: hand puppets should not be used by the distracter, as the tester cannot see the child's face. The distracter can be an audiometrist, AoDC or parent if needed."
+  fixes: []
+
+- id: CPA-01
+  title: Prepare for play audiometry and use the Kendall Toy Test
+  mode: DO-CONFIRM
+  source: "12.2.1–12.2.3"
+  purpose: Get the key history quickly, then use the KTT to engage the child and check speech hearing (about 30 months to 5 years).
+  blocks:
+    - title: Quick history first
+      steps:
+        - Main concerns about hearing.
+        - Speech and language development.
+        - History of middle ear disease.
+        - Fill in the rest of the Child History Form during or after testing.
+      why: You have limited time before attention fades. The full form covers age, referral, responsiveness, speech and language, ear infections, risk factors (pregnancy and birth, family history, major illness, craniofacial differences) and development.
+    - title: Prepare
+      steps:
+        - Get forms, including the KTT score sheet.
+        - Set out the KTT, sound level meter, loudspeaker and play toys.
+        - Do listening checks.
+        - Practise producing 35 and 45 dBA with your voice.
+    - title: Kendall Toy Test
+      steps:
+        - Take toys out one at a time and ask the child to name them; name it if they do not.
+        - Spread the toys on the table.
+        - Practise with the 5 distracter items at normal voice ("Show me the ...").
+        - Drop to 35–40 dBA and ask for each of the 10 test items in random order.
+        - If an item is missed, raise your voice 5–10 dB until it is found.
+        - "Record the dBA level at which ≥ 90% of items are found, e.g. 9/10 at 40–45 dBA."
+  notes:
+    - kind: note
+      text: "Be quick and positive. If the child picks the wrong toy, say \"Yes, that's the bath, and here's the car.\" Hide your lips, and make sure errors come from hearing, not attention."
+  figures: [child-history-form]
+  fixes: []
+
+- id: CPA-02
+  title: Find thresholds with play audiometry
+  mode: READ-DO
+  source: "12.2.4"
+  purpose: Teach a play response, then find thresholds quickly, at the frequencies that matter most for speech.
+  blocks:
+    - title: Condition
+      steps:
+        - "Tell, do not ask: \"We are going to play a game.\""
+        - Condition with loud tones through a speaker or headphones on the table.
+        - Under 4 years, demonstrate without words.
+        - Get a few clear responses before putting headphones on the child.
+    - title: Test air conduction
+      steps:
+        - "Order: 2 kHz, 500 Hz, 4 kHz, 1 kHz (1 kHz before 4 kHz if you suspect a U-shaped loss)."
+        - Get at least 2 kHz and 500 Hz in one ear before switching, if attention is fading.
+        - First frequency at 50 dB HL; if clear, drop to 30 then 20 dB HL.
+        - Later frequencies start at 30 dB HL.
+        - Bracket down to 10 dB HL. From 3½ to 4 years, if cooperative, find true thresholds.
+      pod: cpa-start
+    - title: If things get hard
+      steps:
+        - Headphones refused? Try inserts, a hand-held headphone with enough pressure, or the speaker.
+        - Change the game when interest drops, but keep instructions the same.
+        - Try headphones again later.
+    - title: Bone conduction and masking
+      steps:
+        - Test BC if a loss is suspected. Do not start at 2 kHz.
+        - Screen BC to 0 dB HL, or far enough to confirm or rule out a conductive component.
+        - Mask if needed and the child is still attending; use the step method.
+        - Give a short explanation to the parent before immittance.
+      pod: cpa-bc-screen
+  sim:
+    name: play audiometry simulator
+    url: https://jakalnz.github.io/play-audiometry/
+    label: Run a full CPA session with a simulated child
+  fixes:
+    - "\"simplist\" corrected."
+
+- id: PIM-01
+  title: Do paediatric tympanometry
+  mode: READ-DO
+  source: "13.1, 13.2"
+  purpose: Choose the right probe tone for the child's age and classify against the right norms.
+  blocks:
+    - title: Seat the child
+      steps:
+        - "Under about 2½ years: on the parent's lap facing away from the meter, distracter in front with hands-busy toys."
+        - Older children can sit alone and watch, but will need something to hold.
+    - title: Under 9 months corrected age
+      steps:
+        - "Probe tone 1 kHz, pressure +200 to −600 daPa, baseline correction off."
+        - "Classify as peaked (single or double peak), flat (no peak) or indeterminate (any other shape)."
+        - Repeat if the trace is noisy or not clearly normal.
+      pod: infant-baseline
+    - title: 9 months and over
+      steps:
+        - Use 226 Hz in diagnostic (manual) mode at 600/200 daPa/s.
+        - Use manual rather than screening mode.
+        - Classify with the norms in the table.
+      why: "Screening mode is fast but loses accuracy on ambiguous traces, starts without your control, and needs the probe removed and reinserted every time the seal is lost. Manual mode at a fast sweep is almost as quick."
+  values:
+    - caption: Paediatric norms
+      source: ASHA (1997); UNHSEIP (2023)
+      header: ["Measure", "Infant", "1 yr to school"]
+      rows:
+        - ["Admittance (mmho)", "0.2–1.4", "0.3–1.4"]
+        - ["Peak pressure (daPa)", "−100 to +100", "−100 to +100"]
+        - ["TW (daPa)", "< 235", "< 200"]
+        - ["ECV pre-tube (cm³)", "0.3–0.9", "0.3–0.9"]
+        - ["ECV post-tube (cm³)", "1.0–5.5", "1.0–5.5"]
+  sim:
+    name: immittance simulator
+    url: https://jakalnz.github.io/immittance-simulator/
+    label: Classify infant 1 kHz and child 226 Hz tympanograms
+  fixes:
+    - "UNHSEIP reference updated from 2016 to the October 2023 edition; protocol unchanged."
+
+- id: PIM-02
+  title: Measure paediatric acoustic reflexes
+  mode: READ-DO
+  source: "13.3"
+  purpose: Show reflex presence or absence at a safe level, as a cross-check on hearing and middle ear status.
+  blocks:
+    - title: Under 9 months corrected age
+      steps:
+        - Use a 1 kHz probe tone and BBN at 85 dB HL, ipsilateral.
+        - Get two replications to call it present; check for growth.
+        - Do not go above 85 dB HL.
+        - Keep printouts of any ambiguous record.
+      why: Most babies have a BBN reflex at or below 85 dB HL, so absence at 85 dB HL is abnormal. Positive deflections are normal with a 1 kHz probe.
+    - title: 9 months and over (226 Hz probe)
+      steps:
+        - "Normal tympanogram: find at least one ipsilateral threshold from 1 kHz; add 500 Hz, 2 kHz and contralateral if the child cooperates."
+        - "Ambiguous type C: find a 1 kHz ipsilateral threshold from about 90 dB HL, up to 105 dB HL."
+        - "Ambiguous As or rounded B: test for presence at 95 dB HL BBN or 105 dB HL at 1 kHz, unless there is a patent grommet or perforation."
+        - Use diagnostic, not screening, mode.
+      pod: paed-art-start
+      why: In screening mode, Sells et al. (1997) found a 31% false-positive rate for ipsilateral reflexes.
+  notes:
+    - kind: rule
+      text: "A reflex is present if there is a clear deflection, repeatable at any stimulus level."
+  fixes:
+    - "March 2026 said UNHSEIP starts paediatric reflexes at 90 dB HL; UNHSEIP 2023 Appendix 7 says start at 80 dB HL, or one clear repeatable response at 90 dB HL if the child is active."
+
+differences:
+  vra-normal:
+    title: Normal hearing cut-off and 1 kHz in VRA and CPA
+    cards: VRA-02, CPA-02
+    ours: "Normal is ≤ 15 dB HL. Test 1 kHz routinely."
+    bpg: "UNHSEIP (2023): normal is ≤ 20 dB HL. 1 kHz is discretionary if 500 Hz and 2 kHz differ by < 30 dB; threshold search is down 20, up 10."
+    why: "March 2026 notes the difference and asks students to check each clinic's standard."
+    status: Documented in March 2026; confirm
+  cpa-start:
+    title: CPA starting and screening levels
+    cards: CPA-02
+    ours: "First frequency at 50 dB HL, then 30 and 20; bracket to 10 dB HL."
+    bpg: "UNHSEIP (2023): start at 30 dB HL and screen to 20 dB HL."
+    why: "Weigh an exact threshold against screening; older, reliable children can be screened to 10 dB HL."
+    status: Documented in March 2026; confirm
+  cpa-bc-screen:
+    title: CPA bone conduction screening level
+    cards: CPA-02
+    ours: "Screen BC to 0 dB HL."
+    bpg: "UNHSEIP (2023): screen BC to 10 dB HL, the lowest needed to rule out a conductive loss when AC is screened to 20 dB HL."
+    why: "Case by case: exact thresholds versus ruling a conductive component in or out."
+    status: Documented in March 2026; confirm
+  infant-baseline:
+    title: Drawing a baseline on infant 1 kHz tympanograms
+    cards: PIM-01
+    ours: "March 2026: print and draw a baseline from +200 to −400 daPa before classifying."
+    bpg: "UNHSEIP (2023) Appendix 7: record without baseline correction and classify the shape; no hand-drawn baseline described."
+    why: "Check whether the hand-drawn baseline is still taught."
+    status: To confirm (MS)
+  paed-art-start:
+    title: Starting level for reflexes from 9 months
+    cards: PIM-02
+    ours: "Ambiguous C: start about 90 dB HL. March 2026 said UNHSEIP starts at 90."
+    bpg: "UNHSEIP (2023): start at 80 dB HL, or a single clear response at 90 dB HL if the child is active; BBN to 90–95 dB HL to confirm absence."
+    why: "March 2026 misquoted UNHSEIP. Our levels can stay, with the source corrected."
+    status: To confirm (MS)

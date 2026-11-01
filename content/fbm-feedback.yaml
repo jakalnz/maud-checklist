@@ -1,0 +1,72 @@
+module:
+  id: fbm
+  order: 7
+  title: Feedback and management
+  owner: ""
+  source: "10"
+
+cards:
+
+- id: FBM-01
+  title: Explain the results
+  mode: DO-CONFIRM
+  source: "10.1, 10.2"
+  purpose: Turn the test battery into a clear, accurate explanation the patient can act on.
+  blocks:
+    - title: Before you speak
+      steps:
+        - Check whether results agree with each other, and explain any that do not.
+        - Decide the likely cause or causes.
+        - Note the limits of what the tests can show.
+    - title: Explain
+      steps:
+        - Use plain words, without jargon.
+        - Describe each result briefly and accurately (pure tones, speech, immittance, OAEs).
+        - Say where the problem is likely to be (outer, middle or inner ear, or beyond).
+        - Answer the concerns the patient raised at the start.
+      why: Coming back to the patient's own concerns closes the loop, and shows the appointment was about them, not the audiogram.
+  sim:
+    name: history-taking simulator
+    url: https://jakalnz.github.io/history-taking-simulator/
+    label: Practise explaining a result to the same patient
+  fixes:
+    - "\"probably cause/s\" corrected to \"probable cause or causes\"."
+
+- id: FBM-02
+  title: Plan management
+  mode: DO-CONFIRM
+  source: "10.3"
+  purpose: Choose the next steps in a safe order, starting with anything medical.
+  blocks:
+    - title: 1. Retest first if needed
+      steps:
+        - "Results inconclusive, incomplete or inconsistent, with no medical concern: book a retest."
+        - "Serial results needed: book a retest."
+    - title: 2. Medical concerns
+      steps:
+        - Decide how urgently they need to be seen.
+        - Decide who and how. Use CLS-02 for urgency.
+    - title: 3. Specialist audiology
+      steps:
+        - "Consider tinnitus or hyperacusis, vestibular, auditory processing, paediatric or evoked potential assessment."
+    - title: 4. Other professionals
+      side: true
+      steps:
+        - "Consider speech-language therapist, psychologist, occupational therapist, Hearing Association, hearing therapist, ear nurse, Advisor on Deaf Children."
+    - title: 5. Aural rehabilitation
+      side: true
+      steps:
+        - "Hearing aids and assistive listening devices."
+        - "Hearing therapy: listening strategies, alerting devices, auditory training."
+    - title: 6. Counselling and information
+      side: true
+      steps:
+        - Hearing protection.
+        - Retest every 1–2 years.
+        - Hearing tests for family members.
+        - "Safety: warning signals, localising sound, falls risk."
+        - "Impact of untreated loss: missed information, isolation, less cognitive stimulation."
+  fixes:
+    - "\"Processionals\" corrected to \"Professionals\"."
+    - "Broken cross-reference \"See also Table 1 (4.6.1.) 3.7.1. and Section 14\" replaced by CLS-02."
+    - "\"Annual/biannual retest\" written as every 1–2 years (biannual means twice a year). Confirm intent."

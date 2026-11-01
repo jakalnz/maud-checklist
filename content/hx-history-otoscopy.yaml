@@ -100,11 +100,17 @@ cards:
     - title: Repeat
       steps:
         - Look again if inserts cause discomfort, to check for skin abrasion.
-    - title: Consider referral when
+    - title: Refer for wax removal when there is a significant wax plug
       steps:
-        - Findings are abnormal, such as significant wax or otitis externa.
-        - "Wax shows some of these features: covers more than half the canal diameter; is shallow, hard or central."
-        - For wax, refer directly to a wax-removal provider, or give the patient information to book one themselves.
+        - The plug covers more than half the canal diameter.
+        - Or you cannot see the eardrum past it.
+        - Or it would block an insert earphone or stop an immittance or OAE probe sealing.
+        - "Refer directly to a wax-removal provider, or give the patient details so they can book one themselves."
+        - "If you test anyway, record the wax and any change to the test (e.g. supra-aural headphones) on the audiogram."
+      why: A plug blocking most of the canal can add a conductive loss and stop inserts and probes working, so the results would not show the patient's true hearing. Small amounts of wax that leave the canal open and the eardrum visible do not need removing.
+    - title: Refer for other abnormal findings
+      steps:
+        - "Refer to a GP or ENT for findings such as otitis externa, discharge, a foreign body or a new perforation."
   values:
     - caption: Words to use for common findings
       source: March 2026 Table 1
@@ -128,8 +134,9 @@ cards:
     - "Video: bracing technique for otoscopy (30 s)"
   check:
     - q: Wax covers about two-thirds of the canal but you can see part of the eardrum. Refer?
-      a: "Consider it. Covering more than half the canal is one of the features the checklist lists as a reason a wax referral might be made. It is a judgement, not a fixed rule: also weigh whether the wax is hard, shallow or central, whether it affects testing, and the patient's symptoms."
+      a: "Yes. A plug covering more than half the canal diameter is a significant wax plug, even if part of the eardrum is visible. Refer for wax removal, and record the wax on the audiogram if you go ahead with testing."
   fixes:
     - "Bracing added from Section 14 (safety errors: failure to brace for otoscopy)."
     - "Stop note on discharging ears added from the transducer and immittance contraindications."
-    - "Wax referral kept as guidance (\"might occur if the wax has some of the following features\"), not a fixed rule."
+    - "Wax referral rewritten around a significant wax plug. March 2026 listed \"shallow, hard, or centrally situated\" wax; these were unclear and are removed (MS, 1 Nov 2026)."
+    - "Referral for other abnormal findings (GP or ENT) split out from wax referral."

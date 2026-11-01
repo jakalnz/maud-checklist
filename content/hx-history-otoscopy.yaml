@@ -100,10 +100,10 @@ cards:
     - title: Repeat
       steps:
         - Look again if inserts cause discomfort, to check for skin abrasion.
-    - title: Refer when
+    - title: Consider referral when
       steps:
         - Findings are abnormal, such as significant wax or otitis externa.
-        - "Wax covers more than half the canal diameter, or is shallow, hard or central."
+        - "Wax shows some of these features: covers more than half the canal diameter; is shallow, hard or central."
         - For wax, refer directly to a wax-removal provider, or give the patient information to book one themselves.
   values:
     - caption: Words to use for common findings
@@ -128,7 +128,8 @@ cards:
     - "Video: bracing technique for otoscopy (30 s)"
   check:
     - q: Wax covers about two-thirds of the canal but you can see part of the eardrum. Refer?
-      a: Yes. Wax covering more than half the canal diameter meets the referral guidance, even if part of the eardrum is visible.
+      a: "Consider it. Covering more than half the canal is one of the features the checklist lists as a reason a wax referral might be made. It is a judgement, not a fixed rule: also weigh whether the wax is hard, shallow or central, whether it affects testing, and the patient's symptoms."
   fixes:
     - "Bracing added from Section 14 (safety errors: failure to brace for otoscopy)."
     - "Stop note on discharging ears added from the transducer and immittance contraindications."
+    - "Wax referral kept as guidance (\"might occur if the wax has some of the following features\"), not a fixed rule."

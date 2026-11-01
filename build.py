@@ -186,9 +186,21 @@ T["shell"] = r"""{% from 'card' import card with context %}<!doctype html>
 <script>
 if(matchMedia('(max-width:900px)').matches){document.getElementById('navd').open=false}
 const q=document.getElementById('q');q&&q.addEventListener('input',()=>{const v=q.value.trim().toLowerCase();document.querySelectorAll('#navlist li').forEach(li=>{li.hidden=v&&!li.dataset.k.includes(v)})});
-document.querySelectorAll('.replay').forEach(b=>b.addEventListener('click',()=>{const f=document.getElementById(b.dataset.for);f.classList.remove('anim');void f.offsetWidth;f.classList.add('anim')}));
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('anim');io.unobserve(e.target)}}),{threshold:.4});
-document.querySelectorAll('[data-animate]').forEach(el=>io.observe(el));
+document.querySelectorAll('figure.stepper').forEach(f=>{
+  const steps=JSON.parse(f.dataset.steps), n=steps.length, cap=f.querySelector('.stepcap'), play=f.querySelector('[data-act=play]');
+  let k=n-1, timer=null;
+  const show=i=>{k=Math.max(0,Math.min(n-1,i));
+    f.querySelectorAll('[data-i]').forEach(e=>e.style.visibility=(+e.dataset.i<=k)?'visible':'hidden');
+    f.querySelectorAll('.final').forEach(e=>e.style.visibility=(k>=n-1)?'visible':'hidden');
+    cap.textContent='Step '+(k+1)+' of '+n+': '+steps[k];};
+  const stop=()=>{clearInterval(timer);timer=null;play.textContent='Play';};
+  const start=()=>{if(k>=n-1)show(0);play.textContent='Pause';timer=setInterval(()=>{if(k>=n-1){stop();return;}show(k+1);},1800);};
+  f.querySelector('.stepctl').addEventListener('click',e=>{const a=e.target.dataset.act;if(!a)return;
+    if(a==='play'){timer?stop():start();}
+    else{stop(); if(a==='next')show(k+1); else if(a==='back')show(k-1); else {show(n-1);cap.textContent='All steps shown. Press Play to step through it.';}}});
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+    const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){io.disconnect();show(0);start();}}),{threshold:.5});io.observe(f);}
+});
 document.querySelectorAll('a.pod-mark').forEach(a=>a.addEventListener('click',()=>{const d=document.getElementById('layer-pod');if(d)d.open=true}));
 </script>
 </body></html>"""
@@ -205,7 +217,10 @@ T["page"] = r"""{% from 'card' import card with context %}
 
 {% if c.figures or c.media_planned %}
 <details class="layer" open><summary>See it <span class="hint">diagrams, animations and video</span></summary><div class="layer-body">
-{% for f in c.figures or [] %}<figure id="fig-{{ f }}"{% if f in animated %} data-animate{% endif %}>{{ figs[f] }}<figcaption>{{ figt[f] }}</figcaption>{% if f in animated %}<button class="replay" data-for="fig-{{ f }}" type="button">Replay animation</button>{% endif %}</figure>{% endfor %}
+{% for f in c.figures or [] %}{% if f in steps %}<figure id="fig-{{ f }}" class="stepper" data-steps='{{ steps[f]|tojson|forceescape }}'>{{ figs[f] }}<figcaption>{{ figt[f] }}</figcaption>
+<p class="stepcap" aria-live="polite">Press Play to step through it.</p>
+<div class="stepctl"><button type="button" data-act="play">Play</button><button type="button" data-act="back" aria-label="Previous step">Back</button><button type="button" data-act="next" aria-label="Next step">Next</button><button type="button" data-act="all">Show all</button></div></figure>
+{% else %}<figure id="fig-{{ f }}">{{ figs[f] }}<figcaption>{{ figt[f] }}</figcaption></figure>{% endif %}{% endfor %}
 {% if c.media_planned %}<p class="src">Media still to make:</p><ul class="planned">{% for m in c.media_planned %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
 </div></details>{% endif %}
 
@@ -351,7 +366,7 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
 env = Environment(loader=DictLoader(T), autoescape=select_autoescape(default=False))
 for m in modules:
     m["pod_count"] = len({k for c in m["cards"] for k in c["pods"]})
-common = dict(icon=ICON, mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
+common = dict(steps={}, icon=ICON,   # step-through animations off; F.STEPS kept for later use mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
 
 if SITE.exists(): shutil.rmtree(SITE)
 SITE.mkdir()

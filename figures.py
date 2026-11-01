@@ -121,10 +121,12 @@ def plateau_graph():
     b.append(f'<text transform="translate(16,{(y0+y1)/2}) rotate(-90)" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">Test-ear threshold (dB HL)</text>')
     for lab, a, c in (("Undermasking", 10, 36), ("Plateau", 48, 65), ("Overmasking", 83, 91)):
         b.append(f'<text x="{X((a+c)/2 if lab!="Undermasking" else 30)}" y="{y1+16}" text-anchor="middle" font-size="12" font-weight="700" fill="{INK}" style="{FONT}">{lab}</text>')
-    b.append(f'<path class="draw" d="{path}" fill="none" stroke="{RIGHT}" stroke-width="3" stroke-linejoin="round"/>')
+    for i in range(1, len(pts)):
+        (m0, t0), (m1, t1) = pts[i-1], pts[i]
+        b.append(f'<line data-i="{i}" x1="{X(m0):.1f}" y1="{Y(t0):.1f}" x2="{X(m1):.1f}" y2="{Y(t1):.1f}" stroke="{RIGHT}" stroke-width="3" stroke-linecap="round"/>')
     for i, (m, t) in enumerate(pts):
-        b.append(f'<circle class="pt" style="--i:{i}" cx="{X(m):.1f}" cy="{Y(t):.1f}" r="6" fill="#fff" stroke="{RIGHT}" stroke-width="2.4"/>')
-    b.append(f'<text x="{X(65)}" y="{Y(60)-14}" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">True threshold: 60 dB HL</text>')
+        b.append(f'<circle data-i="{i}" cx="{X(m):.1f}" cy="{Y(t):.1f}" r="6" fill="#fff" stroke="{RIGHT}" stroke-width="2.4"/>')
+    b.append(f'<text data-i="6" x="{X(65)}" y="{Y(60)-14}" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">True threshold: 60 dB HL</text>')
     return _svg(W, H, "\n".join(b), "The masking function",
                 "As masking rises, the test-ear threshold first rises with it (undermasking), then stays at 60 dB HL across 20 to 30 dB of masking (the plateau), then rises again as masking crosses to the test ear (overmasking).")
 
@@ -140,16 +142,16 @@ def hughson_westlake():
         b.append(f'<line x1="{x0}" x2="{x1}" y1="{Y(d)}" y2="{Y(d)}" stroke="{RULE}" stroke-width="{1 if d % 10 == 0 else 0.5}"/>')
         b.append(f'<text x="{x0-8}" y="{Y(d)+4}" text-anchor="end" font-size="11" fill="{MUTED}" style="{FONT}">{d}</text>')
     b.append(f'<text transform="translate(18,{(y0+y1)/2}) rotate(-90)" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">Level (dB HL)</text>')
-    path = "M" + " L".join(f"{X(i):.1f},{Y(d):.1f}" for i, (d, r) in enumerate(seq))
-    b.append(f'<path class="draw" d="{path}" fill="none" stroke="{MUTED}" stroke-width="1.5" stroke-dasharray="4 3"/>')
+    for i in range(1, len(seq)):
+        b.append(f'<line data-i="{i}" x1="{X(i-1):.1f}" y1="{Y(seq[i-1][0]):.1f}" x2="{X(i):.1f}" y2="{Y(seq[i][0]):.1f}" stroke="{MUTED}" stroke-width="1.5" stroke-dasharray="4 3"/>')
+    b.append(f'<line class="final" x1="{x0}" x2="{x1}" y1="{Y(20)}" y2="{Y(20)}" stroke="{RIGHT}" stroke-width="2"/>')
+    b.append(f'<text class="final" x="{x0+6}" y="{Y(20)-6}" text-anchor="start" font-size="12" font-weight="700" fill="{RIGHT}" style="{FONT}">Threshold 20 dB HL</text>')
     for i, (d, r) in enumerate(seq):
         asc = i > 0 and seq[i - 1][0] < d
         fill = BRAND if r else "#fff"
-        b.append(f'<circle class="pt" style="--i:{i}" cx="{X(i):.1f}" cy="{Y(d):.1f}" r="7" fill="{fill}" stroke="{BRAND}" stroke-width="2"/>')
+        b.append(f'<circle data-i="{i}" cx="{X(i):.1f}" cy="{Y(d):.1f}" r="7" fill="{fill}" stroke="{BRAND}" stroke-width="2"/>')
         if r and asc:
-            b.append(f'<text class="pt" style="--i:{i}" x="{X(i):.1f}" y="{Y(d)+24:.1f}" text-anchor="middle" font-size="11" font-weight="700" fill="{BRAND}" style="{FONT}">ascending</text>')
-    b.append(f'<line x1="{x0}" x2="{x1}" y1="{Y(20)}" y2="{Y(20)}" stroke="{RIGHT}" stroke-width="2"/>')
-    b.append(f'<text x="{x0+6}" y="{Y(20)-6}" text-anchor="start" font-size="12" font-weight="700" fill="{RIGHT}" style="{FONT}">Threshold 20 dB HL</text>')
+            b.append(f'<text data-i="{i}" x="{X(i):.1f}" y="{Y(d)+24:.1f}" text-anchor="middle" font-size="11" font-weight="700" fill="{BRAND}" style="{FONT}">ascending</text>')
     b.append(f'<text x="{x0}" y="{H-6}" font-size="11.5" fill="{MUTED}" style="{FONT}">Filled = response. Only ascending responses count. Louder is lower, as on an audiogram.</text>')
     return _svg(W, H, "\n".join(b), "Finding threshold with 10-down 5-up",
                 "Ten presentations: responses at 35, 30, 25, 20 and 20; misses at 25, 20, 15, 10 and 15. Two ascending responses at 20 dB HL give a threshold of 20 dB HL.")
@@ -301,21 +303,22 @@ def pi_function():
     x0, x1, y0, y1 = 70, 530, 250, 30
     X = lambda d: x0 + d / 100 * (x1 - x0)
     Y = lambda p: y0 - p / 100 * (y0 - y1)
-    pts = [(25, 10), (35, 40), (45, 76), (55, 92), (65, 94), (90, 94)]
+    pts = [(25, 10), (35, 40), (45, 76), (55, 94), (65, 94), (90, 94)]
     b = []
     for g in range(0, 101, 20):
         b.append(f'<line x1="{x0}" x2="{x1}" y1="{Y(g)}" y2="{Y(g)}" stroke="{RULE}" stroke-width="0.8"/><text x="{x0-8}" y="{Y(g)+4}" text-anchor="end" font-size="11" fill="{MUTED}" style="{FONT}">{g}</text>')
         b.append(f'<text x="{X(g)}" y="{y0+18}" text-anchor="middle" font-size="11" fill="{MUTED}" style="{FONT}">{g}</text>')
     b.append(f'<text x="{(x0+x1)/2}" y="{H-6}" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">Presentation level (dB HL)</text>')
     b.append(f'<text transform="translate(18,{(y0+y1)/2}) rotate(-90)" text-anchor="middle" font-size="12" fill="{INK}" style="{FONT}">Phonemes correct (%)</text>')
-    path = "M" + " L".join(f"{X(d):.1f},{Y(p):.1f}" for d, p in pts)
-    b.append(f'<path class="draw" d="{path}" fill="none" stroke="{RIGHT}" stroke-width="3"/>')
+    for i in range(1, len(pts)):
+        (d0, p0), (d1, p1) = pts[i-1], pts[i]
+        b.append(f'<line data-i="{i}" x1="{X(d0):.1f}" y1="{Y(p0):.1f}" x2="{X(d1):.1f}" y2="{Y(p1):.1f}" stroke="{RIGHT}" stroke-width="3" stroke-linecap="round"/>')
     for i, (d, p) in enumerate(pts):
-        b.append(f'<circle class="pt" style="--i:{i}" cx="{X(d):.1f}" cy="{Y(p):.1f}" r="6" fill="#fff" stroke="{RIGHT}" stroke-width="2.4"/>')
-    b.append(f'<line x1="{x0}" x2="{X(37)}" y1="{Y(47)}" y2="{Y(47)}" stroke="{BRAND}" stroke-dasharray="4 3"/><line x1="{X(37)}" x2="{X(37)}" y1="{Y(47)}" y2="{y0}" stroke="{BRAND}" stroke-dasharray="4 3"/>')
-    b.append(f'<text x="{X(40)+6}" y="{Y(30)}" font-size="12" font-weight="700" fill="{BRAND}" style="{FONT}">HPL ≈ 37 dB HL (half of 94%)</text>')
-    b.append(f'<text x="{X(55)}" y="{Y(92)-14}" text-anchor="middle" font-size="12" font-weight="700" fill="{INK}" style="{FONT}">PI max 94% at 55 dB HL</text>')
-    b.append(f'<text x="{X(90)}" y="{Y(94)+22}" text-anchor="end" font-size="11.5" fill="{MUTED}" style="{FONT}">No rollover at 90 dB HL</text>')
+        b.append(f'<circle data-i="{i}" cx="{X(d):.1f}" cy="{Y(p):.1f}" r="6" fill="#fff" stroke="{RIGHT}" stroke-width="2.4"/>')
+    b.append(f'<g class="final"><line x1="{x0}" x2="{X(37)}" y1="{Y(47)}" y2="{Y(47)}" stroke="{BRAND}" stroke-dasharray="4 3"/><line x1="{X(37)}" x2="{X(37)}" y1="{Y(47)}" y2="{y0}" stroke="{BRAND}" stroke-dasharray="4 3"/>')
+    b.append(f'<text x="{X(40)+6}" y="{Y(30)}" font-size="12" font-weight="700" fill="{BRAND}" style="{FONT}">HPL ≈ 37 dB HL (half of 94%)</text></g>')
+    b.append(f'<text data-i="3" x="{X(55)}" y="{Y(94)-14}" text-anchor="middle" font-size="12" font-weight="700" fill="{INK}" style="{FONT}">PI max 94% at 55 dB HL</text>')
+    b.append(f'<text data-i="5" x="{X(90)}" y="{Y(94)+22}" text-anchor="end" font-size="11.5" fill="{MUTED}" style="{FONT}">No rollover at 90 dB HL</text>')
     return _svg(W, H, "\n".join(b), "A performance-intensity function",
                 "Scores rise from 10% at 25 dB HL to a maximum of 94% at 55 dB HL and stay there at 65 and 90 dB HL. Half of 94% is 47%, reached at about 37 dB HL: the half-peak level.")
 
@@ -333,4 +336,39 @@ FIGURES = {
     "pi-function": ("A performance-intensity function", pi_function),
 }
 ANIMATED = {"plateau-graph", "hughson-westlake", "pi-function"}
+# Step captions for the step-through animations (one per data-i step)
+STEPS = {
+    "hughson-westlake": [
+        "35 dB HL: response. Go down 10 dB.",
+        "25 dB HL: no response. Go up 5 dB.",
+        "30 dB HL: response on the way up (1st ascending response). Go down 10 dB.",
+        "20 dB HL: no response. Go up 5 dB.",
+        "25 dB HL: response on the way up. Go down 10 dB.",
+        "15 dB HL: no response. Go up 5 dB.",
+        "20 dB HL: response on the way up (1st at 20). Go down 10 dB.",
+        "10 dB HL: no response. Go up 5 dB.",
+        "15 dB HL: no response. Go up 5 dB.",
+        "20 dB HL: response on the way up (2nd at 20), and none lower. Threshold is 20 dB HL.",
+    ],
+    "plateau-graph": [
+        "Masking 10 dB: threshold 30 dB HL.",
+        "Masking 20 dB: still 30 dB HL. The masking is too low to reach the non-test cochlea yet.",
+        "Masking 30 dB: threshold rises to 40. The non-test ear was hearing the tone: undermasking.",
+        "Masking 40 dB: rises to 50. Still undermasked: keep going.",
+        "Masking 50 dB: rises to 60.",
+        "Masking 60 dB: stays at 60. The plateau has started.",
+        "Masking 70 dB: still 60. Steady over 20 dB of masking: 60 dB HL is the true threshold.",
+        "Masking 80 dB: still 60. You can stop at a 20 dB plateau; this point is shown for the full picture.",
+        "Masking 90 dB: rises to 70. Masking is now crossing back to the test ear: overmasking.",
+        "Masking 100 dB: rises to 80. Overmasking.",
+    ],
+    "pi-function": [
+        "25 dB HL: 10% of phonemes correct.",
+        "35 dB HL: 40%.",
+        "45 dB HL: 76%. Scores climb steeply in the middle of the curve.",
+        "55 dB HL: 94%. The best score, at the lowest level that gives it: PI max.",
+        "65 dB HL: still 94%.",
+        "90 dB HL: still 94%, so no rollover. Half of 94% is 47%, reached at about 37 dB HL: the half-peak level.",
+    ],
+}
 PRINT_FIGS = {"plateau-flow", "step-flow-ac", "step-flow-bc", "symbols", "tymp-types"}

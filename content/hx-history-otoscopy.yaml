@@ -97,6 +97,7 @@ cards:
         - Check the eardrum for perforations and other changes.
         - Record findings in the otoscopy section of the audiogram.
       why: Bracing means the speculum moves with the head if the patient moves, so it cannot jab the canal.
+      pod: [bsa-speculum]
     - title: Repeat
       steps:
         - Look again if inserts cause discomfort, to check for skin abrasion.
@@ -108,6 +109,7 @@ cards:
         - "Refer directly to a wax-removal provider, or give the patient details so they can book one themselves."
         - "If you test anyway, record the wax and any change to the test (e.g. supra-aural headphones) on the audiogram."
       why: A plug blocking most of the canal can add a conductive loss and stop inserts and probes working, so the results would not show the patient's true hearing. Small amounts of wax that leave the canal open and the eardrum visible do not need removing.
+      pod: [wax-nzas, wax-bsa]
     - title: Refer for other abnormal findings
       steps:
         - "Refer to a GP or ENT for findings such as otitis externa, discharge, a foreign body or a new perforation."
@@ -140,3 +142,29 @@ cards:
     - "Stop note on discharging ears added from the transducer and immittance contraindications."
     - "Wax referral rewritten around a significant wax plug. March 2026 listed \"shallow, hard, or centrally situated\" wax; these were unclear and are removed (MS, 1 Nov 2026)."
     - "Referral for other abnormal findings (GP or ENT) split out from wax referral."
+
+differences:
+  wax-nzas:
+    title: When wax needs removing (NZ)
+    label: NZAS PTA BPG (2021) 4.2.1
+    cards: OTO-01
+    ours: "Refer for a significant plug: more than half the canal, eardrum hidden, or it would block an insert or probe."
+    bpg: "Test on clear canals where possible. Partial occlusion: use headphones rather than inserts. Full occlusion: refer to have the canal cleared."
+    why: "The NZAS refers only for full occlusion; our wording refers earlier. Agree which threshold we teach."
+    status: To confirm (MS)
+  wax-bsa:
+    title: When wax needs removing (international)
+    label: BSA Aural Care (2025); AAO-HNSF (2017)
+    cards: OTO-01
+    ours: "Refer for a significant plug, judged mainly by how much of the canal it blocks."
+    bpg: "Removal is needed when wax hides the eardrum or canal, causes a blocked feeling or other symptoms, reduces hearing, prevents a test or procedure (hearing test, tympanometry, impressions, probe-microphone measures), or interferes with a hearing aid. AAO-HNSF: impaction = wax causing symptoms or preventing an examination."
+    why: "International guidance defines need by effect and symptoms, not size. Consider adding symptoms to the card."
+    status: To discuss
+  bsa-speculum:
+    title: Otoscopy hygiene and order (international)
+    label: BSA Ear Examination (2022)
+    cards: OTO-01
+    ours: "No guidance on speculum use between ears or which ear to examine first."
+    bpg: "Use a different speculum for each ear and never reuse one between people (disposables preferred). Examine the ear least likely to be abnormal first."
+    why: "Simple infection-control step worth adding to the card."
+    status: To discuss

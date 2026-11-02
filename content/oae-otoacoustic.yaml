@@ -57,6 +57,7 @@ cards:
         - "Report a band as present if its SNR is ≥ 3 dB."
         - Note overall reproducibility and amplitude as supporting evidence.
       why: There are no universal TEOAE criteria. Kemp et al. (1990) suggested at least 50% reproducibility for presence; Prieve et al. (1993) found 70% reasonable with an overall amplitude of at least 6 dB SPL.
+      pod: [bsa-teoae]
   refs:
     - "American Speech-Language-Hearing Association. (2004). Guidelines for the audiologic assessment of children from birth to 5 years of age."
   fixes:
@@ -101,9 +102,18 @@ cards:
 
 differences:
   dpoae-criteria:
+    label: UNHSEIP (2023)
     title: DPOAE presence criteria and frequencies
     cards: OAE-03
     ours: "March 2026 text: SNR 6 dB, or 4 dB at several adjacent frequencies; F2 1.5–4 kHz (2016). Its Table 11 already cites 2023."
     bpg: "UNHSEIP 2023 Appendix 6: SNR 6 dB, or 5 dB next to a passing frequency; F2 1.5, 2, 3, 4 and 6 kHz."
     why: "The text had not caught up with the 2023 table. This draft follows 2023."
     status: Aligned in draft
+  bsa-teoae:
+    title: TEOAE presence criterion (international)
+    label: BSA OAE Practice Guidance (2025)
+    cards: OAE-02
+    ours: "Present in a band if SNR ≥ 3 dB."
+    bpg: "SNR ≥ 6 dB per half-octave band, in at least two bands (the screening criterion; stricter criteria can be set). Whole-waveform reproducibility (e.g. > 70%) is no longer used as the criterion."
+    why: "Our 3 dB is lenient compared with the BSA and with our own 6 dB DPOAE criterion."
+    status: To discuss

@@ -176,6 +176,7 @@ cards:
 
 differences:
   speech-iaa:
+    label: NZAS Speech BPG (2016)
     title: Speech IAA for inserts
     cards: SPM-01
     ours: "50 dB for inserts, 40 dB for supra-aural headphones."
@@ -183,6 +184,7 @@ differences:
     why: "Same value at intermediate depth, which is the depth we teach. Consider adding the shallow-insert value (40 dB)."
     status: Aligned (check shallow case)
   speech-start-80:
+    label: NZAS Speech BPG (2016)
     title: First speech level
     cards: SPA-01
     ours: "2 kHz ≤ 15 dB HL: start at 40 dB HL. Raise by 10–15 dB if PI max is not reached. No rule above 75 dB HL."

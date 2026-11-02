@@ -59,57 +59,93 @@ cards:
 - id: CLS-02
   title: Decide on onward referral
   mode: READ-DO
-  source: "6.1, 6.2, 10.3.2, 14"
+  source: "6.1, 6.2, 10.3.2, 14; NZAS PTA BPG (2021) section 11; NZAS SSHL BPG (2020)"
   purpose: Spot results and symptoms that need medical referral, and refer with the right urgency.
   blocks:
     - title: Asymmetric sensorineural loss
       steps:
-        - "Check for an interaural difference of ≥ 20 dB at two adjacent frequencies."
-        - "Check for an interaural difference of ≥ 15 dB at any two frequencies from 2 to 8 kHz."
-        - If either is met, refer for investigation of retrocochlear pathology.
-      why: No single definition catches every retrocochlear lesion. History and other symptoms still count, so use the red flags below too.
-      pod: asnhl-definition
+        - "Refer if the ears differ by ≥ 20 dB at two or more adjacent frequencies."
+        - Refer even if another cause, such as noise exposure, seems to explain the asymmetry.
+        - "Our checklist also refers for ≥ 15 dB at any two frequencies from 2 to 8 kHz (see Points of difference)."
+      why: The NZAS uses Dawes (1998) - ≥ 20 dB at two adjacent frequencies. No single definition catches every retrocochlear lesion, so history and the red flags below still count.
+      pod: [asnhl-definition, asnhl-nice]
     - title: Refer even without that asymmetry if there is
       steps:
         - "Asymmetry < 20 dB with neurological signs: vertigo, facial numbness or weakness, speech or vision disturbance."
         - Unilateral tinnitus, even with a symmetrical audiogram.
         - "A Ménière's cluster: vertigo, aural fullness, roaring tinnitus, fluctuating loss."
-        - Idiopathic sudden sensorineural loss, whatever the configuration.
-    - title: Then decide
+        - Sudden sensorineural loss, whatever the configuration.
+      pod: red-flags-nice
+    - title: Sudden sensorineural hearing loss
       steps:
-        - How urgently they must be seen.
-        - Who they need to see, and how you will refer them.
+        - "Sudden SNHL is a drop of ≥ 30 dB over at least 3 consecutive frequencies, compared with a previous audiogram or, if none, the other ear."
+        - Do a full assessment, including acoustic reflexes, and compare with any previous audiograms.
+        - Refer to a GP or ENT, to be seen ideally within 24 hours of onset. If neither is available, refer to the emergency department.
+        - If the loss followed trauma or a work injury, refer with a view to an ACC claim.
+      why: Steroid treatment works best when started early, which is why the NZAS asks for review within 24 hours of onset. If the patient's report and earlier results disagree, the NZAS says the patient's report takes precedence.
+      pod: sshl-timing
   values:
     - caption: Sudden hearing loss urgency
-      source: March 2026 Table 7; NZAS SSNHL BPG (2020)
+      source: March 2026 Table 7; NZAS SSHL BPG (2020)
       header: ["Audiogram and symptoms", "Urgency", "Refer to"]
       rows:
         - ["Conductive, occluding wax", "Low", "Wax removal"]
         - ["Conductive, middle ear infection", "Medium", "GP"]
-        - ["Sensorineural, with or without tinnitus, vertigo, fullness or pain", "High", "GP or ENT within 24 hours"]
+        - ["Sensorineural, with or without tinnitus, vertigo, fullness or pain", "High", "GP or ENT, ideally within 24 hours of onset; ED if unavailable"]
         - ["Sensorineural with neurological symptoms", "Urgent", "Emergency department; call an ambulance if severe"]
   notes:
     - kind: note
-      text: "Referral criteria, including the definition of asymmetry, are agreed locally with ENT services and differ between regions and countries. These are the criteria we teach; on placement, use the criteria agreed for that clinic."
+      text: "These are the NZAS criteria. The NZAS notes that referral criteria differ between regions and recommends checking with the local hospital ENT service. On placement, use the criteria agreed for that clinic."
     - kind: stop
       text: "Sudden facial or limb numbness or weakness, confusion or trouble speaking, sudden vision loss, trouble walking, sudden dizziness or severe headache may be a stroke. Call 111."
   check:
     - q: "Right 3 kHz 40 dB, left 3 kHz 20 dB; right 4 kHz 45 dB, left 4 kHz 30 dB. Refer?"
-      a: "Differences are 20 and 15 dB. Not ≥ 20 dB at two adjacent frequencies, but ≥ 15 dB at two frequencies between 2 and 8 kHz. Yes, refer."
+      a: "Differences are 20 and 15 dB, so not ≥ 20 dB at two adjacent frequencies: the NZAS criterion is not met. Our checklist's extra criterion (≥ 15 dB at two frequencies from 2 to 8 kHz) is met, so we would refer. Check which criteria the local ENT service uses."
+    - q: "A patient's left ear thresholds at 1, 2 and 4 kHz are 35, 40 and 45 dB worse than last month's audiogram, after waking with a blocked ear three days ago. What do you do?"
+      a: "This meets the sudden SNHL definition (≥ 30 dB over 3 consecutive frequencies). Complete the assessment including reflexes, then refer to a GP or ENT to be seen as soon as possible (ideally within 24 hours of onset, which has already passed), or ED if neither is available."
   refs:
-    - "Durakovic, N., Valente, M., Goebel, J. A., & Wick, C. C. (2019). What defines asymmetric sensorineural hearing loss? The Laryngoscope, 129(5), 1023–1024."
+    - "New Zealand Audiological Society. (2021). Best practice guidelines: Adult pure-tone audiometry, section 11."
+    - "New Zealand Audiological Society. (2020). Sudden sensorineural hearing loss (SSHL): Referral and follow up."
     - "Dawes, P. J., & Jeannon, J. P. (1998). Audit of regional screening guidelines for vestibular schwannoma. Journal of Laryngology and Otology, 112(9), 860–864."
-    - "New Zealand Audiological Society. (2020). Best practice guideline: Sudden sensorineural hearing loss."
+    - "Durakovic, N., Valente, M., Goebel, J. A., & Wick, C. C. (2019). What defines asymmetric sensorineural hearing loss? The Laryngoscope, 129(5), 1023–1024."
+    - "National Institute for Health and Care Excellence. (2018). Hearing loss in adults: assessment and management (NG98)."
   fixes:
+    - "Asymmetry, red flags and sudden SNHL rewritten to follow NZAS PTA BPG (2021) section 11 and the NZAS SSHL BPG (2020)."
+    - "Sudden SNHL definition (≥ 30 dB over 3 consecutive frequencies) and the NZAS referral pathway (GP or ENT within 24 hours, ED, ACC) added."
     - "Stroke signs from Section 14 brought onto this card as a Stop note."
     - "Broken cross-reference in 10.3.2 (\"See also Table 1 (4.6.1.) 3.7.1.\") replaced by this card."
     - "\"111\" added as the NZ emergency number."
 
 differences:
   asnhl-definition:
-    title: Definition of asymmetric SNHL
+    title: Second asymmetry criterion
     cards: CLS-02
-    ours: "≥ 20 dB at two adjacent frequencies, or ≥ 15 dB at any two frequencies from 2 to 8 kHz (Durakovic et al., 2019)."
-    bpg: "No NZAS BPG definition in the guidelines supplied."
-    why: "Asymmetry criteria are regional and set with local ENT services (NICE NG98 uses ≥ 15 dB at two adjacent frequencies). Confirm the criteria agreed with Auckland-region ENT, and check the second criterion against Durakovic (2019)."
+    label: NZAS PTA BPG (2021)
+    ours: "March 2026 also refers for ≥ 15 dB at any two frequencies from 2 to 8 kHz (Durakovic et al., 2019)."
+    bpg: "≥ 20 dB at two or more adjacent frequencies only (Dawes, 1998), even if another cause seems to explain it. Criteria may differ by region; check with local ENT."
+    why: "Keep the extra criterion only if Auckland-region ENT services have agreed it."
     status: To confirm (MS)
+  asnhl-nice:
+    title: International asymmetry criterion
+    cards: CLS-02
+    label: NICE NG98 (UK, 2018)
+    ours: "≥ 20 dB at two adjacent frequencies (NZAS)."
+    bpg: "≥ 15 dB at any two adjacent frequencies, as the threshold for MRI."
+    why: "Regional criterion set with UK ENT services. Context for teaching, not a standard for NZ."
+    status: For information
+  red-flags-nice:
+    title: Red flags not in our list
+    cards: CLS-02
+    label: NICE NG98 (UK, 2018)
+    ours: "Neurological signs, unilateral tinnitus, Ménière's cluster, sudden loss (NZAS list)."
+    bpg: "Also: pulsatile tinnitus, tinnitus that has changed or causes distress, fluctuating loss not linked to a cold, recurrent or unresolved vertigo; one-sided loss with facial droop or altered sensation within 24 hours."
+    why: "Pulsatile tinnitus and fluctuating loss are widely taught red flags. Consider adding them."
+    status: To discuss
+  sshl-timing:
+    title: Graded urgency for sudden loss
+    cards: CLS-02
+    label: NICE NG98 (UK, 2018)
+    ours: "GP or ENT ideally within 24 hours of onset (NZAS)."
+    bpg: "Loss over ≤ 3 days, within the last 30 days: seen within 24 hours. Onset more than 30 days ago, or worsening over 4–90 days: seen within 2 weeks."
+    why: "Gives students a way to grade urgency when a patient presents late. NZAS does not cover late presentation."
+    status: To discuss

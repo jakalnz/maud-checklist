@@ -59,7 +59,7 @@ cards:
         - Repeat at 2 kHz, 4 kHz, then 1 kHz.
         - No response after two at 30 dB HL? Go up in 20 dB steps (two presentations each) to 50 then 70 dB HL, then find threshold.
         - No response at 70 dB HL? Pair stimulus and reinforcer to condition. Still none? Move to bone conduction.
-      pod: vra-normal
+      pod: [vra-normal, bsa-vra-stimulus, bsa-vra-levels]
     - title: Bone conduction
       steps:
         - Switch early to BC if sound-field results are unreliable and suggest a loss.
@@ -175,7 +175,7 @@ cards:
         - First frequency at 50 dB HL; if clear, drop to 30 then 20 dB HL.
         - Later frequencies start at 30 dB HL.
         - Bracket down to 10 dB HL. From 3½ to 4 years, if cooperative, find true thresholds.
-      pod: cpa-start
+      pod: [cpa-start, vra-normal]
     - title: If things get hard
       steps:
         - Headphones refused? Try inserts, a hand-held headphone with enough pressure, or the speaker.
@@ -265,11 +265,13 @@ differences:
   vra-normal:
     title: Normal hearing cut-off and 1 kHz in VRA and CPA
     cards: VRA-02, CPA-02
+    label: UNHSEIP (2023); BAA/BSA (2024); Ontario IHP
     ours: "Normal is ≤ 15 dB HL. Test 1 kHz routinely."
-    bpg: "UNHSEIP (2023): normal is ≤ 20 dB HL. 1 kHz is discretionary if 500 Hz and 2 kHz differ by < 30 dB; threshold search is down 20, up 10."
+    bpg: "UNHSEIP (2023): normal is ≤ 20 dB HL. 1 kHz is discretionary if 500 Hz and 2 kHz differ by < 30 dB; threshold search is down 20, up 10. International: BAA/BSA discharge criteria (2024) and BSA VRA (2025) use ≤ 20 dB HL (inserts, headphones, BC) and ≤ 25 dB HL in sound field; Ontario IHP (2019) uses ≤ 25 dB HL."
     why: "March 2026 notes the difference and asks students to check each clinic's standard."
     status: Documented in March 2026; confirm
   cpa-start:
+    label: UNHSEIP (2023)
     title: CPA starting and screening levels
     cards: CPA-02
     ours: "First frequency at 50 dB HL, then 30 and 20; bracket to 10 dB HL."
@@ -277,6 +279,7 @@ differences:
     why: "Weigh an exact threshold against screening; older, reliable children can be screened to 10 dB HL."
     status: Documented in March 2026; confirm
   cpa-bc-screen:
+    label: UNHSEIP (2023)
     title: CPA bone conduction screening level
     cards: CPA-02
     ours: "Screen BC to 0 dB HL."
@@ -284,6 +287,7 @@ differences:
     why: "Case by case: exact thresholds versus ruling a conductive component in or out."
     status: Documented in March 2026; confirm
   infant-baseline:
+    label: UNHSEIP (2023)
     title: Drawing a baseline on infant 1 kHz tympanograms
     cards: PIM-01
     ours: "March 2026: print and draw a baseline from +200 to −400 daPa before classifying."
@@ -291,9 +295,26 @@ differences:
     why: "Check whether the hand-drawn baseline is still taught."
     status: To confirm (MS)
   paed-art-start:
+    label: UNHSEIP (2023)
     title: Starting level for reflexes from 9 months
     cards: PIM-02
     ours: "Ambiguous C: start about 90 dB HL. March 2026 said UNHSEIP starts at 90."
     bpg: "UNHSEIP (2023): start at 80 dB HL, or a single clear response at 90 dB HL if the child is active; BBN to 90–95 dB HL to confirm absence."
     why: "March 2026 misquoted UNHSEIP. Our levels can stay, with the source corrected."
     status: To confirm (MS)
+  bsa-vra-stimulus:
+    title: VRA stimulus (international)
+    label: BSA VRA (2025); Ontario IHP (2019)
+    cards: VRA-02
+    ours: "Usually narrowband noise (NBN), alternating with warble tones to keep interest."
+    bpg: "Warble tones should be used; NBN is less frequency specific and can misestimate thresholds where hearing changes across frequency. Ontario: warble tones in sound field; FRESH noise acceptable."
+    why: "Consider making warble tones the default stimulus."
+    status: To discuss
+  bsa-vra-levels:
+    title: VRA starting level and steps (international)
+    label: BSA VRA (2025)
+    cards: VRA-02
+    ours: "Start at 30 dB HL, screen to 20 dB HL; if no response, up in 20 dB steps."
+    bpg: "Condition at about 65 dB HL in sound field (60 dB HL with inserts), drop in 20 dB steps, then 10-down 5-up near the minimum response level (2 of 3 responses). Test to 25 dB HL in sound field and 20 dB HL with inserts or bone conduction."
+    why: "Opposite approach: the BSA starts loud and descends; we start quiet and ascend. Both are used; decide which we teach first."
+    status: To discuss

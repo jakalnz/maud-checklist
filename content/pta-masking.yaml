@@ -172,7 +172,7 @@ cards:
         - After each miss, go up 5 dB.
         - "Threshold is the lowest level with responses on at least 2 of 3 ascending presentations."
       why: The modified Hughson-Westlake method (Carhart & Jerger, 1959) brackets threshold from below. Ascending presentations give the most stable thresholds.
-      pod: threshold-definition
+      pod: [threshold-definition]
     - title: Timing
       steps:
         - Present each tone for 1 to 2 seconds.
@@ -187,7 +187,7 @@ cards:
         - Then test 500 Hz and 250 Hz.
         - At each new frequency, start 15 to 20 dB above the last threshold, unless that level would be uncomfortably loud.
         - Repeat in the other ear.
-      pod: retest
+      pod: [retest, bsa-next-freq]
     - title: Add inter-octave frequencies when
       side: true
       steps:
@@ -199,7 +199,7 @@ cards:
         - Test up to the audiometer limit or 110 dB HL, whichever is lower.
         - Ask whether they hear or feel low-frequency tones at high levels. Write VT beside a felt response.
         - If tinnitus makes pure tones hard to hear, use warble tones and note the stimulus and frequencies on the audiogram.
-      pod: test-limit
+      pod: [test-limit]
   notes:
     - kind: rule
       text: "Correct thresholds for insert earphones before you plot them, if the audiometer has no separate insert output."
@@ -241,7 +241,7 @@ cards:
         - Use the same 10-down 5-up bracketing as for air conduction.
         - Leave the test ear uncovered at 1 kHz and below.
       why: Covering the test ear improves low-frequency bone conduction thresholds (the occlusion effect), which would hide a real air-bone gap.
-      pod: bc-criterion
+      pod: [bc-criterion, bsa-bc-freq]
     - title: Add these frequencies when useful
       steps:
         - 250 Hz, if there is an unexpected conductive loss at 500 Hz.
@@ -332,12 +332,13 @@ cards:
       rule: |
         Mask AC if AC<sub>TE</sub> − BC<sub>NTE</sub> ≥ IAA
       why: Sound reaching the non-test ear is the test level minus the interaural attenuation. If that is at or above the non-test cochlea's threshold (its bone conduction), the non-test ear may have heard it. Before bone conduction is known, use AC<sub>NTE</sub>; bone conduction can only be the same or better.
-      pod: insert-depth
+      pod: [insert-depth, bsa-iaa-inserts]
     - title: Bone conduction
       steps:
         - Mask if both parts of the rule below are true.
       rule: |
         Mask BC if air-bone gap<sub>TE</sub> ≥ 15 dB and AC<sub>TE</sub> > 15 dB HL
+      pod: bsa-bc-rule
       why: Interaural attenuation for bone conduction is taken as 0 dB, so an unmasked bone threshold could come from either cochlea.
   values:
     - caption: "Interaural attenuation (dB)"
@@ -384,7 +385,7 @@ cards:
         - Leave out the OEF if the non-test ear may have an air-bone gap of 20 dB or more at that frequency. If you do not know, add it.
         - For insert masking, subtract insert correction factors from the audiogram values to get the dial level.
       why: The extra 10 dB is a safety factor. The OEF makes up for the non-test ear's improved bone conduction once it is covered by the masking earphone. A conductive loss already reduces that effect.
-      pod: oef-depth
+      pod: [oef-depth, bsa-plateau]
     - title: Find the plateau
       steps:
         - Present the tone to the test ear.
@@ -445,6 +446,7 @@ cards:
         - If it moved 20 dB or more, go to the subsequent step.
       example: "A non-test ear threshold of 10 dB HL gives initial masking of 40 dB HL."
       why: A shift of up to 15 dB is treated as a small amount of cross-hearing. A larger shift means the non-test ear was carrying the response.
+      pod: bsa-step
     - title: Subsequent step
       steps:
         - Raise masking another 20 dB.
@@ -486,7 +488,7 @@ cards:
         - If they do not respond, raise the tone until they do.
         - If the threshold moved 15 dB or less, accept it.
         - If it moved 20 dB or more, go to the subsequent step.
-      pod: oef-depth
+      pod: [oef-depth, bsa-step]
     - title: Subsequent steps
       steps:
         - Raise masking another 20 dB and recheck.
@@ -518,38 +520,93 @@ cards:
 # ---------------------------------------------------------------- Points of difference
 differences:
   insert-depth:
+    label: NZAS PTA BPG (2021)
     title: Insert depth for the insert IAA values
     ours: "Use insert IAA and OEF values when the foam tip is at intermediate (flush) depth or deeper."
     bpg: "NZAS BPG Adult PTA (2021) says insert values apply only when the insert is inserted deeply; otherwise use supra-aural values."
     why: "Flush (intermediate) depth is achievable and comfortable for most adults; deep insertion is often uncomfortable. To confirm: the rationale and the evidence for IAA at intermediate depth."
     status: To confirm (MS)
   oef-depth:
+    label: NZAS PTA BPG (2021)
     title: Insert depth for occlusion effect factors
     ours: "Insert OEFs (10, 10, 0 dB) apply at intermediate depth or deeper."
     bpg: "NZAS BPG Adult PTA (2021): insert OEFs apply only when the insert is inserted deeply."
     why: "As for IAA. To confirm."
     status: To confirm (MS)
   threshold-definition:
+    label: NZAS PTA BPG (2021)
     title: Threshold definition
     ours: "Lowest level with responses on at least 2 of 3 presentations (March 2026 did not say ascending; this draft adds it)."
     bpg: "NZAS BPG (2021): responses on at least half of ascending trials, with a minimum of 2 of 3 ascending presentations."
     why: "Wording difference only. This draft aligns with the BPG."
     status: Aligned in draft
   retest:
+    label: NZAS PTA BPG (2021); BSA (2018)
     title: Reliability retest criterion
     ours: "Retest 1 kHz in one ear (no pass criterion given in March 2026)."
-    bpg: "NZAS BPG (2021): if the retest differs by more than ±5 dB, retest other frequencies and cross-check with speech and immittance."
-    why: "No reason recorded. Proposed: adopt the ±5 dB criterion."
+    bpg: "NZAS BPG (2021): if the retest differs by more than ±5 dB, retest other frequencies and cross-check with speech and immittance. BSA (2018) agrees: within 5 dB, keep the better threshold; more than 5 dB, investigate and re-instruct."
+    why: "No reason recorded. NZ and UK guidance agree. Proposed: adopt the ±5 dB criterion."
     status: To confirm (MS)
   test-limit:
+    label: NZAS PTA BPG (2021)
     title: Upper test limit
     ours: "Test up to the audiometer limit or 110 dB HL, whichever is lower."
     bpg: "NZAS BPG (2021): test to the maximum limit of the audiometer, monitoring comfort above 80 dB HL in 10 or 5 dB steps."
     why: "110 dB HL may be a comfort and safety limit for student clinics. To confirm."
     status: To confirm (MS)
   bc-criterion:
+    label: NZAS PTA BPG (2021)
     title: When to test bone conduction
     ours: "Test bone conduction if air conduction shows a hearing loss."
     bpg: "NZAS BPG (2021): when air conduction thresholds are > 20 dB HL."
     why: "March 2026 does not define \"hearing loss\" here; elsewhere it uses > 15 dB HL as the limit of normal. To confirm which cut-off we teach."
     status: To confirm (MS)
+  bsa-iaa-inserts:
+    title: Interaural attenuation for inserts (international)
+    label: BSA Pure Tone Audiometry (2018)
+    cards: MSK-01
+    ours: "Inserts: 60 dB at 1 kHz and below, 50 dB above. Supra-aural: 40 dB."
+    bpg: "Rule 1: mask if AC thresholds differ by ≥ 40 dB (supra-aural) or ≥ 55 dB (inserts, correctly inserted), at all frequencies."
+    why: "Same supra-aural value. The BSA uses one insert value; ours is 5 dB more generous at low frequencies and 5 dB stricter at high frequencies."
+    status: For information
+  bsa-bc-rule:
+    title: When to mask bone conduction (international)
+    label: BSA Pure Tone Audiometry (2018)
+    cards: MSK-01
+    ours: "Air-bone gap in the test ear ≥ 15 dB and AC > 15 dB HL. (NZAS: ≥ 15 dB and AC ≥ 20 dB HL.)"
+    bpg: "Rule 2: mask when the unmasked BC threshold is better than the AC threshold of either ear by ≥ 10 dB. The BSA notes this often calls for masking that will not change management, e.g. at more than two BC frequencies."
+    why: "The BSA masks at a smaller gap. Our rule matches the NZAS more closely."
+    status: For information
+  bsa-plateau:
+    title: Plateau method details (international)
+    label: BSA Pure Tone Audiometry (2018)
+    cards: MSK-02
+    ours: "Start at AC of the non-test ear + 10 dB (+ OEF for BC). Plateau = threshold steady over 20 dB of masking."
+    bpg: "Start at the non-test ear's threshold (no safety factor). Plateau = three successive masking levels give the same threshold (or one within 5 dB), from at least four measurements. For BC, re-measure the threshold with the non-test ear occluded instead of adding an OEF. Use inserts for BC masking. Caution above 80 dB EML noise or 100 dB HL tones."
+    why: "Both find a 20 dB plateau. The BSA handles the occlusion effect by measuring it rather than adding a fixed factor."
+    status: For information
+  bsa-step:
+    title: Step masking (international)
+    label: BSA Pure Tone Audiometry (2018)
+    cards: MSK-03, MSK-04
+    ours: "Step masking taught as a faster alternative to the plateau method."
+    bpg: "The BSA describes only the plateau method and says other techniques are not recommended."
+    why: "Step masking is widely used and is in the NZAS BPG. Worth telling students that UK guidance does not support it."
+    status: For information
+  bsa-next-freq:
+    title: Starting level at each new frequency (international)
+    label: BSA Pure Tone Audiometry (2018)
+    cards: PTA-05
+    ours: "Start 15–20 dB above the last threshold. Order 1, 2, 3, 4, 6, 8 kHz, retest 1 kHz, then 500, 250 Hz."
+    bpg: "Familiarise first with a clear 1 kHz tone (40 dB HL, never above 80). Start each new frequency about 30 dB above the adjacent threshold. Order 1, 2, 4, 8 kHz, 500, 250 Hz, retest 1 kHz; 3 and 6 kHz where needed."
+    why: "Minor. Our order (with 3 and 6 kHz routinely) matches the NZAS."
+    status: For information
+  bsa-bc-freq:
+    title: Bone conduction frequencies (international)
+    label: BSA Pure Tone Audiometry (2018)
+    cards: PTA-06
+    ours: "1, 2, 4 kHz, then 500 Hz."
+    bpg: "BC normally only from 500 Hz to 2 kHz, because of bone vibrator limits; not every frequency in every case."
+    why: "We test 4 kHz routinely, as the NZAS does. Students should know the BSA limits BC to 500 Hz–2 kHz."
+    status: For information
+

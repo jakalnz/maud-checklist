@@ -71,6 +71,7 @@ cards:
         - Add the tips, close the lid, shake, and soak for 2–3 minutes.
         - Rinse thoroughly in warm water.
       why: Without Enzy-Clean, use detergent and hot water and follow the same steps.
+      pod: [aaa-infection]
     - title: Disinfect
       steps:
         - Dissolve ¼ Milton tablet in 250 mL of cold water in the second container.
@@ -86,3 +87,13 @@ cards:
       text: Make Milton solution fresh at least every second day, ideally daily.
   fixes:
     - "Disposable and reusable tip lists moved to the top of the card."
+
+differences:
+  aaa-infection:
+    title: Infection control levels (international)
+    label: AAA Infection Control; BSA Ear Examination (2022)
+    cards: INF-01
+    ours: "Enzymatic pre-soak, then Milton (hypochlorite) soak for reusable tips."
+    bpg: "AAA: clean, then disinfect non-critical items (probe tips, specula, headphones); sterilise anything that contacts blood or ear drainage, such as wax loops and curettes. BSA: a separate speculum for each ear."
+    why: "Our method suits non-critical tips. Add a line on items that need sterilising and on one speculum per ear."
+    status: To discuss

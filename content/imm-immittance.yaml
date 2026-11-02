@@ -33,14 +33,16 @@ cards:
         - Stop if the probe or pressure causes discomfort.
         - Do not move a tip to the other ear if infection could spread.
       why: "Slow the sweep when you need more accuracy, or for pressure-equalisation problems, pressure-induced vertigo (Ménière's disease, suspected fistula), recent middle ear surgery, or a very anxious patient."
+      pod: [bsa-tymp-sweep, bsa-tymp-surgery]
   values:
     - caption: Cavity check tolerances
-      source: March 2026 Table 8; ANSI S3.39
+      source: BSA (2026); NZAS (2018)
+      note: "Tolerance is ±5% or ±0.1 cm³, whichever is greater."
       header: ["Cavity", "Accept"]
       rows:
         - ["0.5 cm³", "0.4–0.6 cm³"]
         - ["2.0 cm³", "1.9–2.1 cm³"]
-        - ["5.0 cm³", "4.8–5.2 cm³"]
+        - ["5.0 cm³", "4.75–5.25 cm³"]
   notes:
     - kind: stop
       text: "Do not test: middle ear surgery in the last 3 months (check with the ENT), an actively discharging ear, or discomfort such as otitis externa or herpes zoster oticus."
@@ -52,7 +54,7 @@ cards:
     label: Run a tympanogram and record the five values
   fixes:
     - "\"whose who are extremely anxious\" corrected."
-    - "Cavity tolerances say \"5%\" but the 0.5 cm³ range (0.4–0.6) is ±20%. NZAS BPG (2018) gives ±0.1 cm³ for small cavities and 4.75–5.25 for 5.0 cm³. Wording to confirm."
+    - "Cavity tolerance clarified: ±5% or ±0.1 cm³, whichever is greater (BSA 2026; matches NZAS 2018). 5.0 cm³ range corrected from 4.8–5.2 to 4.75–5.25 cm³."
 
 - id: IMM-02
   title: Classify the tympanogram
@@ -68,7 +70,7 @@ cards:
         - "Check tympanometric width for any B or borderline trace."
         - "Confirm a type B with a reflex if useful, e.g. 1 kHz ipsilateral at 105 dB HL."
       why: ECV depends on probe depth, and chronic middle ear disease can make it unreliable. Read every B in the light of the history.
-      pod: tymp-norms-year
+      pod: [tymp-norms-year, bsa-mep]
   values:
     - caption: Adult norms (90% range)
       source: ASHA (1990)
@@ -113,6 +115,7 @@ cards:
         - Show it twice at threshold.
         - Show it grows at 5 dB above (not possible at 105 dB HL).
         - Show it is absent 5 dB below.
+      pod: [bsa-art-levels]
     - title: Classify and record
       steps:
         - Classify as normal, elevated, absent or abnormal (e.g. biphasic, reversed).
@@ -153,9 +156,42 @@ cards:
 
 differences:
   tymp-norms-year:
+    label: NZAS Immittance BPG (2018)
     title: Which ASHA norms for adult tympanometry
     cards: IMM-02
     ours: "March 2026 cites ASHA 1990 in Table 9 and ASHA 1997 in 9.2 step 9."
     bpg: "NZAS Immittance BPG (2018): ASHA 1990 for adults."
     why: "This draft uses ASHA 1990 throughout for adults; ASHA 1997 is kept for the paediatric norms."
     status: Aligned in draft
+  bsa-tymp-sweep:
+    title: Tympanometry sweep speed (international)
+    label: BSA Tympanometry and ART (2026)
+    cards: IMM-01
+    ours: "600/200 daPa/s unless a slower rate is needed (NZAS: same, 50 daPa/s for accuracy)."
+    bpg: "50 daPa/s or slower; a faster sweep may help with young children. Start at +200 daPa; normally stop about −300 daPa, down to −600 if needed."
+    why: "Faster sweeps can shift peak pressure. Decide whether we keep 600/200 as the default."
+    status: To discuss
+  bsa-tymp-surgery:
+    title: Tympanometry after ear surgery (international)
+    label: BSA Tympanometry and ART (2026)
+    cards: IMM-01
+    ours: "Do not test within 3 months of middle ear surgery; check with the ENT (NZAS: same)."
+    bpg: "No agreed standard. Not within 2 months of ear surgery unless approved by the ENT; after ossicular or eardrum surgery, only on medical advice."
+    why: "Our 3 months is more cautious. Both defer to the ENT."
+    status: For information
+  bsa-art-levels:
+    title: Reflex starting level and steps (international)
+    label: BSA Tympanometry and ART (2026)
+    cards: IMM-03
+    ours: "Start at 80 dB HL, up 10 dB, then 5 dB steps; maximum 105 dB HL."
+    bpg: "Start at 70 dB HL for tones (60 dB HL for BBN), 5 dB steps, confirm growth 5 dB above, then drop 10 dB and repeat. Maximum 105 dB HL; BBN no higher than 95 dB SPL. Criterion 0.02 mL."
+    why: "Lower start and an explicit BBN limit are worth adopting for safety."
+    status: To discuss
+  bsa-mep:
+    title: Normal middle ear pressure (international)
+    label: BSA Tympanometry and ART (2026)
+    cards: IMM-02
+    ours: "−100 to +100 daPa (ASHA 1990)."
+    bpg: "−50 to +50 daPa normal in adults, but down to −100 daPa may be of little significance alone; children down to −150 daPa may be insignificant. Peak pressure can overestimate middle ear pressure by 30–70 daPa."
+    why: "Supports reading pressure alongside the low-frequency air-bone gap, not alone."
+    status: For information

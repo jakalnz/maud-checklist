@@ -64,8 +64,15 @@ for c in cards:
     c["pods"] = []
     c.setdefault("refs", [])
     for b in c["blocks"]:
-        if b.get("pod") and b["pod"] not in c["pods"]:
-            c["pods"].append(b["pod"])
+        p = b.get("pod")
+        b["podlist"] = p if isinstance(p, list) else ([p] if p else [])
+        b["pod"] = b["podlist"][0] if b["podlist"] else None
+        for k in b["podlist"]:
+            if k not in c["pods"]:
+                c["pods"].append(k)
+    for k in c.get("also_pods") or []:
+        if k not in c["pods"]:
+            c["pods"].append(k)
 
 FIGS = {k: Markup(fn()) for k, (_, fn) in F.FIGURES.items()}
 FIGT = {k: t for k, (t, _) in F.FIGURES.items()}
@@ -103,7 +110,7 @@ T["card"] = r"""
       <section class="block">
         <h3>{{ b.title }}</h3>
         <ol class="steps" start="1">
-          {% for s in b.steps %}<li>{{ s|safe }}{% if loop.last and b.pod %}{% if medium == 'site' %}<a class="pod-mark" href="#pod-{{ b.pod }}" title="Differs from NZAS BPG: see Points of difference">≠</a>{% else %}<span class="pod-mark" title="Differs from NZAS BPG">≠</span>{% endif %}{% endif %}</li>{% endfor %}
+          {% for s in b.steps %}<li>{{ s|safe }}{% if loop.last and b.pod %}{% if medium == 'site' %}<a class="pod-mark" href="#pod-{{ b.pod }}" title="Differs from NZ or international guidance: see Points of difference">≠</a>{% else %}<span class="pod-mark" title="Differs from NZAS BPG">≠</span>{% endif %}{% endif %}</li>{% endfor %}
         </ol>
         {% if b.rule %}<div class="rule">{{ b.rule|safe }}</div>{% endif %}
         {% if b.example %}<p class="example">{{ b.example|safe }}</p>{% endif %}
@@ -145,7 +152,7 @@ T["card"] = r"""
   <footer class="card-foot">
     <div>
       {{ c.mod.title }} · Card {{ c.id }} · v{{ mod.version }} · {{ mod.date }} · from March 2026 checklist §{{ c.source }}<br>
-      {% if c.pods %}<span style="color:var(--pod)"><b>≠</b> Differs from NZAS BPG. </span>{% endif %}
+      {% if c.pods %}<span style="color:var(--pod)"><b>≠</b> Differs from NZ or international guidance. </span>{% endif %}
       {% if medium == 'print' %}Scan for explanation, video and practice.{% endif %}
     </div>
     {% if medium == 'print' %}{{ c.qr }}{% endif %}
@@ -238,8 +245,8 @@ T["page"] = r"""{% from 'card' import card with context %}
 {% for x in c.check %}<div class="qa"><p><b>Q{{ loop.index }}.</b> {{ x.q|safe }}</p><details><summary>Show answer</summary><p>{{ x.a|safe }}</p></details></div>{% endfor %}
 </div></details>{% endif %}
 
-{% if c.pods %}<details class="layer" id="layer-pod"><summary>Points of difference <span class="hint">where NZAS guidance differs</span></summary><div class="layer-body">
-{% for k in c.pods %}{% set d = diffs[k] %}<div class="pod-box" id="pod-{{ k }}"><h4>≠ {{ d.title }}</h4><dl><dt>We teach</dt><dd>{{ d.ours }}</dd><dt>NZAS BPG</dt><dd>{{ d.bpg }}</dd><dt>Why</dt><dd>{{ d.why }}</dd><dt>Status</dt><dd><span class="status">{{ d.status }}</span></dd></dl></div>{% endfor %}
+{% if c.pods %}<details class="layer" id="layer-pod"><summary>Points of difference <span class="hint">where NZ or international guidance differs</span></summary><div class="layer-body">
+{% for k in c.pods %}{% set d = diffs[k] %}<div class="pod-box" id="pod-{{ k }}"><h4>≠ {{ d.title }}</h4><dl><dt>We teach</dt><dd>{{ d.ours }}</dd><dt>{{ d.label or 'Guideline' }}</dt><dd>{{ d.bpg }}</dd><dt>Why</dt><dd>{{ d.why }}</dd><dt>Status</dt><dd><span class="status">{{ d.status }}</span></dd></dl></div>{% endfor %}
 </div></details>{% endif %}
 
 {% if c.fixes %}<details class="layer"><summary>Changes from March 2026 <span class="hint">for reviewers</span></summary><div class="layer-body"><ul class="fixes">{% for f in c.fixes %}<li>{{ f }}</li>{% endfor %}</ul></div></details>{% endif %}
@@ -259,7 +266,7 @@ T["home"] = r"""
   <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety concern or contraindication. Pause and decide whether, and how, to go on.</div>
   <div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>A decision rule you apply every time.</div>
   <div class="callout note"><span class="lbl">{{ icon.note }}Note</span>Useful detail to know while you test.</div>
-  <div class="pod-box" style="margin:0"><b style="color:var(--pod)">≠ Point of difference</b><br>We teach this differently from the NZAS or UNHSEIP guideline.</div>
+  <div class="pod-box" style="margin:0"><b style="color:var(--pod)">≠ Point of difference</b><br>We teach this differently from NZ (NZAS, UNHSEIP) or international (BSA, AAA) guidance.</div>
   <div class="ptf"><b>PTF tip</b><br>Advice from our Professional Teaching Fellows.</div>
 </div>
 {% for m in modules %}
@@ -276,7 +283,7 @@ T["review"] = r"""
 <h1 style="color:var(--brand)">Review log</h1>
 <p>Everything this draft changed from the March 2026 checklist, and every place it differs from NZAS best practice guidelines. Reviewer for now: MS.</p>
 <h2>Points of difference</h2>
-<table class="reviewtbl"><thead><tr><th>Topic</th><th>We teach</th><th>NZAS BPG</th><th>Status</th></tr></thead><tbody>
+<table class="reviewtbl"><thead><tr><th>Topic</th><th>We teach</th><th>Guideline</th><th>Status</th></tr></thead><tbody>
 {% for k, d in diffs.items() %}<tr id="pod-{{ k }}"><td><b>{{ d.title }}</b>{% if d.cards %}<br><span class="src">{{ d.cards }}</span>{% endif %}</td><td>{{ d.ours }}</td><td>{{ d.bpg }}</td><td>{{ d.status }}</td></tr>{% endfor %}
 </tbody></table>
 <h2>Errors fixed and wording changes</h2>
@@ -348,7 +355,7 @@ T["print"] = r"""{% from 'card' import card with context %}<!doctype html>
       <div class="callout stop"><span class="lbl">{{ icon.stop }}Stop</span>Safety concern or contraindication: pause and decide.</div>
       <div class="callout rule-note"><span class="lbl">{{ icon.rule }}Rule</span>Decision rule.</div>
       <div class="callout note"><span class="lbl">{{ icon.note }}Note</span>Useful detail while you test.</div>
-      <div class="callout" style="border-left-color:var(--pod);background:var(--pod-wash)"><span class="lbl" style="color:var(--pod)">≠</span>Differs from NZAS BPG; see teaching page.</div>
+      <div class="callout" style="border-left-color:var(--pod);background:var(--pod-wash)"><span class="lbl" style="color:var(--pod)">≠</span>Differs from NZ or international guidance; see teaching page.</div>
     </div>
     {% if pcards|length > 14 %}<ol style="columns:3;font-size:8pt;padding:0;margin-top:4mm">{% for m in modules %}<li style="list-style:none;break-inside:avoid;margin-bottom:2mm"><b style="color:var(--brand)">{{ m.title }}</b><br>{{ m.cards|map(attribute='id')|join(', ') }}</li>{% endfor %}</ol>
     {% else %}<ol style="columns:2;font-size:9pt;padding:0;margin-top:6mm">{% for c in pcards %}<li style="list-style:none;break-inside:avoid"><b style="color:var(--brand)">{{ c.id }}</b> {{ c.title }}</li>{% endfor %}</ol>{% endif %}
@@ -445,8 +452,8 @@ def module_md(mods, title):
                 if b.get("example"): L.append(f"**Example:** {md_text(b['example'])}\n")
                 if b.get("stop"): L.append(f"**Stop:** {md_text(b['stop'])}\n")
                 if b.get("why"): L.append(f"**Why:** {md_text(b['why'])}\n")
-                if b.get("pod") and b["pod"] in diffs:
-                    d = diffs[b["pod"]]
+                for pk in b.get("podlist") or []:
+                    d = diffs[pk]
                     L.append(f"**Point of difference ({md_text(d['title'])}):** We teach: {md_text(d['ours'])} Guideline: {md_text(d['bpg'])} Status: {md_text(d['status'])}\n")
             for v in c.get("values") or []:
                 L.append(f"**{md_text(v['caption'])}** (source: {md_text(v['source'])})\n\n" + md_table(v) + "\n")

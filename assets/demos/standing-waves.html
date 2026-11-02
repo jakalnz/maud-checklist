@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ear Canal Standing Waves</title>
+<link rel="icon" href="../favicon.svg">
+<style>
+@font-face { font-family: "Inter"; src: url("../fonts/inter-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-Medium.woff2") format("woff2"); font-weight: 500 600; font-display: swap; }
+@font-face { font-family: "Inter"; src: url("../fonts/inter-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+/* Layout: one teaching column. Controls, then tube, then response + audiogram side by side, then the three-step explanation. */
+:root {
+  --bg: #ffffff;
+  --panel: #f1f1f5;
+  --ink: #1d2329;
+  --muted: #5b6670;
+  --rule: #d5dbe2;
+  --brand: #0c0c48;
+  --azure: #1f2bd4;
+  --mahina: #00caef;
+  --loss: #b3261e;
+  --loss-wash: #fdeceb;
+  --gain: #1d7a46;
+  --gain-wash: #e6f3ea;
+  --skin: #f6e3d6;
+  --skin-edge: #b98b73;
+  --right: #c8102e;
+  --chip: #ffffff;
+  --font: "Inter", "Segoe UI", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d0f1c; --panel: #171a2c; --ink: #e7e9f2; --muted: #a2a9bd; --rule: #2e3350;
+    --brand: #c9ccff; --azure: #8b93ff; --mahina: #00caef; --loss: #ff8a80; --loss-wash: #3a1d1f;
+    --gain: #7fd3a1; --gain-wash: #17301f; --skin: #4a3a33; --skin-edge: #b98b73; --right: #ff6b7f; --chip: #20243a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d0f1c; --panel: #171a2c; --ink: #e7e9f2; --muted: #a2a9bd; --rule: #2e3350;
+  --brand: #c9ccff; --azure: #8b93ff; --mahina: #00caef; --loss: #ff8a80; --loss-wash: #3a1d1f;
+  --gain: #7fd3a1; --gain-wash: #17301f; --skin: #4a3a33; --skin-edge: #b98b73; --right: #ff6b7f; --chip: #20243a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 980px; margin: 0 auto; padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 22px; }
+header h1 { margin: 0; font-size: 1.7rem; line-height: 1.2; color: var(--brand); text-wrap: balance; letter-spacing: -0.01em; }
+header p { margin: 6px 0 0; color: var(--muted); max-width: 68ch; }
+.eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: .72rem; font-weight: 600; color: var(--azure); margin-bottom: 6px; }
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; background: var(--panel); border-radius: 18px 0 18px 0; padding: 18px 20px; }
+.ctl { display: grid; gap: 8px; min-width: 0; }
+.ctl label, .ctl .lab { font-weight: 600; font-size: .9rem; display: flex; justify-content: space-between; gap: 8px; }
+.ctl output { font-variant-numeric: tabular-nums; color: var(--azure); font-weight: 700; }
+input[type=range] { width: 100%; accent-color: var(--azure); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips button, .btn { font: inherit; font-size: .85rem; border: 1.5px solid var(--rule); background: var(--chip); color: var(--ink);
+  border-radius: 999px; padding: 4px 12px; cursor: pointer; font-variant-numeric: tabular-nums; }
+.chips button[aria-pressed="true"] { background: var(--brand); color: var(--bg); border-color: var(--brand); }
+.btn { border-color: var(--azure); color: var(--azure); font-weight: 600; }
+.chips button:focus-visible, .btn:focus-visible, input:focus-visible { outline: 3px solid var(--mahina); outline-offset: 2px; }
+.hint { font-size: .8rem; color: var(--muted); }
+.card { display: grid; gap: 10px; min-width: 0; }
+.card h2 { margin: 0; font-size: 1.05rem; color: var(--brand); }
+.card .sub { margin: 0; color: var(--muted); font-size: .88rem; }
+canvas { width: 100%; height: 230px; display: block; border-radius: 12px; background: var(--bg); }
+svg { width: 100%; height: auto; display: block; overflow: visible; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.readout { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: .9rem; }
+.readout b { font-variant-numeric: tabular-nums; }
+.pill { display: inline-block; padding: 1px 10px; border-radius: 999px; font-weight: 700; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.pill.loss { background: var(--loss-wash); color: var(--loss); }
+.pill.gain { background: var(--gain-wash); color: var(--gain); }
+.pill.same { background: var(--panel); color: var(--muted); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.step { background: var(--panel); border-radius: 18px 0 18px 0; padding: 16px 18px; min-width: 0; }
+.step h3 { margin: 0 0 6px; font-size: .95rem; color: var(--brand); }
+.step p { margin: 0; font-size: .9rem; }
+.note { font-size: .82rem; color: var(--muted); max-width: 80ch; }
+@media (max-width: 760px) {
+  .controls, .two, .steps { grid-template-columns: 1fr; }
+  canvas { height: 190px; }
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow"><a href="../../pta/pta-03.html" style="color:inherit">MAud clinical checklist · PTA-03 Fit the transducers</a></div>
+    <h1>Why supra-aural headphones can fake a high-frequency notch</h1>
+    <p>The space between the earphone and the eardrum is a short tube. At high frequencies a standing wave forms in it. Change the ear's length and watch what happens to the audiogram of someone with <b>perfectly normal hearing</b>.</p>
+  </header>
+
+  <section class="controls" aria-label="Controls">
+    <div class="ctl">
+      <label for="len">Ear length (canal + concha under the cushion) <output id="lenOut">29 mm</output></label>
+      <input id="len" type="range" min="20" max="38" step="0.5" value="29">
+      <div class="chips" role="group" aria-label="Ear presets">
+        <button type="button" data-len="23">Short</button>
+        <button type="button" data-len="29" aria-pressed="true">Average</button>
+        <button type="button" data-len="34">Long</button>
+      </div>
+    </div>
+    <div class="ctl">
+      <div class="lab">Test frequency shown in the tube <output id="fOut">6 kHz</output></div>
+      <div class="chips" role="group" aria-label="Test frequency" id="freqChips"></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button type="button" class="btn" id="reseat">Re-seat headphones</button>
+        <span class="hint" id="seatOut">Seating: centred</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="h-tube">
+    <h2 id="h-tube">1 · The standing wave in this ear</h2>
+    <p class="sub">The earphone is on the left and the eardrum on the right. The eardrum always sits at a pressure maximum. What changes is where the earphone sits on the pattern.</p>
+    <canvas id="tube" aria-label="Animated standing wave in the ear canal"></canvas>
+    <div class="readout" id="tubeRead"></div>
+  </section>
+
+  <section class="two">
+    <div class="card" aria-labelledby="h-resp">
+      <h2 id="h-resp">2 · How much sound reaches the eardrum</h2>
+      <p class="sub">Level reaching the eardrum for the same earphone drive. Solid: this ear. Dashed: the average ear the audiometer was calibrated for.</p>
+      <svg id="resp" viewBox="0 0 440 300" role="img" aria-labelledby="respT"><title id="respT">Ear canal frequency response for this ear and the average ear</title></svg>
+    </div>
+    <div class="card" aria-labelledby="h-aud">
+      <h2 id="h-aud">3 · The audiogram you would record</h2>
+      <p class="sub">True hearing is 0 dB HL at every frequency. Any shift away from 0 comes from the ear's acoustics, not from hearing.</p>
+      <svg id="aud" viewBox="0 0 440 300" role="img" aria-labelledby="audT"><title id="audT">Audiogram of a normal-hearing listener measured with supra-aural headphones</title></svg>
+    </div>
+  </section>
+
+  <section class="steps" aria-label="How it works">
+    <div class="step"><h3>The dip</h3><p>The standing wave gives every ear a peak and a dip in how much sound reaches the eardrum. Between about 5 and 9 kHz they sit close together, and where they fall depends on the length of the ear. A few millimetres of difference moves a test frequency from the peak to the dip.</p></div>
+    <div class="step"><h3>The calibration</h3><p>The audiometer's 0 dB HL is set from the average ear on a coupler. It assumes everyone's ear passes on the average amount of sound. If your dip falls on a test frequency where the average ear isn't dipping, your eardrum receives less sound than the audiometer assumes.</p></div>
+    <div class="step"><h3>The false loss</h3><p>Less sound at the eardrum means you need a louder tone, so the threshold looks worse. The result is a notch at 6 or 8 kHz with normal hearing. Short ears tend to lose 6 kHz and long ears 8 kHz. Re-seating the headphones changes the effective length by a few mm, so the notch can move or disappear.</p></div>
+  </section>
+
+  <p class="note"><b>About the model.</b> This is a simplified tube, closed at the eardrum, with a small loss term. It's driven by an earphone that isn't an ideal pressure source: its diaphragm impedance rises with frequency. Voss et al. (2000) measured that real earphones aren't ideal sources. Ear lengths of 22–36 mm (canal plus concha) set the average ear. Real ears add the pinna, cushion leaks and eardrum impedance, which can make individual differences larger than shown here. The shape of the effect is right, but the dB values only illustrate it and aren't predictions for a patient. Further reading: Voss et al. (2000) <i>JASA</i> 107:1548; Voss &amp; Herrmann (2005) <i>Ear Hear</i> 26:636; Siegel (1994) <i>JASA</i> 95:2589.</p>
+</div>
+
+<script>
+(() => {
+  const C = 343000;            // speed of sound, mm/s
+  const ETA = 0.12;            // tube loss (sets how sharp the peaks and dips are)
+  const RS = 0.5, XS = 0.6;    // earphone source impedance re tube Z0: R + j·XS·f/1 kHz (diaphragm mass)
+  const POP = [];              // population of ear lengths used to define the "average ear"
+  for (let L = 22; L <= 36.001; L += 0.25) POP.push(L);
+  const AUD_F = [250, 500, 1000, 2000, 3000, 4000, 6000, 8000];
+  const TUBE_F = [2000, 3000, 4000, 6000, 8000];
+
+  const state = { L: 29, seat: 0, f: 6000 };
+  const $ = id => document.getElementById(id);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  // Complex helpers: numbers are [re, im].
+  const cmul = (a, b) => [a[0]*b[0] - a[1]*b[1], a[0]*b[1] + a[1]*b[0]];
+  const cdiv = (a, b) => { const d = b[0]*b[0] + b[1]*b[1]; return [(a[0]*b[0] + a[1]*b[1]) / d, (a[1]*b[0] - a[0]*b[1]) / d]; };
+  const cadd = (a, b) => [a[0] + b[0], a[1] + b[1]];
+  const mag = ([a, b]) => Math.hypot(a, b);
+  // Lossy wavenumber k = kr(1 - j·eta/2). cos and sin of (k·d) for complex k.
+  const ccos = (f, d) => { const a = 2*Math.PI*f/C*d, b = a*ETA/2; return [Math.cos(a)*Math.cosh(b), Math.sin(a)*Math.sinh(b)]; };
+  const csin = (f, d) => { const a = 2*Math.PI*f/C*d, b = a*ETA/2; return [Math.sin(a)*Math.cosh(b), -Math.cos(a)*Math.sinh(b)]; };
+  // Pressure along the tube, d = distance from eardrum (mm), eardrum normalised to 1.
+  const P = (f, d) => ccos(f, d);
+  // Eardrum level re the earphone's drive: the tube's input impedance loads a non-ideal earphone.
+  const gainDb = (f, L) => {
+    const zin = cdiv([0, -1], cdiv(csin(f, L), ccos(f, L)));       // -j·cot(kL)
+    const zs = [RS, XS * f / 1000];
+    const pin = cdiv(zin, cadd(zin, zs));
+    return 20 * Math.log10(mag(cdiv(pin, ccos(f, L))));
+  };
+  const avgDb = f => POP.reduce((s, L) => s + gainDb(f, L), 0) / POP.length;
+  const Leff = () => state.L + state.seat;
+
+  // ---------- frequency chips
+  const fc = $("freqChips");
+  TUBE_F.forEach(f => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = (f / 1000) + " kHz"; b.dataset.f = f;
+    b.setAttribute("aria-pressed", f === state.f);
+    b.onclick = () => { state.f = f; fc.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b)); render(); };
+    fc.appendChild(b);
+  });
+  document.querySelectorAll("[data-len]").forEach(b => b.onclick = () => { $("len").value = b.dataset.len; state.L = +b.dataset.len; state.seat = 0; render(); });
+  $("len").addEventListener("input", e => { state.L = +e.target.value; state.seat = 0; render(); });
+  $("reseat").onclick = () => { state.seat = Math.round((Math.random() * 6 - 3) * 2) / 2; render(); };
+
+  // ---------- SVG helpers
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (svg, tag, attrs, text) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; svg.appendChild(e); return e; };
+  const clear = svg => { [...svg.childNodes].forEach(n => { if (n.nodeName !== "title") svg.removeChild(n); }); };
+  const fmt = v => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v).toFixed(1);
+
+  // ---------- response chart
+  function drawResp() {
+    const svg = $("resp"); clear(svg);
+    const x0 = 46, x1 = 428, y0 = 258, y1 = 14, fmin = 1000, fmax = 10000, dmin = -20, dmax = 10;
+    const X = f => x0 + Math.log10(f / fmin) / Math.log10(fmax / fmin) * (x1 - x0);
+    const Y = d => y0 - (d - dmin) / (dmax - dmin) * (y0 - y1);
+    for (let d = -20; d <= 10; d += 5) {
+      el(svg, "line", { x1: x0, x2: x1, y1: Y(d), y2: Y(d), stroke: css("--rule"), "stroke-width": d === 0 ? 1.2 : .7 });
+      el(svg, "text", { x: x0 - 6, y: Y(d) + 4, "text-anchor": "end", "font-size": 11, fill: css("--muted") }, (d > 0 ? "+" : "") + d);
+    }
+    [1000, 2000, 3000, 4000, 6000, 8000, 10000].forEach(f => {
+      el(svg, "line", { x1: X(f), x2: X(f), y1: y1, y2: y0, stroke: css("--rule"), "stroke-width": .5 });
+      el(svg, "text", { x: X(f), y: y0 + 16, "text-anchor": "middle", "font-size": 11, fill: css("--muted") }, (f / 1000) + "k");
+    });
+    el(svg, "text", { x: (x0 + x1) / 2, y: y0 + 34, "text-anchor": "middle", "font-size": 11.5, fill: css("--ink") }, "Frequency (Hz)");
+    el(svg, "text", { transform: `translate(12,${(y0 + y1) / 2}) rotate(-90)`, "text-anchor": "middle", "font-size": 11.5, fill: css("--ink") }, "Level at eardrum (dB)");
+    const L = Leff(), pts = [], apts = [];
+    for (let i = 0; i <= 240; i++) { const f = fmin * Math.pow(fmax / fmin, i / 240); pts.push([X(f), Y(Math.max(dmin, Math.min(dmax, gainDb(f, L))))]); apts.push([X(f), Y(Math.max(dmin, Math.min(dmax, avgDb(f))))]); }
+    // shading between curves: red where this ear < average
+    for (let i = 0; i < 240; i++) {
+      const below = pts[i][1] > apts[i][1];
+      el(svg, "path", { d: `M${pts[i][0]},${pts[i][1]} L${pts[i+1][0]},${pts[i+1][1]} L${apts[i+1][0]},${apts[i+1][1]} L${apts[i][0]},${apts[i][1]} Z`, fill: below ? css("--loss-wash") : css("--gain-wash"), stroke: "none" });
+    }
+    el(svg, "path", { d: "M" + apts.map(p => p.join(",")).join(" L"), fill: "none", stroke: css("--muted"), "stroke-width": 2, "stroke-dasharray": "5 4" });
+    el(svg, "path", { d: "M" + pts.map(p => p.join(",")).join(" L"), fill: "none", stroke: css("--azure"), "stroke-width": 2.6 });
+    // dip marker: deepest local minimum between 3.5 and 9 kHz
+    let fd = 0, gd = Infinity;
+    for (let f = 3500; f <= 9000; f += 25) { const g = gainDb(f, L); if (g < gd && g < gainDb(f - 25, L) && g <= gainDb(f + 25, L)) { gd = g; fd = f; } }
+    if (fd) {
+      el(svg, "line", { x1: X(fd), x2: X(fd), y1: y1 + 14, y2: Y(Math.max(dmin, gd)) - 6, stroke: css("--loss"), "stroke-width": 1.2, "stroke-dasharray": "3 3" });
+      el(svg, "text", { x: X(fd), y: y1 + 10, "text-anchor": "middle", "font-size": 11, "font-weight": 700, fill: css("--loss") }, `dip ${(fd/1000).toFixed(1)} kHz`);
+    }
+    // current frequency marker
+    el(svg, "circle", { cx: X(state.f), cy: Y(Math.max(dmin, Math.min(dmax, gainDb(state.f, L)))), r: 5, fill: css("--bg"), stroke: css("--azure"), "stroke-width": 2.4 });
+    el(svg, "circle", { cx: X(state.f), cy: Y(Math.max(dmin, Math.min(dmax, avgDb(state.f)))), r: 4, fill: css("--bg"), stroke: css("--muted"), "stroke-width": 2 });
+  }
+
+  // ---------- audiogram
+  function drawAud() {
+    const svg = $("aud"); clear(svg);
+    const x0 = 46, x1 = 428, y0 = 270, y1 = 30, dmin = -20, dmax = 30;
+    const X = i => x0 + 18 + i * (x1 - x0 - 36) / (AUD_F.length - 1);
+    const Y = d => y1 + (d - dmin) / (dmax - dmin) * (y0 - y1);
+    for (let d = -20; d <= 30; d += 10) {
+      el(svg, "line", { x1: x0, x2: x1, y1: Y(d), y2: Y(d), stroke: css("--rule"), "stroke-width": d === 0 ? 1.4 : .7 });
+      el(svg, "text", { x: x0 - 6, y: Y(d) + 4, "text-anchor": "end", "font-size": 11, fill: css("--muted") }, d);
+    }
+    AUD_F.forEach((f, i) => el(svg, "text", { x: X(i), y: y1 - 10, "text-anchor": "middle", "font-size": 11, fill: css("--muted") }, f < 1000 ? f : (f / 1000) + "k"));
+    el(svg, "text", { transform: `translate(12,${(y0 + y1) / 2}) rotate(-90)`, "text-anchor": "middle", "font-size": 11.5, fill: css("--ink") }, "Measured threshold (dB HL)");
+    const L = Leff();
+    const th = AUD_F.map(f => -(gainDb(f, L) - avgDb(f)));
+    el(svg, "path", { d: "M" + th.map((t, i) => `${X(i)},${Y(Math.max(dmin, Math.min(dmax, t)))}`).join(" L"), fill: "none", stroke: css("--right"), "stroke-width": 2 });
+    th.forEach((t, i) => {
+      const y = Y(Math.max(dmin, Math.min(dmax, t)));
+      el(svg, "circle", { cx: X(i), cy: y, r: 6.5, fill: css("--bg"), stroke: css("--right"), "stroke-width": 2.2 });
+      if (Math.abs(t) >= 2) el(svg, "text", { x: X(i), y: y + (t > 0 ? 22 : -12), "text-anchor": "middle", "font-size": 10.5, "font-weight": 700, fill: t > 0 ? css("--loss") : css("--gain") }, (t > 0 ? "+" : "−") + Math.abs(t).toFixed(0));
+    });
+    el(svg, "text", { x: x0, y: y0 + 22, "font-size": 11, fill: css("--muted") }, "Right ear. 0 = true hearing. Lower = looks worse (false loss).");
+  }
+
+  // ---------- readouts
+  function readouts() {
+    const L = Leff(), g = gainDb(state.f, L), a = avgDb(state.f), dev = g - a;
+    $("lenOut").textContent = state.L + " mm";
+    $("fOut").textContent = (state.f / 1000) + " kHz";
+    $("seatOut").textContent = state.seat === 0 ? "Seating: centred" : `Seating shifted ${state.seat > 0 ? "+" : "−"}${Math.abs(state.seat)} mm (effective ${L.toFixed(1)} mm)`;
+    document.querySelectorAll("[data-len]").forEach(b => b.setAttribute("aria-pressed", +b.dataset.len === state.L));
+    const cls = dev < -1.5 ? "loss" : dev > 1.5 ? "gain" : "same";
+    const word = dev < -1.5 ? `${Math.abs(dev).toFixed(0)} dB less than calibration assumes: false loss` : dev > 1.5 ? `${dev.toFixed(0)} dB more than calibration assumes: looks better` : "close to the average ear";
+    $("tubeRead").innerHTML = `<span>At ${state.f/1000} kHz this ear: <b>${fmt(g)} dB</b></span><span>Average ear: <b>${fmt(a)} dB</b></span><span class="pill ${cls}">${word}</span>`;
+  }
+
+  // ---------- animated tube (canvas)
+  const cv = $("tube"), ctx = cv.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let t0 = performance.now();
+  function sizeCanvas() { const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1; cv.width = r.width * dpr; cv.height = r.height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  function drawTube(now) {
+    const W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
+    ctx.clearRect(0, 0, W, H);
+    const pad = 16, maxL = 40, tm = W - pad - 10, px = (W - 2 * pad - 60) / maxL;
+    const L = Leff(), src = tm - L * px, top = H * 0.2, bot = H * 0.76, mid = (top + bot) / 2, half = (bot - top) / 2 - 6;
+    // skin + tube walls
+    ctx.fillStyle = css("--skin"); ctx.fillRect(src, top - 14, tm + 10 - src, 14); ctx.fillRect(src, bot, tm + 10 - src, 14);
+    ctx.strokeStyle = css("--skin-edge"); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(src, top); ctx.lineTo(tm, top); ctx.moveTo(src, bot); ctx.lineTo(tm, bot); ctx.stroke();
+    // eardrum
+    ctx.strokeStyle = css("--muted"); ctx.lineWidth = 5; ctx.lineCap = "round";
+    ctx.beginPath(); ctx.moveTo(tm - 5, top); ctx.lineTo(tm + 5, bot); ctx.stroke();
+    // earphone
+    ctx.fillStyle = css("--ink"); roundRect(src - 30, top - 30, 30, bot - top + 60, 12); ctx.fill();
+    // standing wave: instantaneous + envelope, normalised to the pattern's own peak
+    const ph = reduce ? 0 : ((now - t0) / 1000) * 2 * Math.PI * 0.6;
+    const N = 160, env = [], inst = [];
+    let peak = 0;
+    for (let i = 0; i <= N; i++) { const d = L * (1 - i / N); const p = P(state.f, d); env.push(mag(p)); peak = Math.max(peak, mag(p)); inst.push(p[0] * Math.cos(ph) - p[1] * Math.sin(ph)); }
+    const X = i => src + (tm - 6 - src) * i / N;
+    ctx.lineWidth = 1.4; ctx.setLineDash([4, 4]); ctx.strokeStyle = css("--muted");
+    [1, -1].forEach(s => { ctx.beginPath(); env.forEach((e, i) => { const y = mid - s * half * e / peak; i ? ctx.lineTo(X(i), y) : ctx.moveTo(X(i), y); }); ctx.stroke(); });
+    ctx.setLineDash([]);
+    ctx.globalAlpha = 0.18; ctx.fillStyle = css("--azure");
+    ctx.beginPath(); ctx.moveTo(X(0), mid); inst.forEach((v, i) => ctx.lineTo(X(i), mid - half * v / peak)); ctx.lineTo(X(N), mid); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha = 1; ctx.strokeStyle = css("--azure"); ctx.lineWidth = 2.6;
+    ctx.beginPath(); inst.forEach((v, i) => { const y = mid - half * v / peak; i ? ctx.lineTo(X(i), y) : ctx.moveTo(X(i), y); }); ctx.stroke();
+    // minima markers
+    ctx.fillStyle = css("--loss"); ctx.font = "600 11px Inter, Segoe UI, Arial, sans-serif"; ctx.textAlign = "center";
+    const lam = C / state.f;
+    for (let n = 0; ; n++) { const d = lam / 4 + n * lam / 2; if (d > L) break; const x = tm - d * px; ctx.beginPath(); ctx.arc(x, bot + 20, 4, 0, 7); ctx.fill(); ctx.textAlign = x < W / 2 ? "left" : "right"; ctx.fillText("min", x + (x < W / 2 ? 7 : -7), bot + 24); }
+    // labels
+    ctx.fillStyle = css("--muted"); ctx.font = "500 11.5px Inter, Segoe UI, Arial, sans-serif";
+    ctx.textAlign = "left"; ctx.fillText(W < 560 ? "" : "earphone", Math.max(4, src - 30), top - 36 < 12 ? 12 : top - 36);
+    ctx.textAlign = "right"; ctx.fillText(W < 560 ? "eardrum" : "eardrum (always max)", W - 4, top - 36 < 12 ? 12 : top - 36);
+    // half-wave cue
+    const ratio = L / (lam / 2);
+    ctx.textAlign = "center"; ctx.fillStyle = css("--ink"); ctx.font = "600 12px Inter, Segoe UI, Arial, sans-serif";
+    ctx.fillText(W < 560 ? `${L.toFixed(1)} mm = ${ratio.toFixed(2)} × ½λ at ${state.f/1000} kHz` : `${L.toFixed(1)} mm tube = ${ratio.toFixed(2)} × half-wavelength at ${state.f/1000} kHz`, W / 2, H - 4);
+  }
+  function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+  function render() { readouts(); drawResp(); drawAud(); if (reduce) drawTube(0); }
+  function loop(now) { drawTube(now); requestAnimationFrame(loop); }
+  sizeCanvas(); addEventListener("resize", () => { sizeCanvas(); drawTube(performance.now()); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+  new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  render();
+  if (reduce) drawTube(0); else requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>

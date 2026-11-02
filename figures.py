@@ -372,3 +372,7 @@ STEPS = {
     ],
 }
 PRINT_FIGS = {"plateau-flow", "step-flow-ac", "step-flow-bc", "symbols", "tymp-types"}
+
+# Transducer artefact figures (web only) live in their own module.
+from figures_transducer import FIGURES as _TRANSDUCER_FIGS  # noqa: E402
+FIGURES.update(_TRANSDUCER_FIGS)

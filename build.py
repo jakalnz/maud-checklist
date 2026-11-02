@@ -231,9 +231,13 @@ T["page"] = r"""{% from 'card' import card with context %}
 {% if c.media_planned %}<p class="src">Media still to make:</p><ul class="planned">{% for m in c.media_planned %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
 </div></details>{% endif %}
 
-{% if c.sim %}<details class="layer" open><summary>Try it <span class="hint">practise in the simulator</span></summary><div class="layer-body try">
+{% if c.sim or c.demos %}<details class="layer" open><summary>Try it <span class="hint">{{ 'interactive demos and the simulator' if c.demos else 'practise in the simulator' }}</span></summary>
+{% for d in c.demos or [] %}<div class="layer-body try">
+<a class="btn" href="../{{ d.url }}">Open the {{ d.name }}</a><span>{{ d.label }}</span>
+</div>{% endfor %}
+{% if c.sim %}<div class="layer-body try">
 <a class="btn" href="{{ c.sim.url }}" target="_blank" rel="noopener">Open the {{ c.sim.name }}</a><span>{{ c.sim.label }}</span>
-</div></details>{% endif %}
+</div>{% endif %}</details>{% endif %}
 
 <details class="layer" open id="ptf"><summary>PTF tips <span class="hint">advice from our clinical teachers</span></summary><div class="layer-body">
 <div class="ptf"><span class="who">From the Professional Teaching Fellows</span>

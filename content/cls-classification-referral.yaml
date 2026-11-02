@@ -89,6 +89,8 @@ cards:
         - ["Sensorineural, with or without tinnitus, vertigo, fullness or pain", "High", "GP or ENT within 24 hours"]
         - ["Sensorineural with neurological symptoms", "Urgent", "Emergency department; call an ambulance if severe"]
   notes:
+    - kind: note
+      text: "Referral criteria, including the definition of asymmetry, are agreed locally with ENT services and differ between regions and countries. These are the criteria we teach; on placement, use the criteria agreed for that clinic."
     - kind: stop
       text: "Sudden facial or limb numbness or weakness, confusion or trouble speaking, sudden vision loss, trouble walking, sudden dizziness or severe headache may be a stroke. Call 111."
   check:
@@ -109,5 +111,5 @@ differences:
     cards: CLS-02
     ours: "≥ 20 dB at two adjacent frequencies, or ≥ 15 dB at any two frequencies from 2 to 8 kHz (Durakovic et al., 2019)."
     bpg: "No NZAS BPG definition in the guidelines supplied."
-    why: "Check the second criterion against the Durakovic (2019) wording before release."
+    why: "Asymmetry criteria are regional and set with local ENT services (NICE NG98 uses ≥ 15 dB at two adjacent frequencies). Confirm the criteria agreed with Auckland-region ENT, and check the second criterion against Durakovic (2019)."
     status: To confirm (MS)

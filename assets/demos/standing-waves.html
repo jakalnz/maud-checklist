@@ -67,7 +67,7 @@ input[type=range] { width: 100%; accent-color: var(--azure); }
 .card { display: grid; gap: 10px; min-width: 0; }
 .card h2 { margin: 0; font-size: 1.05rem; color: var(--brand); }
 .card .sub { margin: 0; color: var(--muted); font-size: .88rem; }
-canvas { width: 100%; height: 230px; display: block; border-radius: 12px; background: var(--bg); }
+canvas { width: 100%; height: 280px; display: block; border-radius: 12px; background: var(--bg); }
 svg { width: 100%; height: auto; display: block; overflow: visible; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
 .readout { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: .9rem; }
@@ -83,7 +83,7 @@ svg { width: 100%; height: auto; display: block; overflow: visible; }
 .note { font-size: .82rem; color: var(--muted); max-width: 80ch; }
 @media (max-width: 760px) {
   .controls, .two, .steps { grid-template-columns: 1fr; }
-  canvas { height: 190px; }
+  canvas { height: 250px; }
 }
 </style>
 </head>
@@ -118,9 +118,9 @@ svg { width: 100%; height: auto; display: block; overflow: visible; }
   </section>
 
   <section class="card" aria-labelledby="h-tube">
-    <h2 id="h-tube">1 · The standing wave in this ear</h2>
-    <p class="sub">The earphone is on the left and the eardrum on the right. The eardrum always sits at a pressure maximum. What changes is where the earphone sits on the pattern.</p>
-    <canvas id="tube" aria-label="Animated standing wave in the ear canal"></canvas>
+    <h2 id="h-tube">1 · Sound level along this ear canal</h2>
+    <p class="sub">The blue line is the sound level at each point between the earphone (left) and the eardrum (right), in dB, on the same scale as chart 2. The standing wave makes the level rise and fall along the tube. The eardrum always sits at a peak. The blue dot on the eardrum is the value plotted in chart 2, and the dashed grey tick is the average ear the audiometer was calibrated for. If the blue dot is below the grey tick, this ear gets less sound than the audiometer assumes.</p>
+    <canvas id="tube" aria-label="Sound level along the ear canal in dB"></canvas>
     <div class="readout" id="tubeRead"></div>
   </section>
 
@@ -271,60 +271,81 @@ svg { width: 100%; height: auto; display: block; overflow: visible; }
     $("tubeRead").innerHTML = `<span>At ${state.f/1000} kHz this ear: <b>${fmt(g)} dB</b></span><span>Average ear: <b>${fmt(a)} dB</b></span><span class="pill ${cls}">${word}</span>`;
   }
 
-  // ---------- animated tube (canvas)
+  // ---------- tube: sound level along the tube, same dB scale as chart 2
   const cv = $("tube"), ctx = cv.getContext("2d");
-  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let t0 = performance.now();
   function sizeCanvas() { const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1; cv.width = r.width * dpr; cv.height = r.height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
-  function drawTube(now) {
+  const levelAt = (f, L, d) => gainDb(f, L) + 20 * Math.log10(Math.max(1e-4, mag(P(f, d))));
+  function drawTube() {
     const W = cv.clientWidth, H = cv.clientHeight; if (!W) return;
     ctx.clearRect(0, 0, W, H);
-    const pad = 16, maxL = 40, tm = W - pad - 10, px = (W - 2 * pad - 60) / maxL;
-    const L = Leff(), src = tm - L * px, top = H * 0.2, bot = H * 0.76, mid = (top + bot) / 2, half = (bot - top) / 2 - 6;
-    // skin + tube walls
-    ctx.fillStyle = css("--skin"); ctx.fillRect(src, top - 14, tm + 10 - src, 14); ctx.fillRect(src, bot, tm + 10 - src, 14);
+    const narrow = W < 560;
+    const axisW = 40, tm = W - (narrow ? 70 : 128), maxL = 40, px = (tm - axisW - 46) / maxL;
+    const L = Leff(), src = tm - L * px, top = 34, bot = H - 40;
+    const dTop = 10, dBot = -40;
+    const Y = d => top + 6 + (dTop - Math.max(dBot, Math.min(dTop, d))) / (dTop - dBot) * (bot - top - 12);
+    const font = (w, sz) => `${w} ${sz}px Inter, Segoe UI, Arial, sans-serif`;
+    // dB grid (across the whole width so the scale reads like chart 2)
+    ctx.font = font(500, 11); ctx.textAlign = "right";
+    for (let d = dTop; d >= dBot; d -= 10) {
+      ctx.strokeStyle = css("--rule"); ctx.lineWidth = d === 0 ? 1.2 : .7;
+      ctx.beginPath(); ctx.moveTo(axisW, Y(d)); ctx.lineTo(tm, Y(d)); ctx.stroke();
+      ctx.fillStyle = css("--muted"); ctx.fillText((d > 0 ? "+" : "") + d, axisW - 6, Y(d) + 4);
+    }
+    ctx.save(); ctx.translate(11, (top + bot) / 2); ctx.rotate(-Math.PI / 2); ctx.textAlign = "center"; ctx.fillStyle = css("--ink"); ctx.font = font(500, 11); ctx.fillText("Level (dB)", 0, 0); ctx.restore();
+    // tube walls + eardrum + earphone
+    ctx.fillStyle = css("--skin"); ctx.fillRect(src, top - 12, tm + 8 - src, 12); ctx.fillRect(src, bot, tm + 8 - src, 12);
     ctx.strokeStyle = css("--skin-edge"); ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(src, top); ctx.lineTo(tm, top); ctx.moveTo(src, bot); ctx.lineTo(tm, bot); ctx.stroke();
-    // eardrum
     ctx.strokeStyle = css("--muted"); ctx.lineWidth = 5; ctx.lineCap = "round";
-    ctx.beginPath(); ctx.moveTo(tm - 5, top); ctx.lineTo(tm + 5, bot); ctx.stroke();
-    // earphone
-    ctx.fillStyle = css("--ink"); roundRect(src - 30, top - 30, 30, bot - top + 60, 12); ctx.fill();
-    // standing wave: instantaneous + envelope, normalised to the pattern's own peak
-    const ph = reduce ? 0 : ((now - t0) / 1000) * 2 * Math.PI * 0.6;
-    const N = 160, env = [], inst = [];
-    let peak = 0;
-    for (let i = 0; i <= N; i++) { const d = L * (1 - i / N); const p = P(state.f, d); env.push(mag(p)); peak = Math.max(peak, mag(p)); inst.push(p[0] * Math.cos(ph) - p[1] * Math.sin(ph)); }
-    const X = i => src + (tm - 6 - src) * i / N;
-    ctx.lineWidth = 1.4; ctx.setLineDash([4, 4]); ctx.strokeStyle = css("--muted");
-    [1, -1].forEach(s => { ctx.beginPath(); env.forEach((e, i) => { const y = mid - s * half * e / peak; i ? ctx.lineTo(X(i), y) : ctx.moveTo(X(i), y); }); ctx.stroke(); });
-    ctx.setLineDash([]);
-    ctx.globalAlpha = 0.18; ctx.fillStyle = css("--azure");
-    ctx.beginPath(); ctx.moveTo(X(0), mid); inst.forEach((v, i) => ctx.lineTo(X(i), mid - half * v / peak)); ctx.lineTo(X(N), mid); ctx.closePath(); ctx.fill();
-    ctx.globalAlpha = 1; ctx.strokeStyle = css("--azure"); ctx.lineWidth = 2.6;
-    ctx.beginPath(); inst.forEach((v, i) => { const y = mid - half * v / peak; i ? ctx.lineTo(X(i), y) : ctx.moveTo(X(i), y); }); ctx.stroke();
-    // minima markers
-    ctx.fillStyle = css("--loss"); ctx.font = "600 11px Inter, Segoe UI, Arial, sans-serif"; ctx.textAlign = "center";
+    ctx.beginPath(); ctx.moveTo(tm - 4, top); ctx.lineTo(tm + 4, bot); ctx.stroke();
+    ctx.fillStyle = css("--ink"); roundRect(src - 26, top - 8, 26, bot - top + 16, 10); ctx.fill();
+    // level profile
+    const N = 200, pts = [];
+    for (let i = 0; i <= N; i++) { const x = src + (tm - src) * i / N, d = (tm - x) / px; pts.push([x, Y(levelAt(state.f, L, d))]); }
+    ctx.globalAlpha = 0.14; ctx.fillStyle = css("--azure");
+    ctx.beginPath(); ctx.moveTo(src, bot); pts.forEach(([x, y]) => ctx.lineTo(x, y)); ctx.lineTo(tm, bot); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha = 1; ctx.strokeStyle = css("--azure"); ctx.lineWidth = 2.8; ctx.lineJoin = "round";
+    ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke();
+    // minima
     const lam = C / state.f;
-    for (let n = 0; ; n++) { const d = lam / 4 + n * lam / 2; if (d > L) break; const x = tm - d * px; ctx.beginPath(); ctx.arc(x, bot + 20, 4, 0, 7); ctx.fill(); ctx.textAlign = x < W / 2 ? "left" : "right"; ctx.fillText("min", x + (x < W / 2 ? 7 : -7), bot + 24); }
+    ctx.font = font(700, 11);
+    for (let n = 0; ; n++) {
+      const d = lam / 4 + n * lam / 2; if (d > L) break;
+      const x = tm - d * px, v = levelAt(state.f, L, d), y = Y(v);
+      ctx.fillStyle = css("--loss"); ctx.beginPath(); ctx.arc(x, y, 4, 0, 7); ctx.fill();
+      ctx.textAlign = "left"; ctx.fillText(narrow ? `${fmt(v)}` : `min ${fmt(v)} dB`, x + 8, Math.max(top + 14, y - 8));
+    }
+    // ends: earphone and eardrum values (eardrum = the value plotted in chart 2)
+    const vE = levelAt(state.f, L, L), vT = gainDb(state.f, L), vA = avgDb(state.f);
+    ctx.fillStyle = css("--bg"); ctx.strokeStyle = css("--muted"); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(src + 3, Y(vE), 4.5, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = css("--azure"); ctx.lineWidth = 2.4;
+    ctx.beginPath(); ctx.arc(tm, Y(vT), 5.5, 0, 7); ctx.fill(); ctx.stroke();
+    // average ear tick at the eardrum
+    ctx.strokeStyle = css("--muted"); ctx.lineWidth = 2; ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(tm - 16, Y(vA)); ctx.lineTo(tm + 14, Y(vA)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.textAlign = "left"; ctx.font = font(700, 11.5); ctx.fillStyle = css("--azure");
+    const tY = Y(vT), aY = Y(vA), sep = Math.abs(tY - aY) < 16 ? (tY <= aY ? -8 : 8) : 0;
+    ctx.fillText(narrow ? `${fmt(vT)}` : `this ear ${fmt(vT)} dB`, tm + 14, tY + 4 + sep);
+    ctx.font = font(500, 11); ctx.fillStyle = css("--muted");
+    ctx.fillText(narrow ? `avg ${fmt(vA)}` : `average ${fmt(vA)} dB`, tm + 14, aY + 4 - sep);
+    ctx.textAlign = "left"; ctx.fillStyle = css("--muted"); ctx.font = font(500, 11);
+    ctx.fillText(narrow ? `${fmt(vE)}` : `${fmt(vE)} dB`, src + 10, Y(vE) - 9 < top + 10 ? Y(vE) + 16 : Y(vE) - 9);
     // labels
-    ctx.fillStyle = css("--muted"); ctx.font = "500 11.5px Inter, Segoe UI, Arial, sans-serif";
-    ctx.textAlign = "left"; ctx.fillText(W < 560 ? "" : "earphone", Math.max(4, src - 30), top - 36 < 12 ? 12 : top - 36);
-    ctx.textAlign = "right"; ctx.fillText(W < 560 ? "eardrum" : "eardrum (always max)", W - 4, top - 36 < 12 ? 12 : top - 36);
-    // half-wave cue
+    ctx.font = font(600, 11.5); ctx.fillStyle = css("--ink");
+    ctx.textAlign = "left"; ctx.fillText("earphone", Math.max(axisW, src - 26), 16);
+    ctx.textAlign = "right"; ctx.fillText(narrow ? "eardrum" : "eardrum → chart 2", W - 4, 16);
+    ctx.textAlign = "center"; ctx.font = font(500, 11.5); ctx.fillStyle = css("--muted");
     const ratio = L / (lam / 2);
-    ctx.textAlign = "center"; ctx.fillStyle = css("--ink"); ctx.font = "600 12px Inter, Segoe UI, Arial, sans-serif";
-    ctx.fillText(W < 560 ? `${L.toFixed(1)} mm = ${ratio.toFixed(2)} × ½λ at ${state.f/1000} kHz` : `${L.toFixed(1)} mm tube = ${ratio.toFixed(2)} × half-wavelength at ${state.f/1000} kHz`, W / 2, H - 4);
+    ctx.fillText(`${L.toFixed(1)} mm long = ${ratio.toFixed(2)} × half a wavelength at ${state.f/1000} kHz`, (axisW + tm) / 2, H - 10);
   }
   function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
 
-  function render() { readouts(); drawResp(); drawAud(); if (reduce) drawTube(0); }
-  function loop(now) { drawTube(now); requestAnimationFrame(loop); }
-  sizeCanvas(); addEventListener("resize", () => { sizeCanvas(); drawTube(performance.now()); });
+  function render() { readouts(); drawResp(); drawAud(); drawTube(); }
+  sizeCanvas(); addEventListener("resize", () => { sizeCanvas(); drawTube(); });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
   new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   render();
-  if (reduce) drawTube(0); else requestAnimationFrame(loop);
 })();
 </script>
 

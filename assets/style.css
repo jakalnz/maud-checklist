@@ -256,3 +256,5 @@ body.print .head-shape { padding: 9px 34px 9px 14px; }
 .stepctl button { font: inherit; font-size: 0.9rem; background: #fff; border: 1.5px solid var(--brand); color: var(--brand); border-radius: 3px; padding: 4px 12px; cursor: pointer; }
 .stepctl button[data-act=play] { background: var(--brand); color: #fff; min-width: 5.5em; }
 .stepctl button:hover { border-color: var(--brand-2); }
+
+.std{font-weight:500;color:var(--brand);background:var(--wash);border-left:3px solid var(--mahina);padding:.35em .6em;margin:.3em 0;font-size:.9em}

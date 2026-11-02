@@ -151,7 +151,7 @@ T["card"] = r"""
   </div>
   <footer class="card-foot">
     <div>
-      {{ c.mod.title }} · Card {{ c.id }} · v{{ mod.version }} · {{ mod.date }} · from March 2026 checklist §{{ c.source }}<br>
+      {{ c.mod.title }} · Card {{ c.id }} · v{{ mod.version }} · {{ mod.date }} · from March 2026 checklist §{{ c.source }}{% if c.mod.standard %}<br>{{ c.mod.standard }}{% endif %}<br>
       {% if c.pods %}<span style="color:var(--pod)"><b>≠</b> Differs from NZ or international guidance. </span>{% endif %}
       {% if medium == 'print' %}Scan for explanation, video and practice.{% endif %}
     </div>
@@ -272,7 +272,7 @@ T["home"] = r"""
 {% for m in modules %}
 <section class="module" id="mod-{{ m.id }}">
 <h2>{{ m.title }}</h2>
-<p class="src">From the March 2026 checklist §{{ m.source }} · <a href="print/{{ m.id }}.pdf">Print this module</a> · <a href="edit/{{ m.id }}.docx">Edit in Word</a></p>
+{% if m.standard %}<p class="std">{{ m.standard }}</p>{% endif %}<p class="src">From the March 2026 checklist §{{ m.source }} · <a href="print/{{ m.id }}.pdf">Print this module</a> · <a href="edit/{{ m.id }}.docx">Edit in Word</a></p>
 <ul class="cardlist">{% for c in m.cards %}<li><a href="{{ c.dir }}/{{ c.id|lower }}.html"><span class="cid">{{ c.id }}</span><span>{{ c.title }}</span><span class="mode">{{ 'Procedure' if c.mode == 'READ-DO' else 'Guide' }}</span></a></li>{% endfor %}</ul>
 </section>
 {% endfor %}

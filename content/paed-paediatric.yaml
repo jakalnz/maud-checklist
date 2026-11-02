@@ -4,6 +4,7 @@ module:
   title: Paediatric testing
   owner: ""
   source: "12–13"
+  standard: "NZ standard: UNHSEIP Diagnostic and Amplification Protocols (Oct 2023). ≠ marks where UoA teaching differs."
 
 cards:
 
@@ -13,7 +14,7 @@ cards:
   source: "12, 12.1.1.1, 12.1.2.1"
   purpose: Prepare the room, equipment and seating so VRA can start the moment the child settles (about 6 to 30 months).
   when:
-    - Read with the UNHSEIP Diagnostic and Amplification Protocols (Oct 2023) for children referred through newborn screening.
+    - The UNHSEIP Diagnostic and Amplification Protocols (Oct 2023) are the NZ standard for paediatric assessment and take precedence over these cards. ≠ marks where UoA teaching differs.
   blocks:
     - title: Audiometer and room
       steps:
@@ -59,7 +60,7 @@ cards:
         - Repeat at 2 kHz, 4 kHz, then 1 kHz.
         - No response after two at 30 dB HL? Go up in 20 dB steps (two presentations each) to 50 then 70 dB HL, then find threshold.
         - No response at 70 dB HL? Pair stimulus and reinforcer to condition. Still none? Move to bone conduction.
-      pod: [vra-normal, bsa-vra-stimulus, bsa-vra-levels]
+      pod: [vra-normal, bsa-vra-stimulus, bsa-vra-levels, vra-threshold-search, vra-conditioning]
     - title: Bone conduction
       steps:
         - Switch early to BC if sound-field results are unreliable and suggest a loss.
@@ -67,6 +68,7 @@ cards:
         - Condition with 500 Hz NBN at 40 dB HL (felt as vibration), paired with the reinforcer.
         - Do not start BC at 2 kHz.
       why: A conductive loss can give a false sensorineural-looking result at 2 kHz. If that is the only BC threshold you get, the result is ambiguous.
+      pod: [vra-bc]
     - title: Ear-specific (inserts)
       side: true
       steps:
@@ -74,6 +76,7 @@ cards:
         - Start at 30 dB HL and reduce to 20 dB HL.
         - Get 500 Hz, 2 kHz, 4 kHz and 1 kHz before changing ears.
         - No responses down to 20 dB HL? Test bone conduction.
+      pod: [vra-inserts-first, vra-required-tests]
   notes:
     - kind: rule
       text: "If unsure whether a turn was real, do not reinforce. Reinforcing a false turn teaches searching and can pass a child with a hearing loss."
@@ -150,6 +153,7 @@ cards:
         - Drop to 35–40 dBA and ask for each of the 10 test items in random order.
         - If an item is missed, raise your voice 5–10 dB until it is found.
         - "Record the dBA level at which ≥ 90% of items are found, e.g. 9/10 at 40–45 dBA."
+      pod: [ktt-pass]
   notes:
     - kind: note
       text: "Be quick and positive. If the child picks the wrong toy, say \"Yes, that's the bath, and here's the car.\" Hide your lips, and make sure errors come from hearing, not attention."
@@ -187,7 +191,7 @@ cards:
         - Screen BC to 0 dB HL, or far enough to confirm or rule out a conductive component.
         - Mask if needed and the child is still attending; use the step method.
         - Give a short explanation to the parent before immittance.
-      pod: cpa-bc-screen
+      pod: [cpa-bc-screen, vra-required-tests]
   sim:
     name: play audiometry simulator
     url: https://jakalnz.github.io/play-audiometry/
@@ -263,58 +267,106 @@ cards:
 
 differences:
   vra-normal:
-    title: Normal hearing cut-off and 1 kHz in VRA and CPA
+    title: Pass level and 1 kHz in VRA and CPA
     cards: VRA-02, CPA-02
-    label: UNHSEIP (2023); BAA/BSA (2024); Ontario IHP
-    ours: "Normal is ≤ 15 dB HL. Test 1 kHz routinely."
-    bpg: "UNHSEIP (2023): normal is ≤ 20 dB HL. 1 kHz is discretionary if 500 Hz and 2 kHz differ by < 30 dB; threshold search is down 20, up 10. International: BAA/BSA discharge criteria (2024) and BSA VRA (2025) use ≤ 20 dB HL (inserts, headphones, BC) and ≤ 25 dB HL in sound field; Ontario IHP (2019) uses ≤ 25 dB HL."
-    why: "March 2026 notes the difference and asks students to check each clinic's standard."
-    status: Documented in March 2026; confirm
+    label: UNHSEIP (Oct 2023), NZ standard
+    ours: "Normal is ≤ 15 dB HL; test down to 15 dB HL or lower. Test 1 kHz routinely."
+    bpg: "Minimum test level defining normal hearing is 20 dB HL (VRA, and CPA for 500 Hz–4 kHz). 1 kHz is tested only where indicated by the shape of the audiogram (discretionary if 500 Hz and 2 kHz differ by < 30 dB). International guidance agrees: BAA/BSA (2024) and BSA VRA (2025) use ≤ 20 dB HL under earphones, ≤ 25 dB HL in sound field."
+    why: "UoA teaching variation (lower pass level). Students must use 20 dB HL when working to the UNHSEIP protocol."
+    status: UoA variation; confirm
+  vra-inserts-first:
+    title: Ear-specific testing from the start
+    cards: VRA-02
+    label: UNHSEIP (Oct 2023), NZ standard
+    ours: "Start in the sound field; use inserts for ear-specific thresholds when possible."
+    bpg: "Begin with insert earphones in both ears and test the ear nearest the reinforcer first. Initial assessments need ear-specific thresholds at 2 kHz, 500 Hz and 4 kHz. Sound field is acceptable, but normal sound-field results must be backed by DPOAEs and immittance in each ear. Inserts are mandatory for AC VRA in infants with permanent hearing loss."
+    why: "Not a minor variation: UNHSEIP makes ear-specific testing the default. Recommend aligning VRA-02 with UNHSEIP."
+    status: Recommend align
+  vra-threshold-search:
+    title: VRA threshold search
+    cards: VRA-02
+    label: UNHSEIP (Oct 2023), NZ standard
+    ours: "After two responses at 30 dB HL, drop to 20 dB HL; otherwise use 'standard audiometric procedure' to find threshold."
+    bpg: "After two consecutive head turns, search down 20 dB, up 10 dB. Threshold is the lowest level with 2 responses out of 3 presentations, or test down to 20 dB HL."
+    why: "Ours does not state the step size. Recommend adopting the UNHSEIP 20-down 10-up search."
+    status: Recommend align
+  vra-conditioning:
+    title: Conditioning when there is no head turn
+    cards: VRA-02
+    label: UNHSEIP (Oct 2023), NZ standard
+    ours: "No response at 70 dB HL: pair sound and reinforcer; if still none, move to bone conduction."
+    bpg: "At 70 dB HL pair twice, then present a probe. No turn: do a listening check, then try 90 dB HL (80 dB HL in sound field if the speaker distorts) paired twice, then a probe. Still none: change frequency, stimulus type, ear, or try bone conduction or sound field."
+    why: "UNHSEIP goes to 90 dB HL before concluding. Recommend aligning."
+    status: Recommend align
+  vra-bc:
+    title: Bone conduction in VRA
+    cards: VRA-02
+    label: UNHSEIP (Oct 2023), NZ standard
+    ours: "Bone conductor on the mastoid nearest the speaker; condition with 500 Hz at 40 dB HL (vibrotactile)."
+    bpg: "Test BC for at least one frequency where AC is > 20 dB HL in both ears. Under 1 year, place it on the mastoid of the better AC ear (interaural attenuation for BC is still 15–25 dB at this age); older children and CPA, the worse ear. Start at or below the AC threshold and test down to 20 dB HL."
+    why: "Placement rule differs and is evidence-based. Recommend aligning; the vibrotactile conditioning tip can stay as a PTF tip."
+    status: Recommend align
+  vra-required-tests:
+    title: Tests required in every initial VRA or CPA assessment
+    cards: VRA-02, CPA-02
+    label: UNHSEIP (Oct 2023), NZ standard
+    ours: "DPOAEs and immittance with reflexes in each ear when sound-field results are normal."
+    bpg: "Every initial VRA assessment: otoscopy; ear-specific AC at 2 kHz, 500 Hz, 4 kHz (+1 kHz if indicated); ear-specific speech detection thresholds by live voice; BC if indicated; DPOAEs at 1.5, 2, 3, 4, 6 kHz; tympanometry and ipsilateral 1 kHz reflex (226 Hz probe, or 1 kHz probe under 9 months). CPA: the same, with the Kendall Toy Test recommended. Sound-field CPA is acceptable only after a documented, failed effort to get ear-specific results."
+    why: "Recommend adding this battery to VRA-02 and CPA-02 as a checklist."
+    status: Recommend align
   cpa-start:
-    label: UNHSEIP (2023)
-    title: CPA starting and screening levels
+    label: UNHSEIP (Oct 2023), NZ standard
+    title: CPA starting and test levels
     cards: CPA-02
-    ours: "First frequency at 50 dB HL, then 30 and 20; bracket to 10 dB HL."
-    bpg: "UNHSEIP (2023): start at 30 dB HL and screen to 20 dB HL."
-    why: "Weigh an exact threshold against screening; older, reliable children can be screened to 10 dB HL."
-    status: Documented in March 2026; confirm
+    ours: "First frequency at 50 dB HL, then 30 and 20; bracket down to 10 dB HL; from 3½–4 years find true thresholds."
+    bpg: "Condition with 2 kHz at about 110 dB HL (headphones on the table) or 70 dB HL via speaker. Start at 30 dB HL with a repeat, then 20 dB HL with a repeat; later frequencies one response at 30, then 20 dB HL. No response: up in 20 dB steps. Down 20 up 10, or 10/5 if cooperative."
+    why: "UoA teaching variation, documented in March 2026. Starting at 50 dB HL is a gentler first step; testing below 20 dB HL is optional under UNHSEIP."
+    status: UoA variation; confirm
   cpa-bc-screen:
-    label: UNHSEIP (2023)
-    title: CPA bone conduction screening level
+    label: UNHSEIP (Oct 2023), NZ standard
+    title: CPA bone conduction
     cards: CPA-02
-    ours: "Screen BC to 0 dB HL."
-    bpg: "UNHSEIP (2023): screen BC to 10 dB HL, the lowest needed to rule out a conductive loss when AC is screened to 20 dB HL."
-    why: "Case by case: exact thresholds versus ruling a conductive component in or out."
-    status: Documented in March 2026; confirm
+    ours: "Test BC if a loss is suspected; screen to 0 dB HL."
+    bpg: "Test BC if AC is > 20 dB HL; test down to 20 or 10 dB HL depending on the child's attention."
+    why: "UoA teaching variation (lower screening level), documented in March 2026."
+    status: UoA variation; confirm
+  ktt-pass:
+    title: Kendall Toy Test pass level and method
+    cards: CPA-01
+    label: UNHSEIP (Oct 2023), NZ standard
+    ours: "Start at 35–40 dBA, raise 5–10 dB; record the level for ≥ 90% correct. Practise with all 5 distracter items."
+    bpg: "Pass level 40 dBA (≥ 90%), raised from the original 35 dBA to match the 20 dB HL screening level. Raise in 10 dB steps. Practise with 2–3 distracter items. Live voice (sound level meter on fast, dBA, at the child's head) or the SPANZ recording; audiometer equivalents of 40 dBA: inserts 27.5, supra-aural 20, speaker 25.5 dB HL (round down to 5 dB). A picture-card version is acceptable."
+    why: "Add the 40 dBA pass level and audiometer equivalents to CPA-01. Our lower start is a UoA variation."
+    status: Recommend align (pass level)
   infant-baseline:
-    label: UNHSEIP (2023)
+    label: UNHSEIP (Oct 2023), NZ standard
     title: Drawing a baseline on infant 1 kHz tympanograms
     cards: PIM-01
     ours: "March 2026: print and draw a baseline from +200 to −400 daPa before classifying."
-    bpg: "UNHSEIP (2023) Appendix 7: record without baseline correction and classify the shape; no hand-drawn baseline described."
+    bpg: "Record without baseline correction (+200 to −600 daPa) and classify the shape as peaked, flat or indeterminate; no hand-drawn baseline described."
     why: "Check whether the hand-drawn baseline is still taught."
     status: To confirm (MS)
   paed-art-start:
-    label: UNHSEIP (2023)
-    title: Starting level for reflexes from 9 months
+    label: UNHSEIP (Oct 2023), NZ standard
+    title: Reflexes from 9 months
     cards: PIM-02
-    ours: "Ambiguous C: start about 90 dB HL. March 2026 said UNHSEIP starts at 90."
-    bpg: "UNHSEIP (2023): start at 80 dB HL, or a single clear response at 90 dB HL if the child is active; BBN to 90–95 dB HL to confirm absence."
-    why: "March 2026 misquoted UNHSEIP. Our levels can stay, with the source corrected."
-    status: To confirm (MS)
+    ours: "Ambiguous C: start about 90 dB HL, up to 105 dB HL. Ambiguous As or rounded B: 95 dB HL BBN or 105 dB HL at 1 kHz."
+    bpg: "Start at 80 dB HL (1 kHz, ipsilateral, 226 Hz probe), two replications; a single clear repeatable response at 90 dB HL is enough if the child is active. To confirm middle ear effusion, use BBN up to 90–95 dB HL. The goal is presence or absence at a safe level, not a threshold."
+    why: "March 2026 misquoted UNHSEIP as starting at 90 dB HL. Recommend the 80 dB HL start."
+    status: Recommend align
   bsa-vra-stimulus:
-    title: VRA stimulus (international)
+    title: VRA stimulus (international, for detail only)
     label: BSA VRA (2025); Ontario IHP (2019)
     cards: VRA-02
-    ours: "Usually narrowband noise (NBN), alternating with warble tones to keep interest."
-    bpg: "Warble tones should be used; NBN is less frequency specific and can misestimate thresholds where hearing changes across frequency. Ontario: warble tones in sound field; FRESH noise acceptable."
-    why: "Consider making warble tones the default stimulus."
-    status: To discuss
+    ours: "Usually narrowband noise (NBN), alternating with warble tones."
+    bpg: "BSA prefers FM warble tones because NBN is less frequency specific. UNHSEIP allows pulsed NBN, FRESH noise or FM warble tones, so our practice meets the NZ standard."
+    why: "UNHSEIP takes precedence. Useful background on why warble tones may be more accurate."
+    status: For information
   bsa-vra-levels:
-    title: VRA starting level and steps (international)
+    title: VRA starting level (international, for detail only)
     label: BSA VRA (2025)
     cards: VRA-02
-    ours: "Start at 30 dB HL, screen to 20 dB HL; if no response, up in 20 dB steps."
-    bpg: "Condition at about 65 dB HL in sound field (60 dB HL with inserts), drop in 20 dB steps, then 10-down 5-up near the minimum response level (2 of 3 responses). Test to 25 dB HL in sound field and 20 dB HL with inserts or bone conduction."
-    why: "Opposite approach: the BSA starts loud and descends; we start quiet and ascend. Both are used; decide which we teach first."
-    status: To discuss
+    ours: "Start at 30 dB HL and work up if needed (as UNHSEIP)."
+    bpg: "BSA conditions at about 65 dB HL and descends in 20 dB steps, testing to 25 dB HL in sound field and 20 dB HL under earphones."
+    why: "UNHSEIP takes precedence; our 30 dB HL start matches it."
+    status: For information

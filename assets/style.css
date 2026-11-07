@@ -258,3 +258,30 @@ body.print .head-shape { padding: 9px 34px 9px 14px; }
 .stepctl button:hover { border-color: var(--brand-2); }
 
 .std{font-weight:500;color:var(--brand);background:var(--wash);border-left:3px solid var(--mahina);padding:.35em .6em;margin:.3em 0;font-size:.9em}
+
+/* Per-step teaching notes (site only) */
+.layer-bar{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:.85rem;color:var(--tint-60);padding:6px 16px;border-bottom:1px solid var(--tint-20);background:#fff}
+.layer-bar label{display:inline-flex;gap:6px;align-items:center;color:var(--brand);font-weight:500;cursor:pointer}
+.layer-bar input{accent-color:var(--brand-2);width:16px;height:16px}
+.steps li.has-more{position:relative;padding-right:30px}
+.more-btn{position:absolute;right:0;top:1px;width:22px;height:22px;border:1px solid var(--tint-20);border-radius:50%;background:#fff;color:var(--brand-2);font:600 15px/1 Inter,sans-serif;cursor:pointer;padding:0}
+.more-btn:hover,.more-btn:focus-visible{background:var(--wash);border-color:var(--brand-2)}
+.more{display:none;margin:6px 0 2px}
+.more p{margin:3px 0;padding:4px 8px;font-size:.9em;line-height:1.45;border-left:3px solid var(--mahina);background:var(--wash)}
+.more p.why{border-left-color:var(--brand-2)}
+.more b{font-weight:700;color:var(--brand);margin-right:4px}
+li.open .more,.card.show-eg .more,.card.show-why .more{display:block}
+.card:not(.show-eg) li:not(.open) .more .eg,.card:not(.show-why) li:not(.open) .more .why{display:none}
+@media print{.more,.more-btn,.layer-bar{display:none!important}}
+table.topics{width:100%;border-collapse:collapse;font-size:.9em;margin-top:4px}
+table.topics th{text-align:left;font-weight:700;color:var(--brand);border-bottom:2px solid var(--brand);padding:4px 6px}
+table.topics td{vertical-align:top;border-bottom:1px solid var(--tint-20);padding:6px}
+table.topics td p{margin:0 0 4px}
+table.topics .cover{display:block;color:var(--tint-60);font-size:.92em;margin-top:2px}
+table.topics td:first-child{width:30%}
+table.topics .c-why{color:#333}
+@media screen and (max-width:700px){table.topics thead{display:none}table.topics tr{display:block;border-bottom:1px solid var(--tint-20);padding:6px 0}table.topics td{display:block;border:0;width:auto!important;padding:2px 0}
+table.topics td.c-eg:not(:empty)::before{content:"Ask";font-weight:700;color:var(--brand);margin-right:4px}table.topics td.c-why:not(:empty)::before{content:"Why ";font-weight:700;color:var(--brand)}}
+.topics-block{padding:10px 16px 6px;border-top:1px solid var(--tint-20)}
+.topics-block td:first-child{width:24%}.topics-block td.c-eg{width:38%}
+.steps li.has-more:has(.pod-mark){padding-right:56px}.steps li.has-more .pod-mark{right:28px}

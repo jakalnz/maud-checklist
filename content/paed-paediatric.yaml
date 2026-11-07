@@ -49,15 +49,18 @@ cards:
     - title: Speech detection threshold (live voice)
       steps:
         - "At 30 dB HL, call the child naturally (\"Hi Emily, I'm over here\"). Reinforce a head turn."
-        - Get a second turn at 30 dB HL, with the interrupt off between calls.
+        - do: Get a second turn at 30 dB HL, with the interrupt off between calls.
+          why: One turn can be chance. A second turn at the same level shows the child is responding to the sound.
         - Drop to 20 dB HL and get two turns for a screening SDT.
-        - No turn at 30 dB HL? Go up in 20 dB steps until they respond, then find threshold.
+        - do: No turn at 30 dB HL? Go up in 20 dB steps until they respond, then find threshold.
+          why: Large steps find a response quickly, before the child loses interest. You then refine it.
         - Still no spontaneous turn? Pair sound and reinforcer until the child is conditioned.
     - title: Frequency-specific, sound field
       steps:
         - Present 500 Hz NBN at 30 dB HL and reinforce a head turn. Repeat once.
         - Drop to 20 dB HL and get two reliable turns.
-        - Repeat at 2 kHz, 4 kHz, then 1 kHz.
+        - do: Repeat at 2 kHz, 4 kHz, then 1 kHz.
+          why: Children habituate quickly. Getting a low and a high frequency first means even a short test shows the shape of the audiogram.
         - No response after two at 30 dB HL? Go up in 20 dB steps (two presentations each) to 50 then 70 dB HL, then find threshold.
         - No response at 70 dB HL? Pair stimulus and reinforcer to condition. Still none? Move to bone conduction.
       pod: [vra-normal, bsa-vra-stimulus, bsa-vra-levels, vra-threshold-search, vra-conditioning]
@@ -65,16 +68,18 @@ cards:
       steps:
         - Switch early to BC if sound-field results are unreliable and suggest a loss.
         - Place the bone conductor on the mastoid nearest the speaker.
-        - Condition with 500 Hz NBN at 40 dB HL (felt as vibration), paired with the reinforcer.
-        - Do not start BC at 2 kHz.
-      why: A conductive loss can give a false sensorineural-looking result at 2 kHz. If that is the only BC threshold you get, the result is ambiguous.
+        - do: Condition with 500 Hz NBN at 40 dB HL (felt as vibration), paired with the reinforcer.
+          why: At 500 Hz the bone conductor is felt as well as heard, so a child with a hearing loss can still learn the task.
+        - do: Do not start BC at 2 kHz.
+          why: A conductive loss can give a false sensorineural-looking result at 2 kHz. If that is the only BC threshold you get, the result is ambiguous.
       pod: [vra-bc]
     - title: Ear-specific (inserts)
       side: true
       steps:
         - Start with the ear nearest the reinforcer, unless history or immittance suggests it is the poorer ear.
         - Start at 30 dB HL and reduce to 20 dB HL.
-        - Get 500 Hz, 2 kHz, 4 kHz and 1 kHz before changing ears.
+        - do: Get 500 Hz, 2 kHz, 4 kHz and 1 kHz before changing ears.
+          why: Moving the earphone disturbs the child. Finish one ear while they are still engaged.
         - No responses down to 20 dB HL? Test bone conduction.
       pod: [vra-inserts-first, vra-required-tests]
   notes:

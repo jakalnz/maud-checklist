@@ -63,7 +63,21 @@ for c in cards:
     c["qr"] = qr_svg(c["url"])
     c["pods"] = []
     c.setdefault("refs", [])
+    c["has_more"] = False
     for b in c["blocks"]:
+        items = []
+        for st in b["steps"]:
+            if isinstance(st, dict):
+                eg = st.get("eg") or []
+                items.append({"text": st["do"], "eg": eg if isinstance(eg, list) else [eg], "why": st.get("why")})
+            else:
+                items.append({"text": st, "eg": [], "why": None})
+        b["items"] = items
+        b["steps"] = [i["text"] for i in items]
+        if b.get("layout") != "table":
+            c["has_eg"] = c.get("has_eg") or any(i["eg"] for i in items)
+            c["has_why"] = c.get("has_why") or any(i["why"] for i in items)
+            c["has_more"] = c["has_eg"] or c["has_why"]
         p = b.get("pod")
         b["podlist"] = p if isinstance(p, list) else ([p] if p else [])
         b["pod"] = b["podlist"][0] if b["podlist"] else None
@@ -106,18 +120,32 @@ T["card"] = r"""
         <p class="src">Source: {{ v.source }}</p>
       </div>
 {% endif %}{% endfor %}{% endmacro %}
-{% macro blocks(c, medium, side) %}      {% for b in c.blocks if (b.side or False) == side %}
+{% macro blocks(c, medium, side) %}      {% for b in c.blocks if (b.side or False) == side and not (medium == 'site' and b.layout == 'table') %}
       <section class="block">
         <h3>{{ b.title }}</h3>
+        {% set pm %}{% if b.pod %}{% if medium == 'site' %}<a class="pod-mark" href="#pod-{{ b.pod }}" title="Differs from NZ or international guidance: see Points of difference">≠</a>{% else %}<span class="pod-mark" title="Differs from NZAS BPG">≠</span>{% endif %}{% endif %}{% endset %}
+        {% if false %}
+        {% else %}
         <ol class="steps" start="1">
-          {% for s in b.steps %}<li>{{ s|safe }}{% if loop.last and b.pod %}{% if medium == 'site' %}<a class="pod-mark" href="#pod-{{ b.pod }}" title="Differs from NZ or international guidance: see Points of difference">≠</a>{% else %}<span class="pod-mark" title="Differs from NZAS BPG">≠</span>{% endif %}{% endif %}</li>{% endfor %}
+          {% for it in b['items'] %}<li{% if medium == 'site' and (it.eg or it.why) %} class="has-more"{% endif %}>{{ it.text|safe }}{% if loop.last %}{{ pm }}{% endif %}{% if medium == 'site' and (it.eg or it.why) %}<button type="button" class="more-btn" aria-expanded="false" aria-label="Show {{ (c.eg_label or 'example')|lower }} and why">+</button>
+            <div class="more">{% for e in it.eg %}<p class="eg"><b>{{ c.eg_label or 'Example' }}</b> “{{ e|safe }}”</p>{% endfor %}{% if it.why %}<p class="why"><b>Why</b> {{ it.why|safe }}</p>{% endif %}</div>{% endif %}</li>{% endfor %}
         </ol>
+        {% endif %}
         {% if b.rule %}<div class="rule">{{ b.rule|safe }}</div>{% endif %}
         {% if b.example %}<p class="example">{{ b.example|safe }}</p>{% endif %}
         {% if b.stop %}<div class="callout stop" style="margin:6px 0 0 2.2em"><span class="lbl">{{ icon.stop }}Stop</span>{{ b.stop|safe }}</div>{% endif %}
       </section>
       {% endfor %}
 {% endmacro %}
+{% macro topictables(c, medium) %}{% for b in c.blocks if medium == 'site' and b.layout == 'table' %}
+      <section class="block topics-block"><h3>{{ b.title }}</h3>
+      {% set pm %}{% if b.pod %}<a class="pod-mark" href="#pod-{{ b.pod }}">≠</a>{% endif %}{% endset %}
+        <table class="topics"><thead><tr><th>Topic</th><th class="c-eg">{{ c.eg_label or 'Example' }}</th><th class="c-why">Why we ask</th></tr></thead><tbody>
+          {% for it in b['items'] %}{% set tp = it.text.split(':', 1) %}<tr><td><b>{{ tp[0]|safe }}</b>{% if tp|length > 1 %}<span class="cover">{{ tp[1]|safe }}</span>{% endif %}{% if loop.last %}{{ pm }}{% endif %}</td>
+          <td class="c-eg">{% for e in it.eg %}<p>“{{ e|safe }}”</p>{% endfor %}</td><td class="c-why">{{ (it.why or '')|safe }}</td></tr>{% endfor %}
+        </tbody></table>
+      <p class="src">On the print card this is a checklist of topics; the questions and reasons appear on this site only.</p></section>
+{% endfor %}{% endmacro %}
 {% macro card(c, medium) %}
 <article class="card" id="card-{{ c.id|lower }}">
   <header class="card-head">
@@ -126,6 +154,9 @@ T["card"] = r"""
     <div class="card-mode"><b>{{ 'Procedure' if c.mode == 'READ-DO' else 'Guide' }}</b>{{ 'Follow the steps in order' if c.mode == 'READ-DO' else 'Cover every point; order can vary' }}</div>
   </header>
   <p class="card-purpose">{{ c.purpose|safe }}</p>
+  {% if medium == 'site' and c.has_more %}<div class="layer-bar" role="group" aria-label="Show teaching notes on every step"><span>Show on every step:</span>
+    {% if c.has_eg %}<label><input type="checkbox" data-show="eg"> {{ 'Questions to ask' if c.eg_label == 'Ask' else 'Examples' }}</label>{% endif %}
+    {% if c.has_why %}<label><input type="checkbox" data-show="why"> Why</label>{% endif %}</div>{% endif %}
   <div class="card-body">
     <div class="card-steps">
       {% if c.when %}<ul class="card-when">{% for w in c.when %}<li>{{ w|safe }}</li>{% endfor %}</ul>{% endif %}
@@ -149,6 +180,7 @@ T["card"] = r"""
       
     </aside>
   </div>
+  {{ topictables(c, medium) }}
   <footer class="card-foot">
     <div>
       {{ c.mod.title }} · Card {{ c.id }} · v{{ mod.version }} · {{ mod.date }} · from March 2026 checklist §{{ c.source }}{% if c.mod.standard %}<br>{{ c.mod.standard }}{% endif %}<br>
@@ -208,6 +240,8 @@ document.querySelectorAll('figure.stepper').forEach(f=>{
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
     const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){io.disconnect();show(0);start();}}),{threshold:.5});io.observe(f);}
 });
+document.querySelectorAll('.more-btn').forEach(b=>b.addEventListener('click',()=>{const li=b.closest('li');const o=li.classList.toggle('open');b.setAttribute('aria-expanded',o);b.textContent=o?'−':'+'}));
+document.querySelectorAll('.layer-bar input').forEach(i=>i.addEventListener('change',()=>{i.closest('.card').classList.toggle('show-'+i.dataset.show,i.checked)}));
 document.querySelectorAll('a.pod-mark').forEach(a=>a.addEventListener('click',()=>{const d=document.getElementById('layer-pod');if(d)d.open=true}));
 </script>
 </body></html>"""
@@ -217,10 +251,10 @@ T["page"] = r"""{% from 'card' import card with context %}
 {{ card(c, 'site') }}
 <p class="src" style="margin-top:6px">The box above is the print card, word for word. <a href="../print/{{ c.dir }}.pdf">Print this module</a> · <a href="../print/cards.pdf">Print all cards</a>.</p>
 
-<details class="layer" open><summary>Why <span class="hint">the reason behind each block</span></summary><div class="layer-body">
+{% if c.blocks|selectattr('why')|list or c.script %}<details class="layer" open><summary>Why <span class="hint">the reason behind each block</span></summary><div class="layer-body">
 {% for b in c.blocks if b.why %}<div class="why-item"><h4>{{ b.title }}</h4><p>{{ b.why|safe }}</p></div>{% endfor %}
 {% if c.script %}<div class="why-item"><h4>What to say</h4><ul>{% for s in c.script %}<li>{{ s }}</li>{% endfor %}</ul></div>{% endif %}
-</div></details>
+</div></details>{% endif %}
 
 {% if c.figures or c.media_planned %}
 <details class="layer" open><summary>See it <span class="hint">diagrams, animations and video</span></summary><div class="layer-body">
@@ -330,7 +364,7 @@ T["owners"] = r"""
   <li>Download the Word file for the module you want to review.</li>
   <li>Turn on <b>Track Changes</b> (Review tab) before you edit, so MS can see what you changed.</li>
   <li>Edit any step, value or explanation directly, or add a comment.</li>
-  <li>Add your advice for students under <b>Your PTF tips</b> at the end of each card. Put your initials after each tip if you would like credit.</li>
+  <li>Add tips, example questions and images in the blue <b>PTF additions</b> box at the end of each card. Put your initials after each one if you would like credit. Anything in the blue box becomes PTF material on the site; tracked changes elsewhere are edits to the card.</li>
   <li>Email the file back to MS. Your changes are checked and added to the site and print cards.</li>
 </ol>
 <table class="reviewtbl" style="margin-top:16px"><thead><tr><th>Module</th><th>Cards</th><th>Download</th></tr></thead><tbody>
@@ -438,7 +472,8 @@ def md_table(v):
 def module_md(mods, title):
     L = [f"---\ntitle: \"MAud Clinical Checklist: {title}\"\nsubtitle: \"Review copy for PTFs, version {SITEINFO['version']} ({SITEINFO['date']})\"\n---\n",
          "**How to review:** turn on Track Changes, then edit any wording, step or value directly. "
-         "Add advice for students under *Your PTF tips* at the end of each card, with your initials if you would like credit. "
+         "Add tips, example questions and images in the blue *PTF additions* box at the end of each card, with your initials if you would like credit. "
+         "Anything inside the blue box becomes PTF material on the site; changes elsewhere are treated as edits to the card. "
          "Email the file back to MS.\n"]
     for m in mods:
         L.append(f"# {m['title']}\n")
@@ -451,7 +486,14 @@ def module_md(mods, title):
                 L.append("**When:**\n\n" + "\n".join(f"- {md_text(w)}" for w in c["when"]) + "\n")
             for b in c["blocks"]:
                 L.append(f"### {md_text(b['title'])}\n")
-                L.append("\n".join(f"{i}. {md_text(s)}" for i, s in enumerate(b["steps"], 1)) + "\n")
+                lines = []
+                for i, it in enumerate(b["items"], 1):
+                    lines.append(f"{i}. {md_text(it['text'])}")
+                    for e in it["eg"]:
+                        lines.append(f"    - *{c.get('eg_label') or 'Example'}:* \u201c{md_text(e)}\u201d")
+                    if it["why"]:
+                        lines.append(f"    - *Why:* {md_text(it['why'])}")
+                L.append("\n".join(lines) + "\n")
                 if b.get("rule"): L.append(f"**Rule:** {md_text(b['rule']).strip()}\n")
                 if b.get("example"): L.append(f"**Example:** {md_text(b['example'])}\n")
                 if b.get("stop"): L.append(f"**Stop:** {md_text(b['stop'])}\n")
@@ -469,7 +511,11 @@ def module_md(mods, title):
                 L.append("**What to say:**\n\n" + "\n".join(f"- {md_text(s)}" for s in c["script"]) + "\n")
             if c["ptf"]:
                 L.append("**Current PTF tips:**\n\n" + "\n".join(f"- {md_text(t['text'])}" + (f" ({t['who']})" if t["who"] else "") for t in c["ptf"]) + "\n")
-            L.append("**Your PTF tips:**\n\n- \n\n**Other comments on this card:**\n\n- \n")
+            L.append(f"::: {{custom-style=\"PTF additions\"}}\n**PTF additions for {c['id']}** (type or paste inside this blue box; add your initials)\n\n"
+                     "**Tip for students:** \n\n"
+                     "**Example question, phrase or explanation** (say which step): \n\n"
+                     "**Image** (paste here, add a one-line caption, and say whether it is your own photo or drawing, or where it came from): \n:::\n")
+            L.append("**Other comments on this card** (or use Track Changes on the card above):\n\n- \n")
             L.append("\\newpage\n" if False else "")
     return "\n".join(L)
 

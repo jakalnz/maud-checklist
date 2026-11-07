@@ -15,14 +15,19 @@ cards:
   blocks:
     - title: Before you speak
       steps:
-        - Check whether results agree with each other, and explain any that do not.
+        - do: Check whether results agree with each other, and explain any that do not.
+          eg: "A type B tympanogram should go with an air-bone gap. Present OAEs are unusual where thresholds are worse than about 40 dB HL. The HPL should fit the audiogram (SPA-01)."
         - Decide the likely cause or causes.
-        - Note the limits of what the tests can show.
+        - do: Note the limits of what the tests can show.
+          say: "These tests show where the hearing loss is, but not what is causing it. That's a question for the ear doctor."
     - title: Explain
       steps:
-        - Use plain words, without jargon.
+        - do: Use plain words, without jargon.
+          say: "Your inner ear isn't picking up high-pitched sounds as well as it should, so sounds like 's' and 'f' are hard to catch."
+          watch: "\"Mild\" can sound trivial to someone who is struggling. Link the result to what they told you about their everyday listening."
         - Describe each result briefly and accurately (pure tones, speech, immittance, OAEs).
-        - Say where the problem is likely to be (outer, middle or inner ear, or beyond).
+        - do: Say where the problem is likely to be (outer, middle or inner ear, or beyond).
+          say: "The problem is in the inner ear, the part that turns sound into signals for the brain."
         - Answer the concerns the patient raised at the start.
       why: Coming back to the patient's own concerns closes the loop, and shows the appointment was about them, not the audiogram.
   sim:
@@ -40,11 +45,13 @@ cards:
   blocks:
     - title: 1. Retest first if needed
       steps:
-        - "Results inconclusive, incomplete or inconsistent, with no medical concern: book a retest."
+        - do: "Results inconclusive, incomplete or inconsistent, with no medical concern: book a retest."
+          why: "Acting on unreliable results risks a wrong referral or an inaccurate hearing aid fitting."
         - "Serial results needed: book a retest."
     - title: 2. Medical concerns
       steps:
-        - Decide how urgently they need to be seen.
+        - do: Decide how urgently they need to be seen.
+          watch: "Deal with medical concerns before hearing aids. A fitting can wait; a sudden loss cannot."
         - Decide who and how. Use CLS-02 for urgency.
     - title: 3. Specialist audiology
       steps:
@@ -62,10 +69,13 @@ cards:
       side: true
       steps:
         - Hearing protection.
-        - Retest every 1–2 years.
+        - do: Retest every 1–2 years.
+          why: "A baseline lets you spot change early, including a new asymmetry."
         - Hearing tests for family members.
-        - "Safety: warning signals, localising sound, falls risk."
-        - "Impact of untreated loss: missed information, isolation, less cognitive stimulation."
+        - do: "Safety: warning signals, localising sound, falls risk."
+          ask: "Can you hear the smoke alarm and the doorbell from your bedroom?"
+        - do: "Impact of untreated loss: missed information, isolation, less cognitive stimulation."
+          why: "Untreated hearing loss is linked to social isolation, and the Lancet Commission lists it among the largest modifiable risk factors for dementia."
   fixes:
     - "\"Processionals\" corrected to \"Professionals\"."
     - "Broken cross-reference \"See also Table 1 (4.6.1.) 3.7.1. and Section 14\" replaced by CLS-02."

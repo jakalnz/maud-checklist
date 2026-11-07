@@ -56,6 +56,12 @@ def load_ptf(cid):
             tips.append({"text": html.escape(t), "who": who})
     return tips
 
+# Step notes: tag -> (label on the note, label on the "show on every step" switch, quoted?)
+TAGS = {"ask": ("Ask", "Questions to ask", True), "say": ("Say", "What to say", True),
+        "eg": ("Example", "Examples", False), "why": ("Why", "Why", False),
+        "watch": ("Watch for", "Watch for", False)}
+TAG_KEYS = list(TAGS)
+
 for c in cards:
     c["ptf"] = load_ptf(c["id"])
     c["ptf_edit"] = f"https://github.com/{REPO}/edit/{BRANCH}/content/ptf/{c['id'].lower()}.md"
@@ -63,21 +69,26 @@ for c in cards:
     c["qr"] = qr_svg(c["url"])
     c["pods"] = []
     c.setdefault("refs", [])
-    c["has_more"] = False
+    c["tags"] = []
     for b in c["blocks"]:
         items = []
         for st in b["steps"]:
             if isinstance(st, dict):
-                eg = st.get("eg") or []
-                items.append({"text": st["do"], "eg": eg if isinstance(eg, list) else [eg], "why": st.get("why")})
+                bad = set(st) - {"do"} - set(TAG_KEYS)
+                assert not bad, f"{c['id']}: unknown step note tag(s) {bad}"
+                notes = []
+                for k in TAG_KEYS:
+                    v = st.get(k)
+                    for t in (v if isinstance(v, list) else [v] if v else []):
+                        notes.append({"tag": k, "label": TAGS[k][0], "text": t, "quote": TAGS[k][2]})
+                items.append({"text": st["do"], "notes": notes, "tags": {n["tag"] for n in notes}})
             else:
-                items.append({"text": st, "eg": [], "why": None})
+                items.append({"text": st, "notes": [], "tags": set()})
         b["items"] = items
         b["steps"] = [i["text"] for i in items]
+        b["tags"] = [k for k in TAG_KEYS if any(k in i["tags"] for i in items)]
         if b.get("layout") != "table":
-            c["has_eg"] = c.get("has_eg") or any(i["eg"] for i in items)
-            c["has_why"] = c.get("has_why") or any(i["why"] for i in items)
-            c["has_more"] = c["has_eg"] or c["has_why"]
+            c["tags"] = [k for k in TAG_KEYS if k in c["tags"] or k in b["tags"]]
         p = b.get("pod")
         b["podlist"] = p if isinstance(p, list) else ([p] if p else [])
         b["pod"] = b["podlist"][0] if b["podlist"] else None
@@ -127,8 +138,8 @@ T["card"] = r"""
         {% if false %}
         {% else %}
         <ol class="steps" start="1">
-          {% for it in b['items'] %}<li{% if medium == 'site' and (it.eg or it.why) %} class="has-more"{% endif %}>{{ it.text|safe }}{% if loop.last %}{{ pm }}{% endif %}{% if medium == 'site' and (it.eg or it.why) %}<button type="button" class="more-btn" aria-expanded="false" aria-label="Show {{ (c.eg_label or 'example')|lower }} and why">+</button>
-            <div class="more">{% for e in it.eg %}<p class="eg"><b>{{ c.eg_label or 'Example' }}</b> “{{ e|safe }}”</p>{% endfor %}{% if it.why %}<p class="why"><b>Why</b> {{ it.why|safe }}</p>{% endif %}</div>{% endif %}</li>{% endfor %}
+          {% for it in b['items'] %}<li{% if medium == 'site' and it.notes %} class="has-more"{% endif %}>{{ it.text|safe }}{% if loop.last %}{{ pm }}{% endif %}{% if medium == 'site' and it.notes %}<button type="button" class="more-btn" aria-expanded="false" aria-label="Show notes for this step">+</button>
+            <div class="more">{% for n in it.notes %}<p class="n-{{ n.tag }}"><b>{{ n.label }}</b> {% if n.quote %}“{{ n.text|safe }}”{% else %}{{ n.text|safe }}{% endif %}</p>{% endfor %}</div>{% endif %}</li>{% endfor %}
         </ol>
         {% endif %}
         {% if b.rule %}<div class="rule">{{ b.rule|safe }}</div>{% endif %}
@@ -140,9 +151,9 @@ T["card"] = r"""
 {% macro topictables(c, medium) %}{% for b in c.blocks if medium == 'site' and b.layout == 'table' %}
       <section class="block topics-block"><h3>{{ b.title }}</h3>
       {% set pm %}{% if b.pod %}<a class="pod-mark" href="#pod-{{ b.pod }}">≠</a>{% endif %}{% endset %}
-        <table class="topics"><thead><tr><th>Topic</th><th class="c-eg">{{ c.eg_label or 'Example' }}</th><th class="c-why">Why we ask</th></tr></thead><tbody>
+        <table class="topics"><thead><tr><th>Topic</th>{% for k in b.tags %}<th class="c-{{ k }}">{{ tags[k][0] }}</th>{% endfor %}</tr></thead><tbody>
           {% for it in b['items'] %}{% set tp = it.text.split(':', 1) %}<tr><td><b>{{ tp[0]|safe }}</b>{% if tp|length > 1 %}<span class="cover">{{ tp[1]|safe }}</span>{% endif %}{% if loop.last %}{{ pm }}{% endif %}</td>
-          <td class="c-eg">{% for e in it.eg %}<p>“{{ e|safe }}”</p>{% endfor %}</td><td class="c-why">{{ (it.why or '')|safe }}</td></tr>{% endfor %}
+          {% for k in b.tags %}<td class="c-{{ k }}" data-l="{{ tags[k][0] }}">{% for n in it.notes if n.tag == k %}<p>{% if n.quote %}“{{ n.text|safe }}”{% else %}{{ n.text|safe }}{% endif %}</p>{% endfor %}</td>{% endfor %}</tr>{% endfor %}
         </tbody></table>
       <p class="src">On the print card this is a checklist of topics; the questions and reasons appear on this site only.</p></section>
 {% endfor %}{% endmacro %}
@@ -154,9 +165,8 @@ T["card"] = r"""
     <div class="card-mode"><b>{{ 'Procedure' if c.mode == 'READ-DO' else 'Guide' }}</b>{{ 'Follow the steps in order' if c.mode == 'READ-DO' else 'Cover every point; order can vary' }}</div>
   </header>
   <p class="card-purpose">{{ c.purpose|safe }}</p>
-  {% if medium == 'site' and c.has_more %}<div class="layer-bar" role="group" aria-label="Show teaching notes on every step"><span>Show on every step:</span>
-    {% if c.has_eg %}<label><input type="checkbox" data-show="eg"> {{ 'Questions to ask' if c.eg_label == 'Ask' else 'Examples' }}</label>{% endif %}
-    {% if c.has_why %}<label><input type="checkbox" data-show="why"> Why</label>{% endif %}</div>{% endif %}
+  {% if medium == 'site' and c.tags %}<div class="layer-bar" role="group" aria-label="Show teaching notes on every step"><span>Show on every step:</span>
+    {% for k in c.tags %}<label class="sw-{{ k }}"><input type="checkbox" data-show="{{ k }}"> {{ tags[k][1] }}</label>{% endfor %}</div>{% endif %}
   <div class="card-body">
     <div class="card-steps">
       {% if c.when %}<ul class="card-when">{% for w in c.when %}<li>{{ w|safe }}</li>{% endfor %}</ul>{% endif %}
@@ -412,7 +422,7 @@ env = Environment(loader=DictLoader(T), autoescape=select_autoescape(default=Fal
 for m in modules:
     m["pod_count"] = len({k for c in m["cards"] for k in c["pods"]})
 # Step-through animations are off (steps={}); captions stay in F.STEPS for later use.
-common = dict(steps={}, icon=ICON, mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
+common = dict(tags=TAGS, steps={}, icon=ICON, mod=mod, modules=modules, cards=cards, diffs=diffs, figs=FIGS, figt=FIGT, animated=F.ANIMATED, print_figs=F.PRINT_FIGS)
 
 if SITE.exists(): shutil.rmtree(SITE)
 SITE.mkdir()
@@ -489,10 +499,9 @@ def module_md(mods, title):
                 lines = []
                 for i, it in enumerate(b["items"], 1):
                     lines.append(f"{i}. {md_text(it['text'])}")
-                    for e in it["eg"]:
-                        lines.append(f"    - *{c.get('eg_label') or 'Example'}:* \u201c{md_text(e)}\u201d")
-                    if it["why"]:
-                        lines.append(f"    - *Why:* {md_text(it['why'])}")
+                    for n in it["notes"]:
+                        t = f"\u201c{md_text(n['text'])}\u201d" if n["quote"] else md_text(n["text"])
+                        lines.append(f"    - *{n['label']}:* {t}")
                 L.append("\n".join(lines) + "\n")
                 if b.get("rule"): L.append(f"**Rule:** {md_text(b['rule']).strip()}\n")
                 if b.get("example"): L.append(f"**Example:** {md_text(b['example'])}\n")
@@ -513,7 +522,7 @@ def module_md(mods, title):
                 L.append("**Current PTF tips:**\n\n" + "\n".join(f"- {md_text(t['text'])}" + (f" ({t['who']})" if t["who"] else "") for t in c["ptf"]) + "\n")
             L.append(f"::: {{custom-style=\"PTF additions\"}}\n**PTF additions for {c['id']}** (type or paste inside this blue box; add your initials)\n\n"
                      "**Tip for students:** \n\n"
-                     "**Example question, phrase or explanation** (say which step): \n\n"
+                     "**Note for a step** (give the step number and the tag: Ask, Say, Example, Why or Watch for): \n\n"
                      "**Image** (paste here, add a one-line caption, and say whether it is your own photo or drawing, or where it came from): \n:::\n")
             L.append("**Other comments on this card** (or use Track Changes on the card above):\n\n- \n")
             L.append("\\newpage\n" if False else "")

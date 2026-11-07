@@ -18,11 +18,13 @@ cards:
         - Set up the audiometer and the CD, MP3 or .wav source.
         - Adjust the calibration tone to 0 on the VU meter.
         - If the speech circuit is calibrated for supra-aural headphones, apply the same correction you used at 1 kHz.
-        - Warn the patient before testing at high levels.
+        - do: Warn the patient before testing at high levels.
+          say: "Some of the words will be quite loud. Tell me straight away if anything is uncomfortable."
         - Test the better ear first.
     - title: First level
       steps:
-        - "2 kHz ≤ 15 dB HL: start at 40 dB HL."
+        - do: "2 kHz ≤ 15 dB HL: start at 40 dB HL."
+          why: "Consonants carry most of the information that tells one word from another, and much of their energy is around 2 kHz. The 2 kHz threshold predicts how loud the words must be before they become clear."
         - "2 kHz 20–45 dB HL: start 25 dB above it."
         - "2 kHz 50–55 dB HL: start 20 dB above it."
         - "2 kHz 60–65 dB HL: start 15 dB above it."
@@ -31,7 +33,8 @@ cards:
     - title: Find PI max, then the HPL
       steps:
         - If the score is below 90%, go up 10–15 dB, staying comfortable.
-        - Once the score is 90% or more, drop 10–20 dB (20 dB if the score was very high).
+        - do: Once the score is 90% or more, drop 10–20 dB (20 dB if the score was very high).
+          why: "Below PI max the score falls steeply with level, so large drops reach the HPL in few word lists without tiring the patient."
         - Keep dropping 5–15 dB until a score is at or below the HPL.
         - Test at least three levels.
         - "Base each level on the best threshold in the test ear."
@@ -74,12 +77,14 @@ cards:
     - title: Record
       steps:
         - "Record level in dB HL (not the dial reading if different), transducer, masking level and test ear."
-        - Watch the patient for visual cues.
+        - do: Watch the patient for visual cues.
+          why: "Lip-reading would raise the score. The norms assume listening only, so hide your face or use recorded material."
         - Write down what the patient actually says, and score as you go.
         - Plot the speech audiogram on the form with the right norms.
     - title: Score phonemes
       steps:
-        - Score the sound, not the spelling.
+        - do: Score the sound, not the spelling.
+          eg: "\"Knight\" is /n/ /aɪ/ /t/: three phonemes, not six letters."
         - Treat each CVC word as consonant, vowel, consonant, where a consonant may be a blend.
         - Count additions, omissions and distortions as errors, including plurals.
         - Make no allowance for common errors.
@@ -108,7 +113,8 @@ cards:
     - title: Test
       steps:
         - Ask the patient to signal as soon as they hear speech, even if they cannot understand it.
-        - Start 10 dB below the best air conduction threshold.
+        - do: Start 10 dB below the best air conduction threshold.
+          why: "Speech has energy across many frequencies, so it is detected at about the level of the best threshold in the speech range."
         - Present one word per level, rising in 5 dB steps until they hear it.
         - Then drop 10 dB and rise again in 5 dB steps.
         - "SDT is the level detected on 2 of 3 ascending trials."
@@ -117,7 +123,8 @@ cards:
       steps:
         - Test SDT last, after PI max, HPL and rollover, because the instructions differ.
         - Record SDT on the summary sheet, not on the PI function.
-        - "Check SDT agrees with the best threshold from 250 Hz to 4 kHz."
+        - do: "Check SDT agrees with the best threshold from 250 Hz to 4 kHz."
+          watch: "An SDT much better than the pure-tone thresholds means the pure tones are not true thresholds, as in a non-organic loss."
   refs:
     - "Olsen, W. O., & Matkin, N. D. (1979). Speech audiometry. In W. F. Rintelmann (Ed.), Hearing assessment."
     - "American Speech-Language-Hearing Association. (1988). Guidelines for determining threshold level for speech."
@@ -132,7 +139,8 @@ cards:
   blocks:
     - title: Decide whether to mask
       steps:
-        - "Use speech IAA: 40 dB for supra-aural headphones, 50 dB for inserts."
+        - do: "Use speech IAA: 40 dB for supra-aural headphones, 50 dB for inserts."
+          why: "Sound crosses the head mainly by bone conduction: a supra-aural earphone vibrates the skull through its cushion. A deep foam insert vibrates less of the head, so less crosses over."
         - Mask if the speech level minus IAA reaches the best bone conduction threshold of the non-test ear.
         - Use masked BC thresholds for the non-test ear if you have them.
         - If BC was not tested in the non-test ear, assume it equals that ear's best AC threshold.
@@ -141,8 +149,11 @@ cards:
     - title: Set the masking level
       steps:
         - Add the largest significant (≥ 15 dB) air-bone gap in the non-test ear.
-        - Warn the patient, then raise the noise gradually, not suddenly.
-        - Use speech noise if available. With white noise, add 5 dB unless effective masking has been calibrated.
+        - do: Warn the patient, then raise the noise gradually, not suddenly.
+          say: "You'll hear a rushing noise in your other ear. Ignore it and just repeat the words."
+          why: "A sudden loud noise startles and can be uncomfortable, and the patient may stop responding."
+        - do: Use speech noise if available. With white noise, add 5 dB unless effective masking has been calibrated.
+          why: "White noise spreads its energy across frequencies well beyond speech, so less of it falls where it masks speech. The extra 5 dB makes up for that."
         - For inserts on an audiometer needing correction, apply the 1 kHz correction to both speech and masking levels.
       rule: "Masking = Level<sub>TE</sub> − IAA + 10 dB + largest ABG<sub>NTE</sub>"
       why: The extra 10 dB covers speech peaks, which are up to 12 dB above the average. An air-bone gap in the non-test ear matters because speech crosses by bone, but masking arrives by air.

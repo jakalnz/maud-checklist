@@ -23,20 +23,25 @@ cards:
   blocks:
     - title: Before the patient arrives
       steps:
-        - Read the referral and plan which tests you will do.
+        - do: Read the referral and plan which tests you will do.
+          why: "A plan lets you put the most important tests first, in case the patient tires or time runs out."
         - Get the correct forms and prepare the test area.
-        - "Do listening checks on all transducers: level and distortion."
+        - do: "Do listening checks on all transducers: level and distortion."
+          why: "A listening check finds a faulty cord or transducer before it produces a false hearing loss on a real patient."
+          watch: "A crackle or drop-out when you flex the cord means a faulty lead. Swap it before you start."
         - Calibrate the speech CD, MP3 player or .wav files using the VU meter.
-      why: A listening check finds a faulty cord or transducer before it produces a false hearing loss on a real patient.
     - title: Instruct the patient
       steps:
         - Explain the purpose of the test.
-        - Ask them to respond even when the sound is very faint, and to guess if unsure.
+        - do: Ask them to respond even when the sound is very faint, and to guess if unsure.
+          why: "Encouraging guesses brings responses down to true threshold."
         - Explain that each ear is tested separately.
         - If the audiometer is outside the booth, tell them you can hear them through the microphone.
-        - Agree a clear response, such as a button press or a raised hand.
-        - Ask about loud noise exposure in the last 24 hours.
-      why: Encouraging guesses brings responses down to true threshold. Recent loud noise can cause a temporary threshold shift, so the result may not reflect their usual hearing.
+        - do: Agree a clear response, such as a button press or a raised hand.
+          watch: "Some patients wait for the tone to end, or press only when certain. Watch the first few responses and re-instruct early."
+        - do: Ask about loud noise exposure in the last 24 hours.
+          ask: "Have you been around any loud noise in the last day, like power tools, a concert or shooting?"
+          why: "Recent loud noise can cause a temporary threshold shift, so the result may not reflect their usual hearing."
   script:
     - "I'm going to play some beeps to find the quietest sounds you can hear."
     - "Press the button every time you hear a beep, even if it is very faint. If you think you heard one, press."
@@ -69,14 +74,17 @@ cards:
     - title: Use supra-aural headphones instead of inserts when there is
       steps:
         - A larger than usual ear canal volume, such as a perforation, a patent grommet or a mastoid cavity.
-        - Significant ear wax.
-        - A discharging ear canal, such as active otitis externa.
+        - do: Significant ear wax.
+          why: "An insert can push wax deeper, or seal against the wax instead of the canal wall."
+        - do: A discharging ear canal, such as active otitis externa.
+          why: "Inserting a tip into an infected canal is painful and risks spreading infection. Supra-aural cushions sit outside the canal and can be cleaned."
         - Severe exostoses that would block the insert or make it painful.
       stop: Do not use supra-aural headphones if you suspect a collapsing ear canal.
       why: "Through a patent grommet, perforation or mastoid cavity, the insert has to drive the canal, middle ear and mastoid together. That is a much larger air volume, so less sound reaches the eardrum at low frequencies. Voss et al. (2000) measured 5–25 dB less sound below 500 Hz with grommets and perforations, and up to 35 dB less at 1–4 kHz in mastoid bowls. The measured loss is then worse than the real one. Supra-aural headphones are affected less because their cushions enclose a larger volume. The large ear canal volume on the tympanogram comes from the same physics."
     - title: Check for a collapsing canal
       steps:
-        - During otoscopy, press gently on the tragus and pinna and watch the canal entrance.
+        - do: During otoscopy, press gently on the tragus and pinna and watch the canal entrance.
+          watch: "The speculum holds the canal open, so collapse is easy to miss. Look at the canal entrance before you insert the speculum."
         - If it closes or narrows to a slit, use inserts.
         - Suspect collapse if there is a high-frequency air-bone gap with a normal tympanogram and present reflexes. Retest with inserts.
         - Record a collapsing canal on the audiogram.
@@ -116,10 +124,12 @@ cards:
   blocks:
     - title: Fit insert earphones
       steps:
-        - "Choose the foam tip size: small (10 mm, 14B, beige) for children and small adults; regular (13 mm, 14A, yellow) for most adults; jumbo (18 mm, 14C) for very large canals."
+        - do: "Choose the foam tip size: small (10 mm, 14B, beige) for children and small adults; regular (13 mm, 14A, yellow) for most adults; jumbo (18 mm, 14C) for very large canals."
+          watch: "Roll the foam into a thin, tight cylinder first. A loosely rolled tip will not reach intermediate depth."
         - Insert the foam tip so its outer edge is at least flush with the canal entrance (intermediate depth).
         - Clip the transducer box so the tip points straight down the canal.
-        - Hold the tip in place until the foam has fully expanded.
+        - do: Hold the tip in place until the foam has fully expanded.
+          why: "Foam takes several seconds to expand. Testing before it seals can leak low-frequency sound and give a false low-frequency loss."
         - Tug gently. The tip should resist.
         - Check comfort. Deep insertion can hurt.
         - If the patient feels discomfort, repeat otoscopy to check for skin abrasion.
@@ -128,7 +138,8 @@ cards:
     - title: Fit supra-aural headphones
       steps:
         - Put the red earphone on the right ear and the blue on the left.
-        - Centre each diaphragm directly over the canal opening.
+        - do: Centre each diaphragm directly over the canal opening.
+          watch: "A cushion that has slipped back off the canal opening raises thresholds, mostly at high frequencies."
         - Move hair, glasses and earrings out of the way.
         - Check comfort, for example earrings pressing under the cushion.
         - If 6 or 8 kHz is unexpectedly poor, re-seat the headphones and retest those frequencies.
@@ -136,7 +147,8 @@ cards:
     - title: Place the bone conductor
       steps:
         - Place it on the prominent part of the mastoid, not touching the pinna.
-        - Keep hair between the transducer and the mastoid to a minimum.
+        - do: Keep hair between the transducer and the mastoid to a minimum.
+          why: "Hair reduces contact with the mastoid and can raise bone conduction thresholds."
         - Check it is secure and comfortable.
   notes:
     - kind: note
@@ -182,7 +194,8 @@ cards:
       steps:
         - Close the booth door before you turn up the talk-back, to avoid feedback.
         - Check the loudspeaker is on and you can hear the patient clearly through talk-back.
-        - Set the talk-forward level to suit the patient's hearing.
+        - do: Set the talk-forward level to suit the patient's hearing.
+          watch: "A level set for the poorer ear can be uncomfortable for the better one. Check it again after you place the transducers."
         - With headphones selected, send channels 1 and 2 to separate ears.
         - If masking, set the masking channel (usually channel 2) to the non-test ear.
       why: If both channels go to one ear, the maximum output is reduced. That matters most for a patient with a severe to profound loss.
@@ -196,27 +209,33 @@ cards:
   blocks:
     - title: First frequency
       steps:
-        - Test the better ear first, if known.
+        - do: Test the better ear first, if known.
+          why: "The patient learns the task on the ear that hears best, and its thresholds tell you early when the poorer ear will need masking."
         - Start at 30 dB HL, or at 50 dB HL if you suspect a hearing loss.
         - If there is no response, go up in 15 to 20 dB steps until they respond.
         - After each response, go down 10 dB.
-        - After each miss, go up 5 dB.
-        - "Threshold is the lowest level with responses on at least 2 of 3 ascending presentations."
+        - do: After each miss, go up 5 dB.
+          eg: "Response at 40, down to 30 (miss), up to 35 (response), down to 25 (miss), up to 30 (response)…"
+        - do: "Threshold is the lowest level with responses on at least 2 of 3 ascending presentations."
+          watch: "Count only responses on the way up. A response straight after a 10 dB drop does not count towards 2 of 3."
       why: The modified Hughson-Westlake method (Carhart & Jerger, 1959) brackets threshold from below. Ascending presentations give the most stable thresholds.
       pod: [threshold-definition]
     - title: Timing
       steps:
         - Present each tone for 1 to 2 seconds.
-        - Leave at least 3 seconds between tones, and vary the gap.
+        - do: Leave at least 3 seconds between tones, and vary the gap.
+          why: "A regular rhythm lets the patient predict the tone and respond to the rhythm, not the sound."
         - To save time, go faster below threshold, not at or above it.
-        - Keep your shoulders, arms and face still. Give no visual cues.
-      why: Predictable or very fast presentations encourage false-positive responses.
+        - do: Keep your shoulders, arms and face still. Give no visual cues.
+          watch: "Leaning, glancing up or moving your hand as you present are all visible through the booth window."
     - title: Frequencies
       steps:
         - "Test in this order: 1, 2, 3, 4, 6, 8 kHz."
-        - Retest 1 kHz in the first ear as a reliability check.
+        - do: Retest 1 kHz in the first ear as a reliability check.
+          why: "Agreement within 5 dB shows the responses are reliable. A bigger change suggests the patient was still learning the task."
         - Then test 500 Hz and 250 Hz.
-        - At each new frequency, start 15 to 20 dB above the last threshold, unless that level would be uncomfortably loud.
+        - do: At each new frequency, start 15 to 20 dB above the last threshold, unless that level would be uncomfortably loud.
+          why: "Starting clearly above threshold reminds the patient what the new pitch sounds like."
         - Repeat in the other ear.
       pod: [retest, bsa-next-freq]
     - title: Add inter-octave frequencies when
@@ -228,8 +247,11 @@ cards:
     - title: If there is no response
       steps:
         - Test up to the audiometer limit or 110 dB HL, whichever is lower.
-        - Ask whether they hear or feel low-frequency tones at high levels. Write VT beside a felt response.
-        - If tinnitus makes pure tones hard to hear, use warble tones and note the stimulus and frequencies on the audiogram.
+        - do: Ask whether they hear or feel low-frequency tones at high levels. Write VT beside a felt response.
+          say: "Did you hear that, or feel it like a buzz or vibration?"
+          why: "Low-frequency tones at high levels can be felt. Plotting a felt response as a threshold makes the loss look milder than it is."
+        - do: If tinnitus makes pure tones hard to hear, use warble tones and note the stimulus and frequencies on the audiogram.
+          why: "A warble tone changes pitch, so it stands out against steady tinnitus."
       pod: [test-limit]
   notes:
     - kind: rule
@@ -268,10 +290,12 @@ cards:
       steps:
         - Start with the ear that was worse for air conduction.
         - "Test in this order: 1, 2, 4 kHz, then 500 Hz."
-        - Start 20 dB above the better air conduction threshold at that frequency, in either ear.
+        - do: Start 20 dB above the better air conduction threshold at that frequency, in either ear.
+          why: "Unmasked bone conduction comes from the better cochlea, so a start above the better ear's air conduction makes sure the first tone is heard."
         - Use the same 10-down 5-up bracketing as for air conduction.
-        - Leave the test ear uncovered at 1 kHz and below.
-      why: Covering the test ear improves low-frequency bone conduction thresholds (the occlusion effect), which would hide a real air-bone gap.
+        - do: Leave the test ear uncovered at 1 kHz and below.
+          why: "The bone conductor makes the canal walls vibrate, which puts low-frequency sound into the canal. With the canal open it escapes; covered, it is trapped and reaches the eardrum, so low-frequency bone thresholds improve (the occlusion effect). That would hide a real air-bone gap."
+          watch: "Take the test-ear earphone or insert off when you switch from air to bone conduction."
       pod: [bc-criterion, bsa-bc-freq]
     - title: Add these frequencies when useful
       steps:
@@ -325,8 +349,10 @@ cards:
         - Audiologist and student names.
         - Test date.
         - "Equipment: audiometer model, calibration date (done and due), transducers."
-        - Reliability of responses.
-        - Otoscopy findings.
+        - do: Reliability of responses.
+          eg: "Good, fair or poor, with the reason: \"Fair: frequent false positives at 250 Hz.\""
+        - do: Otoscopy findings.
+          eg: "\"R: canal clear, TM intact. L: wax covering about half the canal, TM partly visible.\""
         - Any non-standard method or stimulus, such as ascending technique or warble tones.
         - Any non-standard symbol, such as VT, with a note explaining it.
       why: These are the ASHA (2005) minimum fields. Records must also follow New Zealand privacy law.
@@ -334,7 +360,8 @@ cards:
       steps:
         - Use a graph, with right and left ears shown clearly. A table may be added.
         - Use the NZ symbol set below.
-        - Join air conduction symbols only once you know no further masking is needed.
+        - do: Join air conduction symbols only once you know no further masking is needed.
+          watch: "Joining early commits you, and the next reader, to unmasked thresholds that may still change."
         - Do not join a no-response symbol to other thresholds.
         - Join right ear thresholds with a solid line and left with a dashed line.
         - Do not join bone conduction symbols.
@@ -358,15 +385,19 @@ cards:
     - title: Air conduction
       steps:
         - Check for masking straight after unmasked air conduction in both ears.
-        - Check again after bone conduction, using the non-test ear's bone thresholds.
-        - Mask if the rule below is met.
+        - do: Check again after bone conduction, using the non-test ear's bone thresholds.
+          why: "The non-test ear's bone conduction can be better than its air conduction, so a tone that looked safe may in fact cross over."
+        - do: Mask if the rule below is met.
+          eg: "Supra-aural, 2 kHz: right AC 60, left BC 15. 60 − 15 = 45, which is ≥ 40, so mask the right ear."
       rule: |
         Mask AC if AC<sub>TE</sub> − BC<sub>NTE</sub> ≥ IAA
       why: Sound reaching the non-test ear is the test level minus the interaural attenuation. If that is at or above the non-test cochlea's threshold (its bone conduction), the non-test ear may have heard it. Before bone conduction is known, use AC<sub>NTE</sub>; bone conduction can only be the same or better.
       pod: [insert-depth, bsa-iaa-inserts]
     - title: Bone conduction
       steps:
-        - Mask if both parts of the rule below are true.
+        - do: Mask if both parts of the rule below are true.
+          eg: "AC 30, unmasked BC 20 at 1 kHz: the gap is 10 dB, so no masking is needed."
+          watch: "Apply the rule to each ear, including the better one. An unmasked bone threshold could come from either cochlea."
       rule: |
         Mask BC if air-bone gap<sub>TE</sub> ≥ 15 dB and AC<sub>TE</sub> > 15 dB HL
       pod: bsa-bc-rule
@@ -411,18 +442,22 @@ cards:
   blocks:
     - title: Start
       steps:
-        - "AC: set initial masking to AC<sub>NTE</sub> + 10 dB."
-        - "BC: set initial masking to AC<sub>NTE</sub> + 10 dB + OEF."
+        - do: "AC: set initial masking to AC<sub>NTE</sub> + 10 dB."
+          eg: "Non-test ear AC is 15 dB HL, so start masking at 25 dB HL."
+        - do: "BC: set initial masking to AC<sub>NTE</sub> + 10 dB + OEF."
+          watch: "Forgetting the OEF is the most common bone masking error. Without it, the covered non-test ear can still hear the tone."
         - Leave out the OEF if the non-test ear may have an air-bone gap of 20 dB or more at that frequency. If you do not know, add it.
         - For insert masking, subtract insert correction factors from the audiogram values to get the dial level.
       why: The extra 10 dB is a safety factor. The OEF makes up for the non-test ear's improved bone conduction once it is covered by the masking earphone. A conductive loss already reduces that effect.
       pod: [oef-depth, bsa-plateau]
     - title: Find the plateau
       steps:
-        - Present the tone to the test ear.
+        - do: Present the tone to the test ear.
+          say: "You'll hear a rushing noise in your other ear. Ignore it, and press only when you hear the beeps."
         - If they respond, raise masking 10 dB and present again.
         - If they do not respond, raise the tone 5 dB until they do, then raise masking 10 dB again.
-        - Stop when the threshold holds steady over 20 dB of masking (2 steps of 10 dB).
+        - do: Stop when the threshold holds steady over 20 dB of masking (2 steps of 10 dB).
+          watch: "If the response disappears as masking rises, think overmasking, not a true shift. Check masking minus IAA against the test ear's bone conduction."
         - Record that level as the masked threshold.
       why: If the threshold keeps rising with masking, the non-test ear was hearing it (undermasking). When it holds steady, masking has removed the non-test ear and the threshold belongs to the test ear.
   values:
@@ -469,7 +504,8 @@ cards:
   blocks:
     - title: Initial step
       steps:
-        - Set masking to AC<sub>NTE</sub> + 30 dB.
+        - do: Set masking to AC<sub>NTE</sub> + 30 dB.
+          why: "Starting 30 dB above the non-test ear covers most cross-hearing in one step, so it is quicker than the plateau method."
         - Recheck the test-ear threshold.
         - If they respond, accept it. Repeat if you doubt reliability.
         - If they do not respond, raise the tone until they do.
@@ -513,7 +549,8 @@ cards:
   blocks:
     - title: Initial step
       steps:
-        - Set masking to AC<sub>NTE</sub> + 30 dB + OEF.
+        - do: Set masking to AC<sub>NTE</sub> + 30 dB + OEF.
+          eg: "Supra-aural, 500 Hz, AC<sub>NTE</sub> 10 dB HL: 10 + 30 + 20 = 60 dB HL."
         - Recheck the bone conduction threshold.
         - If they respond, accept it. Repeat if you doubt reliability.
         - If they do not respond, raise the tone until they do.

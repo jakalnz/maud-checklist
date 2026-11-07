@@ -12,27 +12,26 @@ cards:
   mode: DO-CONFIRM
   source: "1, 2.1"
   purpose: Build rapport and get an accurate history that shapes the rest of the appointment.
-  eg_label: Ask
   when:
     - Test only in rooms that meet ambient noise standards, with calibrated, maintained equipment (NZAS Professional Practice Standards, Part A).
   blocks:
     - title: Open the interview
       steps:
         - do: Give your full name and say why you are asking questions.
-          eg: "Hi, I'm Sam, a student audiologist. I'll start by asking about your hearing, so we can plan today's tests."
+          ask: "Hi, I'm Sam, a student audiologist. I'll start by asking about your hearing, so we can plan today's tests."
           why: Patients answer more openly when they know who you are and why the questions matter.
         - do: Choose seating and lighting that help communication.
           why: Good light on your face supports lip-reading, which many of our patients rely on.
     - title: Ask well
       steps:
         - do: Mix open and closed questions in a sensible order.
-          eg: ["Tell me about your hearing.", "Which ear do you feel hears better?"]
+          ask: ["Tell me about your hearing.", "Which ear do you feel hears better?"]
           why: Open questions get the patient's story and priorities; closed questions then pin down the details.
         - do: Avoid leading questions and asking several questions at once.
-          eg: "Which ear do you feel hears better?"
+          ask: "Which ear do you feel hears better?"
           why: "\"Your hearing is worse on the left, isn't it?\" invites agreement, not information. Asking two things at once gets an answer to only one."
         - do: Use plain words. Say "ringing in your ears", not "tinnitus".
-          eg: "Do you ever hear ringing, buzzing or other noises in your ears?"
+          ask: "Do you ever hear ringing, buzzing or other noises in your ears?"
         - do: Check the patient can hear you. Adjust your volume, clarity and speed.
           why: If they mishear your questions, the history is unreliable. How they cope is also your first informal hearing check.
     - title: Communicate
@@ -44,7 +43,7 @@ cards:
       steps:
         - Keep the patient on track.
         - do: Encourage talk with silence, minimal encouragers and reflections.
-          eg: "So it's mostly in noisy restaurants that you struggle?"
+          ask: "So it's mostly in noisy restaurants that you struggle?"
           why: A reflection shows you listened and lets the patient correct or add to what you understood.
         - Pick up on verbal and non-verbal cues.
         - Close the interview clearly before testing.
@@ -63,7 +62,6 @@ cards:
   mode: DO-CONFIRM
   source: "2.2, 2.3"
   purpose: Gather the history you need to form a hypothesis before you test.
-  eg_label: Ask
   blocks:
     - title: Gather
       steps:
@@ -77,32 +75,32 @@ cards:
       layout: table
       steps:
         - do: "Reason for appointment: referral source and main concern."
-          eg: ["What brings you in today?", "Whose idea was it to have your hearing checked?"]
+          ask: ["What brings you in today?", "Whose idea was it to have your hearing checked?"]
           why: "The main concern sets the goal of the appointment. If family or a GP prompted the visit, the patient may notice less difficulty than others do."
         - do: "Hearing: concerns, better ear, onset (gradual or sudden), sound sensitivity, previous tests or aids."
-          eg: ["Which ear do you feel hears better?", "Did it come on gradually, or did you notice it suddenly?", "Have you had a hearing test or worn hearing aids before?"]
-          why: "The better ear is tested first. A sudden loss needs urgent referral (CLS-02). Earlier results show whether the loss is changing."
+          ask: ["Which ear do you feel hears better?", "Did it come on gradually, or did you notice it suddenly?", "Have you had a hearing test or worn hearing aids before?"]
+          why: "A sudden loss points to an acute insult to the cochlea or nerve (viral, vascular or inflammatory). Hair cells and their blood supply may recover if treatment starts early, so it needs urgent referral (CLS-02). The better ear is tested first, and earlier results show whether the loss is progressing."
         - do: "Tinnitus: side, description, onset, constant, intermittent or pulsatile, annoyance."
-          eg: ["Do you hear ringing, buzzing or other sounds in your ears or head?", "Is it in one ear, both, or in your head?", "Does it ever beat in time with your heartbeat?", "How much does it bother you?"]
-          why: "Unilateral tinnitus is an NZ referral criterion. Pulsatile tinnitus can have a vascular cause and needs medical review. How much it bothers them guides management."
+          ask: ["Do you hear ringing, buzzing or other sounds in your ears or head?", "Is it in one ear, both, or in your head?", "Does it ever beat in time with your heartbeat?", "How much does it bother you?"]
+          why: "Most tinnitus follows reduced input from a damaged cochlea, which the brain compensates for by turning up its own activity. Tinnitus in one ear needs a one-sided cause, which can include a vestibular schwannoma pressing on that ear's nerve, so it is an NZ referral criterion. Pulsatile tinnitus is usually the sound of turbulent blood flow in a vessel near the ear, or a vascular tumour, and needs medical review. How much it bothers them guides management."
         - do: "Vertigo, dizziness or imbalance: onset, trigger, type, duration, recent falls, GP aware."
-          eg: ["Have you had any dizziness, spinning or unsteadiness?", "What were you doing when it started, and how long does it last?", "Have you had any falls in the last year?"]
-          why: "Attacks with fluctuating hearing, tinnitus and fullness suggest Ménière's disease. Dizziness with neurological signs is a red flag. Falls risk changes urgency and onward referral."
+          ask: ["Have you had any dizziness, spinning or unsteadiness?", "What were you doing when it started, and how long does it last?", "Have you had any falls in the last year?"]
+          why: "Vertigo comes from a mismatch between the balance signals of the two inner ears, or from the brain that integrates them. Attacks of 20 minutes to hours with fluctuating low-frequency loss, roaring tinnitus and fullness fit Ménière's disease (excess endolymph). Brief spins when rolling over fit BPPV. Dizziness with double vision, slurred speech, numbness or weakness may be a brainstem or cerebellar stroke: call 111. Falls risk changes urgency and onward referral."
         - do: "General ear health: pain, discharge, fullness, wax."
-          eg: ["Any ear pain, discharge or a blocked feeling?", "Do you use cotton buds, or have your ears cleaned?"]
-          why: "A discharging or painful ear needs referral and may rule out probe tests (IMM-01, INF-01). Fullness with a hearing change points to the middle ear or Ménière's."
+          ask: ["Any ear pain, discharge or a blocked feeling?", "Do you use cotton buds, or have your ears cleaned?"]
+          why: "Pain and discharge usually mean infection of the canal skin (otitis externa) or of the middle ear through a perforation. Inflamed skin is fragile and infection can spread on equipment, so refer and avoid probe tests (IMM-01, INF-01). Fullness with a hearing change points to fluid or pressure in the middle ear, or to Ménière's."
         - do: "ENT history: ear surgery, treatment, scans; middle ear, throat and sinus problems."
-          eg: ["Have you had any ear operations, grommets or scans?", "Any problems with your sinuses or throat?"]
-          why: "Recent surgery affects whether tympanometry is safe (IMM-01). Past treatment can explain an air-bone gap or an unusual tympanogram."
+          ask: ["Have you had any ear operations, grommets or scans?", "Any problems with your sinuses or throat?"]
+          why: "After middle ear surgery, grafts and the reconstructed ossicles are still healing, and pressure changes could disturb them, so tympanometry waits (IMM-01). Old surgery or grommets can leave scarring (tympanosclerosis) or a thin, floppy eardrum, which explain an air-bone gap or an unusual tympanogram."
         - do: "Loud noise: occupational or recreational, hearing protection."
-          eg: ["Have you worked anywhere noisy?", "Do you shoot, ride motorbikes, or play or listen to loud music?", "Did you wear hearing protection?"]
-          why: "Noise predicts a notch around 4 kHz and opens prevention advice. Shooting can explain an asymmetry, but refer anyway if it meets the NZ criteria."
+          ask: ["Have you worked anywhere noisy?", "Do you shoot, ride motorbikes, or play or listen to loud music?", "Did you wear hearing protection?"]
+          why: "Noise damages outer hair cells most in the region tuned to about 3–6 kHz, partly because the ear canal's resonance boosts sound there, giving the typical 4 kHz notch. The damage is permanent, so prevention advice matters. A right-handed shooter's left ear is nearer the muzzle and is usually worse, which can explain an asymmetry, but refer anyway if it meets the NZ criteria."
         - do: "Family history: relatives, age of onset, cause."
-          eg: "Does anyone in your family have hearing loss? How old were they when it started?"
-          why: "Early-onset loss in the family suggests a genetic cause, such as otosclerosis, and helps you predict and counsel about progression."
+          ask: "Does anyone in your family have hearing loss? How old were they when it started?"
+          why: "Early-onset loss in the family suggests a genetic cause. In otosclerosis, for example, abnormal bone growth gradually fixes the stapes, giving a conductive loss that often appears in early adulthood. Knowing the pattern helps you predict and counsel about progression."
         - do: "General health: illnesses, medications, hospital stays, head or ear injury, memory, past infections."
-          eg: ["Any major illnesses or hospital stays?", "What medicines do you take?", "Have you ever had a head injury?", "Any concerns about your memory?"]
-          why: "Some medicines (e.g. certain antibiotics and chemotherapy) and head injury can cause hearing loss. Memory concerns change how you instruct, test and counsel."
+          ask: ["Any major illnesses or hospital stays?", "What medicines do you take?", "Have you ever had a head injury?", "Any concerns about your memory?"]
+          why: "Some medicines are toxic to the outer hair cells, starting at high frequencies: aminoglycoside antibiotics and cisplatin chemotherapy are the main ones. A head injury can fracture the temporal bone, disrupt the ossicles or concuss the cochlea. Memory concerns change how you instruct, test and counsel."
   figures: [adult-history-form]
   notes:
     - kind: flag
@@ -121,12 +119,16 @@ cards:
   blocks:
     - title: Look
       steps:
-        - Brace your hand against the patient's head before inserting the speculum.
-        - Check the outer ear.
+        - do: Brace your hand against the patient's head before inserting the speculum.
+          why: "Bracing means the speculum moves with the head if the patient moves, so it cannot jab the canal."
+          watch: "Rest the side of your hand on the head, not just a fingertip."
+        - do: Check the outer ear.
+          why: "A scar behind the ear suggests previous mastoid surgery, which changes your choice of transducer (PTA-02)."
         - Check the canal for wax, foreign bodies, discharge, disease and collapsing canals.
-        - Check the eardrum for perforations and other changes.
-        - Record findings in the otoscopy section of the audiogram.
-      why: Bracing means the speculum moves with the head if the patient moves, so it cannot jab the canal.
+        - do: Check the eardrum for perforations and other changes.
+          eg: "Perforation, grommet, retraction, a fluid level or bubbles, redness or bulging."
+        - do: Record findings in the otoscopy section of the audiogram.
+          eg: "\"R: canal clear, TM intact. L: wax covering about half the canal, TM partly visible.\""
       pod: [bsa-speculum]
     - title: Repeat
       steps:

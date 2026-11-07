@@ -268,10 +268,13 @@ body.print .head-shape { padding: 9px 34px 9px 14px; }
 .more-btn:hover,.more-btn:focus-visible{background:var(--wash);border-color:var(--brand-2)}
 .more{display:none;margin:6px 0 2px}
 .more p{margin:3px 0;padding:4px 8px;font-size:.9em;line-height:1.45;border-left:3px solid var(--mahina);background:var(--wash)}
-.more p.why{border-left-color:var(--brand-2)}
+.more p.n-why{border-left-color:var(--brand-2)}
+.more p.n-eg{border-left-color:#6d6d91}
+.more p.n-watch{border-left-color:#d98e04;background:#fdf6e7}
 .more b{font-weight:700;color:var(--brand);margin-right:4px}
-li.open .more,.card.show-eg .more,.card.show-why .more{display:block}
-.card:not(.show-eg) li:not(.open) .more .eg,.card:not(.show-why) li:not(.open) .more .why{display:none}
+li.open .more{display:block}
+.card.show-ask .more,.card.show-say .more,.card.show-eg .more,.card.show-why .more,.card.show-watch .more{display:block}
+.card:not(.show-ask) li:not(.open) .more .n-ask,.card:not(.show-say) li:not(.open) .more .n-say,.card:not(.show-eg) li:not(.open) .more .n-eg,.card:not(.show-why) li:not(.open) .more .n-why,.card:not(.show-watch) li:not(.open) .more .n-watch{display:none}
 @media print{.more,.more-btn,.layer-bar{display:none!important}}
 table.topics{width:100%;border-collapse:collapse;font-size:.9em;margin-top:4px}
 table.topics th{text-align:left;font-weight:700;color:var(--brand);border-bottom:2px solid var(--brand);padding:4px 6px}
@@ -279,9 +282,9 @@ table.topics td{vertical-align:top;border-bottom:1px solid var(--tint-20);paddin
 table.topics td p{margin:0 0 4px}
 table.topics .cover{display:block;color:var(--tint-60);font-size:.92em;margin-top:2px}
 table.topics td:first-child{width:30%}
-table.topics .c-why{color:#333}
+table.topics td.c-watch{color:#7a4f00}
 @media screen and (max-width:700px){table.topics thead{display:none}table.topics tr{display:block;border-bottom:1px solid var(--tint-20);padding:6px 0}table.topics td{display:block;border:0;width:auto!important;padding:2px 0}
-table.topics td.c-eg:not(:empty)::before{content:"Ask";font-weight:700;color:var(--brand);margin-right:4px}table.topics td.c-why:not(:empty)::before{content:"Why ";font-weight:700;color:var(--brand)}}
+table.topics td[data-l]:not(:empty)::before{content:attr(data-l);display:block;font-weight:700;color:var(--brand)}}
 .topics-block{padding:10px 16px 6px;border-top:1px solid var(--tint-20)}
-.topics-block td:first-child{width:24%}.topics-block td.c-eg{width:38%}
+.topics-block td:first-child{width:24%}.topics-block td.c-ask{width:38%}
 .steps li.has-more:has(.pod-mark){padding-right:56px}.steps li.has-more .pod-mark{right:28px}

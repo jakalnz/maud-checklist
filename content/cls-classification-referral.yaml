@@ -15,9 +15,12 @@ cards:
   blocks:
     - title: Describe each ear
       steps:
-        - Name the degree using the scale, by frequency range where it varies.
+        - do: Name the degree using the scale, by frequency range where it varies.
+          watch: "Use the threshold range at each frequency, not an average. A pure-tone average can hide a steep slope."
         - Name the configuration.
-        - "Name the type: conductive, sensorineural or mixed, from the air-bone gaps."
+        - do: "Name the type: conductive, sensorineural or mixed, from the air-bone gaps."
+          why: "Bone conduction bypasses the outer and middle ear and vibrates the cochlea directly. If bone is better than air, sound is being lost before it reaches the cochlea."
+          watch: "A gap of 10 dB or less is within test-retest variability. Do not call it conductive."
         - Say whether the ears are symmetrical. If not, go to CLS-02.
       example: "Right: mild sloping to moderate-severe sensorineural hearing loss."
   values:
@@ -64,24 +67,36 @@ cards:
   blocks:
     - title: Asymmetric sensorineural loss
       steps:
-        - "Refer if the ears differ by ≥ 20 dB at two or more adjacent frequencies."
-        - Refer even if another cause, such as noise exposure, seems to explain the asymmetry.
+        - do: "Refer if the ears differ by ≥ 20 dB at two or more adjacent frequencies."
+          eg: "Right 2 and 4 kHz: 25 and 30 dB HL. Left: 50 and 55 dB HL. Differences of 25 dB at two adjacent frequencies, so refer."
+        - do: Refer even if another cause, such as noise exposure, seems to explain the asymmetry.
+          why: "A vestibular schwannoma grows on the balance nerve and presses on the hearing nerve beside it, giving a one-sided loss, often with speech scores poorer than the audiogram predicts. Noise exposure can be present as well, so an MRI decides, not the history."
         - "Our checklist also refers for ≥ 15 dB at any two frequencies from 2 to 8 kHz (see Points of difference)."
       why: The NZAS uses Dawes (1998) - ≥ 20 dB at two adjacent frequencies. No single definition catches every retrocochlear lesion, so history and the red flags below still count.
       pod: [asnhl-definition, asnhl-nice]
     - title: Refer even without that asymmetry if there is
       steps:
-        - "Asymmetry < 20 dB with neurological signs: vertigo, facial numbness or weakness, speech or vision disturbance."
-        - Unilateral tinnitus, even with a symmetrical audiogram.
-        - "A Ménière's cluster: vertigo, aural fullness, roaring tinnitus, fluctuating loss."
-        - Sudden sensorineural loss, whatever the configuration.
+        - do: "Asymmetry < 20 dB with neurological signs: vertigo, facial numbness or weakness, speech or vision disturbance."
+          why: "Vertigo with numbness, weakness, double vision or speech change points to the brainstem or cerebellum rather than the inner ear: a stroke, or a lesion large enough to press on the brainstem."
+        - do: Unilateral tinnitus, even with a symmetrical audiogram.
+          ask: "Is the noise in one ear, both ears, or in your head?"
+          why: "Tinnitus in one ear, even with symmetrical thresholds, can be the first sign of a lesion on that ear's nerve, before the hearing changes."
+        - do: "A Ménière's cluster: vertigo, aural fullness, roaring tinnitus, fluctuating loss."
+          ask: "Do you get spells of spinning, with your ear feeling full and your hearing changing?"
+          why: "Excess endolymph (endolymphatic hydrops) distends the inner ear and disturbs both hearing and balance, giving the cluster. Diagnosis and treatment are medical, and a single audiogram can miss the fluctuation."
+        - do: Sudden sensorineural loss, whatever the configuration.
+          ask: "When did you first notice the change? Did it come on over minutes, hours or days?"
+          why: "A sudden loss points to an acute insult to the cochlea or nerve (viral, vascular or inflammatory). Steroids reduce inflammation and work best in the first days, so time since onset matters."
+          watch: "Patients often put a sudden loss down to wax or a cold and wait to see if it clears. Ask directly."
       pod: red-flags-nice
     - title: Sudden sensorineural hearing loss
       steps:
         - "Sudden SNHL is a drop of ≥ 30 dB over at least 3 consecutive frequencies, compared with a previous audiogram or, if none, the other ear."
-        - Do a full assessment, including acoustic reflexes, and compare with any previous audiograms.
+        - do: Do a full assessment, including acoustic reflexes, and compare with any previous audiograms.
+          why: "Reflexes help separate a middle ear problem from a sensorineural one, and a cochlear loss from a retrocochlear one."
         - Refer to a GP or ENT, to be seen ideally within 24 hours of onset. If neither is available, refer to the emergency department.
-        - If the loss followed trauma or a work injury, refer with a view to an ACC claim.
+        - do: If the loss followed trauma or a work injury, refer with a view to an ACC claim.
+          why: "In New Zealand, ACC may fund assessment and treatment of hearing loss caused by an injury."
       why: Steroid treatment works best when started early, which is why the NZAS asks for review within 24 hours of onset. If the patient's report and earlier results disagree, the NZAS says the patient's report takes precedence.
       pod: sshl-timing
   values:

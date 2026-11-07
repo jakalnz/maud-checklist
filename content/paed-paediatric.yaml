@@ -27,8 +27,10 @@ cards:
       steps:
         - "Under about 18 months: child on the parent's lap, distracter on a full-size chair in front."
         - "From about 18 months: child at the small table, parent close by on the side away from the speaker and reinforcer."
-        - Distracter sits opposite the child, slightly to one side, so the tester can see the child.
-        - Reinforcer box sits at 45–90° from the child.
+        - do: Distracter sits opposite the child, slightly to one side, so the tester can see the child.
+          why: "The tester judges each turn from the child's face and eyes, so needs a clear view."
+        - do: Reinforcer box sits at 45–90° from the child.
+          why: "A turn of 45–90° away from the distracter is a clear, deliberate movement. A reinforcer straight ahead gives turns you cannot judge."
       why: Some clinics are calibrated separately for the lap and the small chair. Check how yours was calibrated.
     - title: Calibrate live voice
       steps:
@@ -48,13 +50,15 @@ cards:
   blocks:
     - title: Speech detection threshold (live voice)
       steps:
-        - "At 30 dB HL, call the child naturally (\"Hi Emily, I'm over here\"). Reinforce a head turn."
+        - do: "At 30 dB HL, call the child naturally (\"Hi Emily, I'm over here\"). Reinforce a head turn."
+          why: "Their own name in a familiar-sounding voice is the most engaging sound, so it is the easiest first response, and it starts teaching the head turn."
         - do: Get a second turn at 30 dB HL, with the interrupt off between calls.
           why: One turn can be chance. A second turn at the same level shows the child is responding to the sound.
         - Drop to 20 dB HL and get two turns for a screening SDT.
         - do: No turn at 30 dB HL? Go up in 20 dB steps until they respond, then find threshold.
           why: Large steps find a response quickly, before the child loses interest. You then refine it.
-        - Still no spontaneous turn? Pair sound and reinforcer until the child is conditioned.
+        - do: Still no spontaneous turn? Pair sound and reinforcer until the child is conditioned.
+          why: "Pairing teaches the child that the sound predicts the toy lighting up, so they learn to look for it when they hear the sound alone."
     - title: Frequency-specific, sound field
       steps:
         - Present 500 Hz NBN at 30 dB HL and reinforce a head turn. Repeat once.
@@ -71,7 +75,7 @@ cards:
         - do: Condition with 500 Hz NBN at 40 dB HL (felt as vibration), paired with the reinforcer.
           why: At 500 Hz the bone conductor is felt as well as heard, so a child with a hearing loss can still learn the task.
         - do: Do not start BC at 2 kHz.
-          why: A conductive loss can give a false sensorineural-looking result at 2 kHz. If that is the only BC threshold you get, the result is ambiguous.
+          why: "Part of bone conduction travels through the ossicles, and that part peaks around 2 kHz. Middle ear fluid or stiffness reduces it, so bone conduction looks worse at 2 kHz than the cochlea really is (the Carhart notch). If 2 kHz is your only BC threshold, a conductive loss can look sensorineural."
       pod: [vra-bc]
     - title: Ear-specific (inserts)
       side: true
@@ -109,18 +113,22 @@ cards:
       steps:
         - Introduce yourselves and seat everyone.
         - Take the history and explain the test. Ask the parent not to cue the child.
-        - Present stimuli with varied gaps between them.
+        - do: Present stimuli with varied gaps between them.
+          why: "Children learn rhythms quickly and turn by habit, which gives false responses."
         - Decide with the distracter whether each turn was real; reinforce only clear turns.
         - Tell the distracter the stimulus and level, but not just before presenting.
-        - Change reinforcers and stimuli (NBN or warble) to keep interest.
-        - Record every presentation and response (✓ or +, and −).
+        - do: Change reinforcers and stimuli (NBN or warble) to keep interest.
+          why: "Infants habituate: the same reward loses its pull after a few trials. Novelty restores the response."
+        - do: Record every presentation and response (✓ or +, and −).
+          why: "Recording the no-response trials, and the turns when nothing was played, lets you judge how reliable the responses were."
         - Do at least one cross-check and immittance.
         - Give brief feedback after each test, then manage the case and refer as needed.
     - title: Distracter
       side: true
       steps:
         - Engage the child during the history.
-        - Keep the child's attention forward, without over-engaging them.
+        - do: Keep the child's attention forward, without over-engaging them.
+          watch: "An over-engaged child will not turn; an under-engaged child keeps looking around and gives false turns."
         - Change toys or how you use them to set the right level of distraction.
         - Praise the child when they respond.
         - Fit the bone conductor or inserts.
@@ -139,9 +147,13 @@ cards:
   blocks:
     - title: Quick history first
       steps:
-        - Main concerns about hearing.
-        - Speech and language development.
-        - History of middle ear disease.
+        - do: Main concerns about hearing.
+          ask: "What worries you most about their hearing?"
+        - do: Speech and language development.
+          ask: "How many words is she using? Is she putting two words together?"
+        - do: History of middle ear disease.
+          ask: ["How many ear infections in the last year?", "Has he had grommets?"]
+          why: "Middle ear fluid is the most common cause of hearing loss at this age. It comes and goes, so a history of infections tells you to look closely at tympanometry and bone conduction."
         - Fill in the rest of the Child History Form during or after testing.
       why: You have limited time before attention fades. The full form covers age, referral, responsiveness, speech and language, ear infections, risk factors (pregnancy and birth, family history, major illness, craniofacial differences) and development.
     - title: Prepare
@@ -149,12 +161,15 @@ cards:
         - Get forms, including the KTT score sheet.
         - Set out the KTT, sound level meter, loudspeaker and play toys.
         - Do listening checks.
-        - Practise producing 35 and 45 dBA with your voice.
+        - do: Practise producing 35 and 45 dBA with your voice.
+          why: "You will speak at these levels with the meter out of the child's view. An inconsistent voice level makes the result meaningless."
     - title: Kendall Toy Test
       steps:
-        - Take toys out one at a time and ask the child to name them; name it if they do not.
+        - do: Take toys out one at a time and ask the child to name them; name it if they do not.
+          why: "The test measures hearing, not vocabulary. A child who does not know the word \"spoon\" cannot pick the spoon."
         - Spread the toys on the table.
-        - Practise with the 5 distracter items at normal voice ("Show me the ...").
+        - do: Practise with the 5 distracter items at normal voice ("Show me the ...").
+          why: "They teach the task at an easy level, so later misses are about hearing."
         - Drop to 35–40 dBA and ask for each of the 10 test items in random order.
         - If an item is missed, raise your voice 5–10 dB until it is found.
         - "Record the dBA level at which ≥ 90% of items are found, e.g. 9/10 at 40–45 dBA."
@@ -173,14 +188,18 @@ cards:
   blocks:
     - title: Condition
       steps:
-        - "Tell, do not ask: \"We are going to play a game.\""
+        - do: "Tell, do not ask: \"We are going to play a game.\""
+          why: "Asking a young child if they want to play invites \"no\"."
         - Condition with loud tones through a speaker or headphones on the table.
-        - Under 4 years, demonstrate without words.
+        - do: Under 4 years, demonstrate without words.
+          why: "Under about 4, spoken instructions are often not understood, but children readily copy what they see."
         - Get a few clear responses before putting headphones on the child.
     - title: Test air conduction
       steps:
-        - "Order: 2 kHz, 500 Hz, 4 kHz, 1 kHz (1 kHz before 4 kHz if you suspect a U-shaped loss)."
-        - Get at least 2 kHz and 500 Hz in one ear before switching, if attention is fading.
+        - do: "Order: 2 kHz, 500 Hz, 4 kHz, 1 kHz (1 kHz before 4 kHz if you suspect a U-shaped loss)."
+          why: "2 kHz carries much of the consonant information in speech, so it is the most useful single frequency if the child stops early."
+        - do: Get at least 2 kHz and 500 Hz in one ear before switching, if attention is fading.
+          why: "One low and one high frequency in each ear is the minimum to show whether there is a loss and roughly its shape."
         - First frequency at 50 dB HL; if clear, drop to 30 then 20 dB HL.
         - Later frequencies start at 30 dB HL.
         - Bracket down to 10 dB HL. From 3½ to 4 years, if cooperative, find true thresholds.
@@ -192,7 +211,8 @@ cards:
         - Try headphones again later.
     - title: Bone conduction and masking
       steps:
-        - Test BC if a loss is suspected. Do not start at 2 kHz.
+        - do: Test BC if a loss is suspected. Do not start at 2 kHz.
+          why: "Middle ear fluid or stiffness lowers bone conduction around 2 kHz (the Carhart notch), so starting there can make a conductive loss look sensorineural (see VRA-02)."
         - Screen BC to 0 dB HL, or far enough to confirm or rule out a conductive component.
         - Mask if needed and the child is still attending; use the step method.
         - Give a short explanation to the parent before immittance.
@@ -212,17 +232,20 @@ cards:
   blocks:
     - title: Seat the child
       steps:
-        - "Under about 2½ years: on the parent's lap facing away from the meter, distracter in front with hands-busy toys."
+        - do: "Under about 2½ years: on the parent's lap facing away from the meter, distracter in front with hands-busy toys."
+          why: "Seeing the probe and meter worries some children. Facing away with busy hands means less movement and fewer lost seals."
         - Older children can sit alone and watch, but will need something to hold.
     - title: Under 9 months corrected age
       steps:
-        - "Probe tone 1 kHz, pressure +200 to −600 daPa, baseline correction off."
+        - do: "Probe tone 1 kHz, pressure +200 to −600 daPa, baseline correction off."
+          why: "An infant's ear canal walls are soft and move with the pressure change. At 226 Hz that movement dominates, so the trace can look normal with fluid behind the eardrum. At 1 kHz the canal walls matter less and the trace reflects the middle ear."
         - "Classify as peaked (single or double peak), flat (no peak) or indeterminate (any other shape)."
         - Repeat if the trace is noisy or not clearly normal.
       pod: infant-baseline
     - title: 9 months and over
       steps:
-        - Use 226 Hz in diagnostic (manual) mode at 600/200 daPa/s.
+        - do: Use 226 Hz in diagnostic (manual) mode at 600/200 daPa/s.
+          why: "By about 9 months the canal walls are firm enough for 226 Hz to reflect the middle ear, and the familiar norms apply."
         - Use manual rather than screening mode.
         - Classify with the norms in the table.
       why: "Screening mode is fast but loses accuracy on ambiguous traces, starts without your control, and needs the probe removed and reinserted every time the seal is lost. Manual mode at a fast sweep is almost as quick."
@@ -253,14 +276,17 @@ cards:
       steps:
         - Use a 1 kHz probe tone and BBN at 85 dB HL, ipsilateral.
         - Get two replications to call it present; check for growth.
-        - Do not go above 85 dB HL.
+        - do: Do not go above 85 dB HL.
+          why: "An infant's ear canal is very small, so the same dial setting gives a much higher sound level at the eardrum than in an adult."
         - Keep printouts of any ambiguous record.
       why: Most babies have a BBN reflex at or below 85 dB HL, so absence at 85 dB HL is abnormal. Positive deflections are normal with a 1 kHz probe.
     - title: 9 months and over (226 Hz probe)
       steps:
         - "Normal tympanogram: find at least one ipsilateral threshold from 1 kHz; add 500 Hz, 2 kHz and contralateral if the child cooperates."
-        - "Ambiguous type C: find a 1 kHz ipsilateral threshold from about 90 dB HL, up to 105 dB HL."
-        - "Ambiguous As or rounded B: test for presence at 95 dB HL BBN or 105 dB HL at 1 kHz, unless there is a patent grommet or perforation."
+        - do: "Ambiguous type C: find a 1 kHz ipsilateral threshold from about 90 dB HL, up to 105 dB HL."
+          why: "Negative middle ear pressure stiffens the eardrum, which can raise a reflex or hide it, so you need higher levels to show it."
+        - do: "Ambiguous As or rounded B: test for presence at 95 dB HL BBN or 105 dB HL at 1 kHz, unless there is a patent grommet or perforation."
+          why: "A present reflex means the middle ear can transmit the stapedius movement to the probe, which argues against an effusion."
         - Use diagnostic, not screening, mode.
       pod: paed-art-start
       why: In screening mode, Sells et al. (1997) found a 31% false-positive rate for ipsilateral reflexes.

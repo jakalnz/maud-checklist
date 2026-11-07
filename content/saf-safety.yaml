@@ -15,24 +15,30 @@ cards:
   blocks:
     - title: Testing and diagnosis
       steps:
-        - "Mask when needed, and recognise undermasking."
+        - do: "Mask when needed, and recognise undermasking."
+          watch: "A threshold that keeps rising as masking rises means you have not reached the plateau yet. It is not a masked threshold."
         - "Use loud sounds (audiometry, reflexes, loudness discomfort testing) only when appropriate."
-        - "Respect contraindications, e.g. a sweep rate too fast for comfort."
+        - do: "Respect contraindications, e.g. a sweep rate too fast for comfort."
+          eg: "No tympanometry within 3 months of middle ear surgery without ENT approval (IMM-01). No reflexes above 105 dB HL unless there is a conductive loss at that frequency (IMM-03)."
     - title: Follow-up and referral
       steps:
-        - Ask the history questions that matter.
+        - do: Ask the history questions that matter.
+          eg: "Sudden onset, one-sided symptoms, dizziness, recent ear surgery, discharge."
         - Monitor and follow up.
         - "Act on red flags. Refer urgently (see CLS-02)."
     - title: Physical safety
       steps:
         - Brace your hand for otoscopy.
-        - Never attempt wax removal you are not trained for.
-        - "Ear impressions: check the otoblock seal and avoid abrasion."
+        - do: Never attempt wax removal you are not trained for.
+          why: "Untrained wax removal can perforate the eardrum or damage the canal skin."
+        - do: "Ear impressions: check the otoblock seal and avoid abrasion."
+          why: "Impression material that gets past the otoblock can reach the eardrum and may need surgical removal."
         - Use good infection control (see INF-01).
     - title: Amplification
       side: true
       steps:
-        - "Over-amplification: verify maximum output with real-ear measures to avoid pain or damage."
+        - do: "Over-amplification: verify maximum output with real-ear measures to avoid pain or damage."
+          why: "Output above the patient's discomfort level is painful and can cause further hearing loss."
         - "Under-amplification: verify targets so the patient has access to speech."
     - title: Communication and records
       side: true
@@ -68,14 +74,16 @@ cards:
       steps:
         - Collect tips from all clinic areas.
         - Add 1 teaspoon of Enzy-Clean to 1 L of warm water in a lidded container.
-        - Add the tips, close the lid, shake, and soak for 2–3 minutes.
+        - do: Add the tips, close the lid, shake, and soak for 2–3 minutes.
+          why: "The enzyme breaks down wax and organic material, which would otherwise shield germs from the disinfectant."
         - Rinse thoroughly in warm water.
       why: Without Enzy-Clean, use detergent and hot water and follow the same steps.
       pod: [aaa-infection]
     - title: Disinfect
       steps:
         - Dissolve ¼ Milton tablet in 250 mL of cold water in the second container.
-        - Add the tips, fully immersed and separated. Soak for no more than 1 hour.
+        - do: Add the tips, fully immersed and separated. Soak for no more than 1 hour.
+          why: "Air bubbles and stacked tips leave surfaces the solution does not reach."
         - Drain with the sieve and dry on a clean paper towel.
         - Return dry tips to their workstations.
     - title: Tidy up

@@ -15,21 +15,26 @@ cards:
   blocks:
     - title: Check the equipment
       steps:
-        - Check the three probe holes are clear.
-        - Do a cavity check against the tolerances.
+        - do: Check the three probe holes are clear.
+          why: "One tube delivers the probe tone, one carries the sound back to the microphone, one changes the pressure. A blocked tube gives a flat trace or a false volume."
+        - do: Do a cavity check against the tolerances.
+          why: "The meter works out admittance and volume from the sound level in a closed space. A known cavity checks those sums are right before you trust them in an ear."
         - Check your own ipsilateral and contralateral reflexes to confirm sound levels.
     - title: Prepare the patient
       steps:
         - Seat adults facing the meter so they can see what you are doing.
-        - "Explain: what it measures, the pressure change, a low humming sound, sit still but keep breathing, tell you about any pain."
-        - Choose the right tip and get an airtight seal; use ear gel if needed.
+        - do: "Explain: what it measures, the pressure change, a low humming sound, sit still but keep breathing, tell you about any pain."
+          say: "You'll feel some pressure in your ear, like going up in a plane, and hear a low hum. Keep still and breathe normally. Tell me if anything hurts."
+        - do: Choose the right tip and get an airtight seal; use ear gel if needed.
+          watch: "A leak shows as a seal error or a sudden jump in volume. Pull the pinna up and back to straighten the canal and reseat the tip."
         - Once the probe is in, keep your face visible when you talk.
     - title: Test and record
       steps:
         - Use a sweep rate of 600/200 daPa/s unless a slower rate is needed (see Why).
         - Save, print or draw the tympanogram.
         - "Record type, ECV at +200 daPa, peak pressure, tympanometric width and static admittance."
-        - Extend below −200 daPa if needed to tell a flat B from a very negative C.
+        - do: Extend below −200 daPa if needed to tell a flat B from a very negative C.
+          why: "When the Eustachian tube does not open, air is absorbed from the middle ear and its pressure falls. Very negative pressure can push the peak past −200 daPa, so a C can look like a flat B."
         - Stop if the probe or pressure causes discomfort.
         - Do not move a tip to the other ear if infection could spread.
       why: "Slow the sweep when you need more accuracy, or for pressure-equalisation problems, pressure-induced vertigo (Ménière's disease, suspected fistula), recent middle ear surgery, or a very anxious patient."
@@ -64,10 +69,13 @@ cards:
   blocks:
     - title: Classify
       steps:
-        - Compare peak pressure, admittance and ECV with the norms.
+        - do: Compare peak pressure, admittance and ECV with the norms.
+          why: "Admittance shows how easily the eardrum and ossicles move: low with fluid or stiffness (effusion, otosclerosis), high with a floppy, scarred eardrum or a break in the ossicular chain. Peak pressure estimates middle ear pressure."
         - Name the type from the figure on the back of this card.
-        - "For a type B, say B-low or B-high from the ECV."
-        - "Check tympanometric width for any B or borderline trace."
+        - do: "For a type B, say B-low or B-high from the ECV."
+          why: "With an intact eardrum the probe measures only the canal. A hole lets it measure the middle ear and mastoid air spaces as well, so the volume is large. Wax or the probe against the canal wall gives a small volume."
+        - do: "Check tympanometric width for any B or borderline trace."
+          why: "Fluid behind the eardrum damps its movement and spreads the peak out. A wide peak can flag an effusion before admittance falls below the norm."
         - "Confirm a type B with a reflex if useful, e.g. 1 kHz ipsilateral at 105 dB HL."
       why: ECV depends on probe depth, and chronic middle ear disease can make it unreliable. Read every B in the light of the history.
       pod: [tymp-norms-year, bsa-mep]
@@ -111,15 +119,19 @@ cards:
     - title: Find threshold
       steps:
         - Start at 80 dB HL. If no reflex, go up 10 dB, then 5 dB steps.
-        - "A reflex is a change of at least 0.02 mmho."
+        - do: "A reflex is a change of at least 0.02 mmho."
+          why: "The stapedius muscle pulls on the stapes and stiffens the ossicular chain, so admittance at the probe drops slightly."
         - Show it twice at threshold.
-        - Show it grows at 5 dB above (not possible at 105 dB HL).
+        - do: Show it grows at 5 dB above (not possible at 105 dB HL).
+          why: "A real reflex grows with level. Artefacts from swallowing, jaw movement or probe movement do not."
         - Show it is absent 5 dB below.
       pod: [bsa-art-levels]
     - title: Classify and record
       steps:
-        - Classify as normal, elevated, absent or abnormal (e.g. biphasic, reversed).
-        - Record contralateral reflexes under the stimulus ear, not the probe ear.
+        - do: Classify as normal, elevated, absent or abnormal (e.g. biphasic, reversed).
+          eg: "Absent in the probe ear with a conductive loss there: the stiff or fluid-filled middle ear hides the muscle's effect, whichever ear is stimulated."
+        - do: Record contralateral reflexes under the stimulus ear, not the probe ear.
+          why: "The stimulus ear's cochlea and nerve start the reflex. The probe ear only shows the muscle's effect, through its own middle ear."
         - "Name each pathway by probe and stimulus ear, and follow it on the pathway diagram."
   values:
     - caption: Adult ART norms (dB HL)

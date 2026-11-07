@@ -17,12 +17,14 @@ cards:
   blocks:
     - title: Instruct
       steps:
-        - Explain the test, for example that they will hear clicks and tones and a microphone picks up tiny sounds made by the inner ear.
+        - do: Explain the test, for example that they will hear clicks and tones and a microphone picks up tiny sounds made by the inner ear.
+          say: "You'll hear clicks and tones. A small microphone picks up tiny sounds your inner ear makes in reply. Please sit as still and quiet as you can."
         - Ask them to keep still and quiet, and to keep breathing and clothing noise to a minimum.
     - title: Fit
       steps:
         - "Choose the tip size (adult or child). The DPOAE probe works for both TEOAE and DPOAE."
-        - Check the probe is clear of wax or debris; clean it carefully if blocked.
+        - do: Check the probe is clear of wax or debris; clean it carefully if blocked.
+          why: "The emission is very quiet, often below 10 dB SPL. Wax in the probe tubes reduces the stimulus and muffles the microphone."
         - Fit the tip so it does not overhang the probe.
         - Insert as deep as comfortable without touching wax or the canal wall.
         - Drape the cable over the shoulder so it does not rub on clothing.
@@ -36,8 +38,10 @@ cards:
     - title: Interpret with care
       steps:
         - Print results and check the ear and patient details.
-        - "Allow for middle ear status: slight negative pressure, a grommet or a perforation can reduce OAE amplitude."
-        - "If OAEs appear with a moderately-severe loss, rule out stimulus artefact before you accept them."
+        - do: "Allow for middle ear status: slight negative pressure, a grommet or a perforation can reduce OAE amplitude."
+          why: "The stimulus goes in through the middle ear and the emission comes back out through it, so a middle ear problem reduces OAEs twice over."
+        - do: "If OAEs appear with a moderately-severe loss, rule out stimulus artefact before you accept them."
+          why: "OAEs come from the outer hair cells, which are usually damaged once thresholds are worse than about 40 dB HL. Present OAEs with a greater loss suggest artefact, or ANSD, where the outer hair cells work but the signal is lost at the inner hair cells or nerve."
   fixes:
     - "\"size of the hold\" corrected to \"hole\"."
 
@@ -54,7 +58,8 @@ cards:
         - With a good seal and a quiet adult, lower the rejection level below the default.
     - title: Report
       steps:
-        - "Report a band as present if its SNR is ≥ 3 dB."
+        - do: "Report a band as present if its SNR is ≥ 3 dB."
+          watch: "Low-frequency bands are often swamped by breathing and room noise. A missing 1 kHz band with strong higher bands may be noise, not a hearing loss."
         - Note overall reproducibility and amplitude as supporting evidence.
       why: There are no universal TEOAE criteria. Kemp et al. (1990) suggested at least 50% reproducibility for presence; Prieve et al. (1993) found 70% reasonable with an overall amplitude of at least 6 dB SPL.
       pod: [bsa-teoae]
@@ -73,14 +78,16 @@ cards:
   blocks:
     - title: Record
       steps:
-        - "Check parameters: F2/F1 = 1.22, L1 = 65 dB SPL, L2 = 55 dB SPL."
+        - do: "Check parameters: F2/F1 = 1.22, L1 = 65 dB SPL, L2 = 55 dB SPL."
+          why: "The cochlea's non-linear outer hair cells mix the two tones and create a new tone at 2F1−F2. At F2/F1 = 1.22, with L1 above L2, the two tones overlap best near the F2 place and the distortion product is largest in most ears."
         - Watch the stimulus levels; correct the probe fit if any frequency is off level (often the highest).
         - Average over several sweeps until the noise floor is low enough. This is harder in children.
         - Repeat if the first sweep is low in amplitude with few passing frequencies.
     - title: Judge presence
       steps:
         - Apply the criteria in the table at each frequency.
-        - Consider the absolute noise floor; a high floor means a response could have been missed.
+        - do: Consider the absolute noise floor; a high floor means a response could have been missed.
+          watch: "A good SNR needs a quiet floor. If the floor is above about −10 dB SPL, a small but real emission can be hidden."
       pod: dpoae-criteria
   values:
     - caption: DPOAE pass criteria
